@@ -59,6 +59,38 @@ class UserController
         
     }
 
+    public function connexion(){
+        if(!empty($_POST['mail'])&&!empty($_POST['password'])){
+            $login=$_POST['mail'];
+            $result= MemberManager::getLogin($login);
+    // si l'utilisateur existe
+            if($result->getPassword()){
+    // on vérifie le mot de passe saisi
+                $password=$_POST['password'];
+                $password_hash=$result->getPassword();
+                if(password_verify($password, $password_hash)){
+                    $_SESSION['user']=$result->getStatut();
+                    header("location: ?controller=expos&action=dashboard");
+    // si une condition n'est pas bonne, on affiche un message d'erreur
+                }else{
+                    $message="Identifiants invalides";
+                    echo $this->twig->render('users/templateConnexion.html.twig',['message'=>$message]);
+                }
+            }else{
+                $message="Identifiants invalides";
+                echo $this->twig->render('users/templateConnexion.html.twig',['message'=>$message]);
+            }
+        }else{
+            $message="Identifiants invalides";
+            echo $this->twig->render('users/templateConnexion.html.twig',['message'=>$message]);
+        }
+    }
+
+    public function logout(){
+        unset($_SESSION['user']);
+        header("location: ?controller=pages&action=home");
+    }
+
     public function add() {
         if($this->loginUser !=""){
             $this->loader = new \Twig\Loader\FilesystemLoader('templates');
