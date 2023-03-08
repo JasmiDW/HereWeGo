@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+  <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://kit.fontawesome.com/3793efe237.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Here We Go</title>
+    </head>
+      <body>
+        <header>
+            <nav class="navbar navbar-expand-lg fixed-top navbar-light">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="index.html"><img
+                      id="HWG-logo"
+                      src="img/logo.png"
+                      alt="Logo"
+                      draggable="false"
+                      height="80"
+                  /></a>
+                  <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-mdb-toggle="collapse"
+                    data-mdb-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                  >
+                    <i class="fas fa-bars"></i>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link mx-2" href="about.html"></i>à propos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2" href="events.html"></i>événements</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2" href="contact.html"></i>contact</a>
+                        </li>
+                        <div class="btn">
+                            <a href="connexion.html">Connexion</a>
+                            <a  href="inscription.html">Incription</a>
+                        </div>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+        </header>
+        <section id="intro">
+          <div class="d-flex bg-orange">
+            <div class="container mt-5 mb-5">
+                <div class="d-flex justify-content-left">
+                <h2>Transport pour : <a href="see-event.html">Il était une voix</a></h2>
+                </div>
+                <div class="d-flex justify-content-left">
+                    <h5>Organisé par : <a href="see-profil.html">Grand Poitiers</h5></a>
+                </div>
+                <!-- <div class="d-flex justify-content-left">
+                    <a href="change-transport.html"><h6>Modifier le transport ?</h6></a>
+                </div> -->
+            </div>
+        </div>
+        </section>
+        <section id="events">
+          <div class="d-flex bg-white">
+            <div class="container mb-5">
+              <div class="d-flex justify-content-left mt-5">
+                <h1><i class="fa-solid fa-calendar-days fa-xl"></i>7 mars 2023</h1>
+              </div>
+              <div class="d-flex justify-content-left">
+                <p><i class="fa-solid fa-clock fa-xl"></i> Départ à 10 heures <i class="fa-solid fa-location-dot fa-xl"></i>Parthenay - Poitiers</p>
+              </div>
+              <div class="d-flex justify-content-left">
+                <p><i class="fa-solid fa-car fa-xl"></i>Voiture</p>
+              </div>
+            <div class="d-flex justify-content-left mt-3">
+                <p class="content"><i class="fa-solid fa-quote-right fa-xl"></i>La voiture disponible entre Partenay et Poitiers pour l'événement musical est une Peugeot 308 de couleur bleu foncé. Cette voiture dispose de cinq places, dont le conducteur. Elle est spacieuse et confortable, avec des sièges en tissu noir, une climatisation et un système audio de qualité. La couleur bleu foncé de la voiture donne un look élégant et sophistiqué, et elle est en excellent état. Si vous souhaitez voyager avec style et confort pour l'événement musical, cette Peugeot 308 est un choix idéal.</p>
+            </div>
+            <div class="row d-flex justify-content-between">
+                <div class="col-md-12 ml-5 d-flex me-5">
+                    <p><i class="fa-solid fa-ticket fa-xl"></i>Places disponibles 
+                      <div class="col-md-5 ml-5 d-flex number">
+                      3
+                      </div>
+                    </p>
+                </div>
+                <div class="col-md-12 ml-5 d-flex me-5">
+                  <p class="d-flex align-items-center"><i class="fa-solid fa-euro-sign fa-xl"></i>Montant 
+                    <div class="col-md-5 ml-5 d-flex number">
+                      15€
+                    </div>
+                  </p>
+                </div>
+            </div>
+                <div class="d-flex justify-content-left mb-2">
+                  <div class="form-row">
+                    <label for="places">Nombre de places</label>
+                    <select name="places" id="places" form="placesform">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="btn mb-5 ">
+                  <a><input class="btn p-0" type="submit" value="Réserver"></a>
+                </div>
+        </section>
+        <footer class="">
+        </footer>
+        <script src="script/bootstrap.bundle.js"></script>
+      </body>
+    </html>

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section id="profil-event">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="d-flex d-md-block bg-yellow-1 col-md-4 col-12 p-3"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5 mb-5 ml-5">
+                    <p class="m-0"> <a href="#"  onclick="backOrToPage()">Retour ?</a></p>
+                    {# {{ % if loginUser ='organisateur' % }} #}
+                        <h1 class="compte">Raison sociale : {{ user.raison_sociale }}</h1>
+                        {# {{% else %}} #}
+                            {# <h1 class="compte">Nom Prénom : Grand Poitiers</h1> #}
+                            {# {{% endif %}} #}
+                    <div class="event-profil">
+                        <div class="trait mt-5"></div>
+                        {% for event in list %}
+                        <h2 class="compte mb-2 mt-3">{{ event.titre_event }}</h2>
+                        <p class="mb-3" ><i class="{{categorie.icone_fontawesome}}"></i>{{categorie.libelle_categorie}}<i class="fa-solid fa-calendar-days fa-lg"></i>{{ event.date_debut_event|date('j') }} au {{ event.date_fin_event|date('j F Y') }}</p>
+                        <a class="" href="?controller=events&action=show&id={{ event.id_event }}">Voir cet événement</a>
+                        <div class="trait mt-3"></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="public/script/backOrToPage.js"></script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section id="connexion">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="d-flex d-md-block bg-yellow-1 col-md-4 col-12 p-3"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5 mb-5 ml-5">
+                    <div class="compte m-0">
+                        <p class="m-0">Pas encore de compte HereWeGo ? <a href="?controller=pages&action=inscription">S'inscrire</a></p>
+                    </div>
+                    <h1 class="compte mb-5">Connexion</h1>
+                    <div class="form-connexion">
+                        <form name="formEx1" method="post" action="?controller=pages&action=login" onsubmit="return verificationForm()">
+                            <p>
+                            <input class="p-2" type="text" id="formMail" placeholder="email"><br/>
+                            <span id="ErreurMail" class="error"></span>
+                            </p>
+                            <p>
+                            <input class=" mt-1 p-2" type="password" id="formPassword" placeholder="Mot de passe"><br/>
+                            <span id="ErreurPassword" class="error"></span><br/>
+                            </p>
+                            <div class="btn">
+                                <a><input class="btn p-0" type="submit" value="Connexion"></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

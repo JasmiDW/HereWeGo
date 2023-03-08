@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section id="intro">
+        <div class="d-flex bg-orange">
+            <div class="container mt-5 mb-5">
+                <div class="d-flex justify-content-left">
+                <h2>Transport pour : <a href="?controller=pages&action=templateEvent">{{event.titre_event}}</a></h2>
+                </div>
+                <div class="d-flex justify-content-left">
+                    <h5>Organisé par : <a href="?controller=pages&action=showProfil">{{participant.nom}} {{participant.prenom}}</h5></a>
+                </div>
+                <!-- <div class="d-flex justify-content-left">
+                    <a href="change-transport.html"><h6>Modifier le transport ?</h6></a>
+                </div> -->
+            </div>
+        </div>
+    </section>
+    <section id="events">
+        <div class="d-flex bg-white">
+            <div class="container mb-5">
+                <div class="d-flex justify-content-left mt-5">
+                    <h1><i class="fa-solid fa-calendar-days fa-xl"></i>{{transport.date_depart_transport|date('j M Y')}}</h1>
+                </div>
+                <div class="d-flex justify-content-left">
+                    <p><i class="fa-solid fa-clock fa-xl"></i> Départ {{transport.heure_depart|date('H:i')}} heures  <i class="ms-3 fa-solid fa-location-dot fa-xl"></i> {{localisation.ville}} - {{event.ville}}</p>
+                </div>
+                <div class="d-flex justify-content-left">
+                    <p><i class="{{type.icone_fontawesome}}"></i>{{type.libelle_type_transport}}</p>
+                </div>
+                <div class="d-flex justify-content-left mt-3">
+                    <p class="content"><i class="fa-solid fa-quote-right fa-xl"></i> {{transport.descriptif}} </p>
+                </div>
+                <div class="row d-flex justify-content-between">
+                    <div class="col-md-12 ml-5 d-flex me-5">
+                        <p><i class="fa-solid fa-ticket fa-xl"></i>Places disponibles 
+                            <div class="col-md-5 ml-5 d-flex number align-items-center">
+                            {{transport.nb_dispo}} 
+                            </div>
+                        </p>
+                    </div>
+                    <div class="col-md-12 ml-5 d-flex me-5">
+                        <p class="d-flex align-items-center"><i class="fa-solid fa-euro-sign fa-xl"></i>Montant 
+                        <div class="col-md-5 ml-5 d-flex number align-items-center">
+                            {{transport.tarif}}€
+                        </div>
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-left mb-3">
+                    <div class="form-row">
+                        <label for="places">Nombre de places</label>
+                        <select name="places" id="places" form="placesform">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="btn mb-5 ">
+                    <a><input class="btn p-0" type="submit" value="Réserver"></a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

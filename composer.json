@@ -1,0 +1,17 @@
+{
+    "name": "jasmi/here-we-go",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nadia Rousseau"
+        }
+    ],
+    "require": {
+        
+        "twig/twig": "^3.5"
+    }
+}

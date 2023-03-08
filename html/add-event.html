@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+  <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://kit.fontawesome.com/3793efe237.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Here We Go</title>
+    </head>
+      <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="index.html"><img
+                      id="HWG-logo"
+                      src="img/logo.png"
+                      alt="Logo"
+                      draggable="false"
+                      height="80"
+                  /></a>
+                  <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-mdb-toggle="collapse"
+                    data-mdb-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                  >
+                    <i class="fas fa-bars"></i>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link mx-2" href="about.html"></i>à propos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2" href="events.html"></i>événements</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2" href="contact.html"></i>contact</a>
+                        </li>
+                        <div class="btn">
+                            <a href="profil-organisateur.html"><i class="fa-sharp fa-solid fa-bars"></i>Profil</a>
+                        </div>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+        </header>
+        <section id="connexion">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="d-flex d-md-block bg-blue-1 col-md-4 col-12 p-3"></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-6">
+                        <p class="m-0"> <a href="profil-organisateur.html">Retour ?</a></p>
+                        <h1 class="compte mb-5">Ajouter un événement</h1>
+                        <div class="form-row">
+                            <form method="" action="template-event.html" onsubmit="return verificationEvent()">
+                                    <p>
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="titre" placeholder="titre">
+                                    </p>
+                                    <p>
+                                        <input class="col-md-3 mb-1 p-2 " type="date" id="date-debut" placeholder="mot de passe">
+                                        <input class="col-md-3 mb-1 p-2 " type="date" id="date-fin" placeholder="mot de passe">
+                                    </p>
+                                    <p>
+                                        <input class="col-md-3 mb-1 p-2 " type="select" id="lieu" placeholder="lieu">
+                                        <input class="col-md-3 mb-1 p-2 " type="select" id="categories" placeholder="categorie">
+                                    </p>
+                                    <p>
+                                        <input class="col-md-6 mb-1 p-2" type="file" id="photo" placeholder="photo">
+                                    </p>
+                                    <p>
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="photo" placeholder="Description">
+                                    </p>
+                                </div>
+                                <div class="btn">
+                                    <a><input class="btn p-0" type="submit" value="Valider"></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="">
+        </footer>
+        <script src="script/bootstrap.bundle.js"></script>
+        <script src="script/code.js"></script>
+      </body>
+    </html>

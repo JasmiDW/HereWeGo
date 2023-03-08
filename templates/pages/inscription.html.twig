@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section id="connexion">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="d-flex d-md-block bg-blue-1 col-md-4 col-12 p-3"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <h1 class="compte mb-5">Inscription</h1>
+                        <div class="form-row">
+                            <form name="formEx2" method="" action="#" onsubmit="return verification()">
+                                <div class="compte">
+                                    <p class=" col-md-4 mb-2"> Etes-vous un organisateur ?
+                                        <input class="" type="radio" id="formOrga"> Oui 
+                                        <input class="" type="radio" id="formUtil"> Non</p>
+                                        <p>
+                                            <span id="ErreurOrga" class="error"></span>
+                                        </p>
+                                </div>
+                                    <p>
+                                        <input class="col-md-6 p-2" type="text" id="raison sociale" placeholder="raison sociale">
+                                    </p>
+                                    <p>
+                                        <span id="ErreurRS" class="error"></span>
+                                    </p>
+                                    
+                                        <input class="col-md-3 mb-1 p-2 " type="text" id="nom" placeholder="nom">
+                                        
+                                        <input class="col-md-3 mb-1 p-2 " type="text" id="prenom" placeholder="prenom">
+                                    
+                                    </p>
+                                    <p>
+                                        <span id="ErreurNom" class="error"></span>
+                                    
+                                    </p>
+                                    <p>
+                                        <span id="ErreurPrenom" class="error"></span>
+                                    </p>
+                                    
+                                    <p>
+                                        <input class="col-md-3 mb-1 p-2 "  id="formMail" placeholder="email">
+                                        <input class="col-md-3 mb-1 p-2 " type="text" id="formPassword" placeholder="mot de passe">
+                                    </p>
+                                    <p>
+                                        <span id="ErreurMail" class="error"></span>
+                                    
+                                    </p>
+                                    <p>
+                                        <span id="ErreurPassword" class="error"></span>
+                                    </p>
+                                    <p>
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="adresse" placeholder="adresse">
+                                    </p>
+                                    <p>
+                                        <span id="ErreurAdresse" class="error"></span>
+                                    
+                                    </p>
+                                    <p>
+                                        <input class="col-md-3 mb-1 p-2 " type="text" id="formCP" placeholder="code postale">
+                                        <input class="col-md-3 mb-1 p-2 " type="text" id="formLieu" placeholder="ville">
+                                    </p>
+                                    <p>
+                                        <span id="ErreurCP" class="error"></span>
+                                    
+                                    </p>
+                                    <p>
+                                        <span id="ErreurLieu" class="error"></span>
+                                    </p>
+                                    <p>
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="formTelephone" placeholder="téléphone">
+                                    </p>
+                                    <p>
+                                        <span id="ErreurTelephone" class="error"></span>
+                                    </p>
+                                
+                                    <div class="btn">
+                                        <a><input class="btn p-0" type="submit" value="Valider"></a>
+                                    </div>
+                                
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

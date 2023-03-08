@@ -5,9 +5,57 @@ h1{
     text-transform: uppercase;
     color:#264653;
     letter-spacing:1px;
-    font-size: 50px;
+    font-size: 40px;
 }
 
+.floating-heart {
+    position: absolute;
+    animation: 2s linear heart normal infinite;
+    top: 30%;
+    color: var(--accent-color);
+    font-size: 50px;
+    z-index: 0;
+  }
+  
+  .floating-heart:nth-child(1) {
+    left: calc(50% - 210px);
+    scale: 1.1;
+  }
+  
+  .floating-heart:nth-child(2) {
+    left: calc(50% - 390px);
+    animation-delay: 0.66s;
+  }
+  
+  .floating-heart:nth-child(3) {
+
+    animation-delay: 1.33s;
+    scale: 1.2;
+  }
+
+
+  @keyframes heart {
+    0% {
+      transform: rotate(10deg);
+      opacity: 1;
+    }
+  
+    25% {
+      transform: rotate(-10deg);
+      opacity: 1;
+    }
+  
+    75% {
+      transform: rotate(10deg);
+      opacity: 0.5;
+    }
+  
+    100% {
+      transform: rotate(-10deg);
+      opacity: 0;
+      top: 10%;
+    }
+  }
 
 .navbar{
     height: 100px;
@@ -15,6 +63,10 @@ h1{
     background-color: white;
 }
 
+nav .form-control{
+    border: 2px solid black;
+    border-radius: 0%;
+}
 .navbar a {
     font-family: 'Kanit';
     font-weight: 600;
@@ -86,11 +138,95 @@ header{
      box-shadow:0 0 0 0;
 }
 
-.rectangle-yellow{
-    width: 400px;
-    height: 896px;
+.btn-filtres {
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 600;
+    background-color: #fff; /* Couleur de fond */
+    color: black; /* Couleur du texte */
+    border: 2px solid black; /* Suppression des bordures */
+    padding: 10px 20px; /* Ajout d'un espacement autour du texte */
+    cursor: pointer; /* Changement du curseur de souris au survol */
+}
+  
+.btn-filtres:hover {
+    background-color: #E76F51; /* Changement de la couleur de fond au survol */
+    color: #fff; /* Changement de la couleur du texte au survol */
+    text-decoration: none; /* Suppression du soulignement du texte au survol */
+}
+
+.btn-search{
+    background-color: transparent; /* Couleur de fond */
+    color: #E76F51; /* Couleur du texte */
+    border: none; /* Suppression des bordures */
+    cursor: pointer; /* Changement du curseur de souris au survol */
+}
+
+.btn-search:hover{
+    background-color: transparent; /* Couleur de fond */
+    color: black; /* Couleur du texte */
+}
+
+
+.navbar-toggler{
+    background-color: #E76F51; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    border: 2px solid black; /* Suppression des bordures */
+    border-radius: 0%;
+    padding: 10px 20px; /* Ajout d'un espacement autour du texte */
+    cursor: pointer; /* Changement du curseur de souris au survol */
+}
+
+.navbar-toggler:hover{
+    background-color: transparent; /* Couleur de fond */
+    color: #E76F51; /* Couleur du texte */
+}
+
+.bg-yellow-1{
+    height: 100vh;
     background-color: #E9C46A;
     border-right: 3px solid black;
+}
+
+.bg-blue-1{
+    height: 100vh;
+    background-color: #264653;
+    border-right: 3px solid black;
+}
+
+@media (max-width: 767px) {
+    .bg-yellow-1 {
+      height: 100px;
+      border-right: 0;
+      border-bottom: 3px solid black;
+      margin-bottom: 50px;
+}
+    }
+
+    @media (max-width: 767px) {
+        .bg-blue-1 {
+          height: 100px;
+          border-right: 0;
+          border-bottom: 3px solid black;
+          margin-bottom: 50px;
+    }
+        }
+  
+@media (max-width: 767px) {
+        .col-md-2, .col-md-5, .btn {
+          display: block;
+          margin: 0 auto;
+          text-align: center;
+        }
+      }
+
+@media only screen and (max-width: 767px) {
+.form-row input {
+    width: 50%;
+    margin: 10px;
+    float: none;
+}
 }
 
 /* PAGE CONNEXION */
@@ -106,13 +242,576 @@ a{
 }
 
 .form-connexion input {
-    width: 310px;
+    width: auto;
     border: 2px solid #264653;
     color:#264653;
+}
+
+.form-row input{
+    border: 2px solid #264653;
+    color:#264653;
+}
+
+.form-connexion .btn {
+    border: none;
+    color: #fff;
+}
+
+.form-row .btn {
+    border: none;
+    color: #fff;
+}
+
+.form-connexion .errorInput {
+    border: 2px solid #E76F51;
+}
+
+.form-row .errorInput {
+    border: 2px solid #E76F51;
+}
+
+.form-connexion span {
+    color:#E76F51;
+}
+
+.form-row span {
+    color:#E76F51;
+}
+
+
+input:focus {
+    border-radius: none;
+    border: 2px solid #E76F51;
 }
 
 ::placeholder{
     text-transform: uppercase;
     font-size: 13px;
     color: #264653;
+}
+
+.bg-orange{
+    height: auto;
+    background-color: #F4A261;
+    border-bottom: 3px solid black;
+    color: #fff;
+}
+
+.bg-custom{
+    height: auto;
+    border-bottom: 3px solid black;
+}
+
+
+.bg-blue{
+    background-color: #264653;
+    height: auto;
+    color: #fff;
+}
+
+.bg-yellow{
+    background-color: #E9C46A;
+    border-bottom: 3px solid black;
+    height: auto;
+    color: #fff;
+}
+
+.bg-white{
+    border-bottom: 3px solid black;
+}
+
+.card{
+    border-radius: 0;
+    border: 2px solid black;
+    box-shadow:  -5px 5px 10px black;
+    height: auto;
+    width: auto;
+
+}
+
+#events-accueil .card-img-top{
+    border-radius: 0;
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 3px solid black;
+}
+
+.card .card-body{
+    height: auto;
+    width: auto;
+}
+
+.card h5{
+    color:#264653;
+    text-transform: uppercase;
+    font-family: 'Kanit';
+    font-weight: 600;
+}
+
+.card p{
+    color:#264653;
+    font-weight: 400;
+}
+
+.card button{
+    text-transform: uppercase;
+    background-color: #fff;
+    color: #E76F51;
+    font-weight: 600;
+    border: 0;
+}
+
+.card button:hover{
+    color: #E9C46A;
+}
+
+.baseBlock {
+    margin:20;
+	padding: 0 0 15px 0px;
+	overflow: hidden;
+	min-height: 390px;
+	background: #fff;
+	-moz-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+	-o-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+	transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.baseBlock:hover {
+	-webkit-transform: translate(0, -8px);
+	-moz-transform: translate(0, -8px);
+	-ms-transform: translate(0, -8px);
+	-o-transform: translate(0, -8px);
+	transform: translate(0, -8px);
+	box-shadow: 0 40px 40px rgba(0, 0, 0, 0.2);
+}
+
+
+.img-event img {
+    border: 2px solid black;
+    box-shadow:  -5px 5px 10px black;
+}
+
+.img-label{
+    border: 2px solid black;
+    box-shadow:  -5px 5px 10px black;
+}
+
+.form-row select {
+    border: 2px solid #264653;
+    color:#264653;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: #264653;
+}
+
+
+.form-row select{
+    border: 2px solid #264653;
+    color:#264653;
+}
+
+select:focus {
+    border-radius: none;
+    border: 2px solid #E76F51;
+}
+
+
+
+/* PAGE EVENTS/FILTRES/TEMPLATES EVENT */
+#events-index {
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    color:white;
+    letter-spacing:1px;
+    font-size: 50px;
+}
+#events-index p {
+    font-family: 'Kanit';
+    font-weight: 300;
+    text-transform: uppercase;
+    color:#264653;
+    letter-spacing:-0px;
+    font-size: 15px;
+}
+
+#events-index .event-localisation{
+    color:white;
+    font-size: 25px;
+}
+
+#events .card-body{
+    border-top: 2px solid black;
+}
+
+#events .img-event{
+        width: 100%; /* la largeur de chaque image sera de 33,33% */
+        height: 300px; /* la hauteur sera définie en fonction du contenu de l'image */
+        float: left;
+        object-fit: cover;
+}
+
+#intro a {
+    color: white;
+    font-weight: 400;
+}
+
+#intro a:hover {
+    color: #264653;
+}
+
+#intro h5{
+    font-family: 'Kanit';
+    font-weight: 300;
+    text-transform: uppercase;
+    color:white;
+    letter-spacing:-0px;
+    font-size: 15px;
+}
+
+#intro h6{
+    font-family: 'Kanit';
+    font-weight: 200;
+    color:white;
+    font-size: 15px;
+}
+
+#intro h2{
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    color:white;
+    letter-spacing:1px;
+    font-size: 50px;
+}
+
+h2{
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    color:white;
+    letter-spacing:1px;
+    font-size: 35px;
+}
+
+#intro .nom-orga {
+    color : white;
+    text-transform: uppercase;
+}
+
+#intro .nom-orga:hover {
+    color : #264653;
+}
+
+#intro h3{
+    font-family: 'Kanit';
+    font-weight: 500;
+    text-transform: uppercase;
+
+    letter-spacing:-0px;
+    font-size: 25px;
+}
+
+#intro p{
+    font-family: 'Kanit';
+    font-weight: 300;
+
+    letter-spacing:-0px;
+    font-size: 15px;
+}
+
+
+#events h1{
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    font-weight: 500;
+    color: #F4A261;
+    letter-spacing:-0px;
+    font-size: 20px;
+}
+
+#events .content{
+    font-family: 'Kanit';
+    font-weight: 300;
+    text-transform: none;
+    color:#264653;
+    letter-spacing:-0px;
+    font-size: 20px;
+}
+
+#events p{
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    font-weight: 500;
+    color:#264653;
+    font-size: 20px;
+    margin-top: 15px;
+}
+
+#events i {
+    margin-right: 20px;
+}
+
+#events .number {
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    font-weight: 500;
+    color:#E76F51;
+    margin-left: 10px;
+    font-size: 30px;
+
+}
+
+#events label{
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    font-weight: 500;
+    color:#264653;
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+#events select{
+    width:50px;
+    height: auto;
+}
+
+#places{
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    font-weight: 500;
+    color:#264653;
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+#transport .card{
+    height: auto;
+    margin:10px;
+}
+
+#transport .card img{
+    height: 100px;
+    width: auto;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+#transport h2{
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    color:white;
+    letter-spacing:1px;
+    font-size: 50px;
+}
+
+#transport .card-body h5{
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    font-weight: 500;
+    color:#E76F51;
+    font-size: 15px;
+}
+
+#transport .card-body .card-date{
+    font-family: 'Kanit';
+    font-weight: 400;
+    color:#264653;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+#transport .card-body .card-lieu{
+    font-family: 'Kanit';
+    font-weight: 400;
+    color:#264653;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+#transport .card-body .card-prix{
+    font-family: 'Kanit';
+    font-weight: 600;
+    color:#E76F51;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+#transport .card-body p{
+    font-family: 'Kanit';
+    font-weight: 200;
+    color:#264653;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+#transport i{
+    color:#264653;
+    margin-right: 10px;
+}
+
+#transport .card .btn {
+        text-transform: uppercase;
+        color: #E76F51;
+        font-weight: 600;
+        font-size: 12px;
+}
+
+#transport .card .btn:hover {
+    color: #E9C46A;
+
+}
+
+.img-label{
+    width: auto;
+    height: 100px;
+}
+/* PAGE TEMPLATE CONNEXION ORGA */
+
+.btn i{
+    margin-right: 20px;
+}
+
+#intro-connexion-orga p{
+    text-transform: uppercase;
+    font-family: 'Kanit';
+    font-weight: 200;
+    font-size: 25px;
+}
+
+#intro-connexion-orga h2{
+    text-transform: uppercase;
+    font-family: 'Kanit';
+    font-weight: 600;
+    font-size: 45px;
+}
+
+#intro img{
+    background-color: white;
+}
+
+/* PAGE PROFIL ORGA */
+
+#profil-orga a {
+    font-family: 'Kanit';
+    font-weight: 400;
+    font-size: 20px;
+    color: #264653;
+    text-transform: uppercase;
+}
+
+#profil-orga a:hover {
+    color: #E9C46A;
+}
+
+#profil img{
+    border: 2px solid black;
+}
+
+.trait{
+    border-bottom: 2px solid black;
+}
+
+#profil a {
+    color:#E9C46A;
+    text-transform: uppercase;
+    font-family: 'Kanit';
+    font-size: 13px;
+    font-weight: 300;
+}
+
+#profil a:hover {
+    color:#264653;
+}
+
+#profil p {
+    color:#264653;
+
+    font-family: 'Kanit';
+    font-size: 20px;
+    font-weight: 300;
+}
+
+#profil h2 {
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    color: #264653;
+    letter-spacing: 1px;
+    font-size: 20px;
+}
+
+#profil h1 {
+    font-size: 25px;
+}
+
+#profil img {
+    width: 30%;
+    height: auto;
+}
+
+#profil i {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#profil-event p{
+    color:#264653;
+    text-transform: uppercase;
+    font-family: 'Kanit';
+    font-size: 15px;
+    font-weight: 400;
+}
+
+#profil-event h2 {
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    color: #264653;
+    letter-spacing: 1px;
+    font-size: 20px;
+}
+
+#profil-event a {
+    color:#E9C46A;
+    text-transform: uppercase;
+    font-family: 'Kanit';
+    font-size: 13px;
+    font-weight: 300;
+}
+
+#profil-event a:hover {
+    color:#264653;
+}
+ 
+.transport-profil i{
+    margin-right: 10px;
+    margin-left: 10px;
+
+}
+
+.event-profil i {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.logo img {
+    width: 30%;
+ }
+
+.navbar-collapse.collapse.show {
+    background-color: #fff;
+    border: 2px solid #264653;
+    padding-bottom: 10px;
+}
+
+footer .footer{
+    border-top: 2px solid black;
+}
+
+.footer img {
+    width:30%;
+}
+
+footer a {
+    font-family: 'Kanit';
+    font-weight: 600;
+    font-size: 18px;
+    text-transform: uppercase;
+    color:#264653;
 }

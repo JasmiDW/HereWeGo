@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+  <section id="intro">
+    <div class="d-flex bg-orange">
+      <div class="container mt-5 mb-5">
+        <div class="row">
+          <div class="col-md-5 offset-1 me-1">
+          <i class="fa-solid fa-heart floating-heart"></i>
+              <i class="fa-solid fa-heart floating-heart"></i>
+              <i class="fa-solid fa-heart floating-heart"></i> 
+            <div class="d-flex justify-content-left">
+              <h2>Coup de coeur de la semaine</h2>
+            </div>
+            
+              <div class="d-flex justify-content-left">
+                Organisé par <a href="?controller=users&action=show&id={{event.id_user}}">{{ user[event.getId_User()].raison_sociale }}</a>
+              </div>
+            </div>
+            <div class="col-md-5 mt-3 ms-1 bg-custom">
+              <a href="?controller=events&action=show&id={{favoriteEvent.id_event}}">
+                <div class="d-flex justify-content-left">
+                  <h3>{{ favoriteEvent.titre_event }}</h3> 
+                </div>
+                <div class="d-flex justify-content-left">
+                  <p>{{ favoriteEvent.date_debut_event|date('j') }} au {{ favoriteEvent.date_fin_event|date('j F Y') }}</p>
+                </div>
+                <div class="d-flex justify-content-left">
+                  <p>{{ favoriteEvent.resume_event }}</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="events-accueil">
+    <div class="d-flex bg-blue">
+      <div class="container-fluid">
+        <div class="d-flex justify-content-center mt-5">
+          <h2>Evénements Here We Go</h2>
+        </div>
+        <div class="d-flex justify-content-center">
+          <p class="event-localisation">Près de chez vous</p>
+      </div>
+      {# <div class="d-flex justify-content-center mb-3">
+          <div class="btn">
+            <a href="?controller=pages&action=filtres">Filtres</a>
+          </div>
+      </div> #}
+        <div class="d-flex justify-content-center mb-3">
+          <div class="btn-filtres" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Filtres <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title" id="exampleModalLabel">Filtres</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form method="get" action="?controller=events&action=filtres">
+                <div class="modal-body">
+                  <div class="row align-items-center">
+                    <div class="col-10">
+                      <div class="form-connexion">
+                          <div class="compte">
+                            <p class="mb-2"> Catégories
+                              <input class="ms-5" type="checkbox"> Concerts 
+                              <input class="ms-3" type="checkbox"> Culturelles
+                              <input class="ms-3" type="checkbox"> Esport
+                            </p>
+                          </div>
+                          <select class="mb-4 p-2" name="ville">
+                            <option selected disabled hidden>Villes</option>
+                            {% for ville in villes %}
+                                <option value="{{ ville.id_ville }}">{{ ville.ville }}</option>
+                            {% endfor %}
+                        </select>
+                          <p>
+                            <input class="p-2 mb-2" type="date" placeholder="date de début"> date de début
+                            <input class="p-2 mb-2" type="date" placeholder="date de fin"> date de fin
+                          </p>
+                      </div>
+                  </div>
+                </div>
+              <div class="modal-footer">
+                <div class="btn">
+                  <a><input class="btn p-0" data-bs-dismiss="modal" value="Fermer"></a>
+                </div>
+                <div class="btn">
+                  <a><input class="btn p-0" type="submit" value="Valider"></a>
+                </div>
+              </div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="row mb-5 mt-5 d-flex justify-content-center align-items-center">
+        {% for event in list %}
+          <div class="col-ld-3 col-md-3 col-12 col-sm-6 mb-5 ">
+            <a href="?controller=events&action=show&id={{event.id_event}}" class="border-bottom">
+              <div class="card baseBlock mx-auto">
+                <img class="card-img-top" src="#" alt="Card image cap">
+                <div class="card-body face face2">
+                  <h5 class="card-title">{{ event.titre_event }}</h5>
+                  <h6 class="card-text mb-4">{{ event.date_debut_event|date('j') }} au {{ event.date_fin_event|date('j F Y') }}</h6>
+                  <p class="card-text mb-4">{{ event.resume_event }}</p>
+                  <a href="?controller=events&action=show&id={{event.id_event}}"><button>Voir plus</button></a>
+                </a>
+                </div>
+              </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    </div>
+  </section>
+
+{% endblock %}

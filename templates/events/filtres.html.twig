@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section id="connexion">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="d-flex d-md-block bg-yellow-1 col-md-4 col-12 p-3"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                    <div class="compte m-0">
+                        <p class="m-0"> <a href="#"  onclick="backOrToPage()">Retour ?</a></p>
+                    </div>    
+                    <h1 class="compte mb-5">Filtres</h1>
+                    <div class="compte">
+                        <p class="mb-2"> Catégories
+                            <input class="ms-5" type="checkbox"> Concerts 
+                            <input class="ms-3" type="checkbox"> Culturelles
+                            <input class="ms-3" type="checkbox"> Esport</p>
+                    </div>
+                    <div class="form-connexion">
+                        <form method="" action="">
+                            <select  class="mb-4 p-2" name="select">
+                                <option>Villes</option>
+                                <option></option>
+                                <option></option>
+                                </select>
+                            <input class="mb-4 p-2" type="select" placeholder="villes">
+                            <p>
+                                <input class="p-2 mb-2" type="date" placeholder="date de début">
+                                <input class="p-2 mb-2" type="date" placeholder="date de fin">
+                            </p>
+                    </div>
+                        <div class="btn">
+                            <a><input class="btn p-0" type="submit" value="Valider"></a>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </section>
+    <script src="public/script/backOrToPage.js"></script>
+{% endblock %}
