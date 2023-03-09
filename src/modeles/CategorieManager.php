@@ -30,4 +30,18 @@ use \PDO;
       // Création de l'objet Utilisateur correspondant
       return new Categorie($data);
   }
+
+  public static function findAll() {
+
+    $db = DbConnection::getInstance();
+
+    $listCategorie = [];
+    $req = $db->prepare('SELECT * FROM categorie ');
+    $req->execute();
+    $reponse= $req->fetchAll();
+    foreach( $reponse as $data){
+      $listCategorie[] = new Categorie($data);
+    }
+    return $listCategorie;
+  }
 }

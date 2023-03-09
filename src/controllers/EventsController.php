@@ -98,11 +98,15 @@ use Twig\Loader\FilesystemLoader;
       ));
     }
 
-    public function addEvent()
-    {
+    public function addEvent(){
+
+      $lieu= LieuManager::findAll();
+      $categorie = CategorieManager::findAll();
+
+
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('events/addEvent.html.twig');
+      echo $this->twig->render('events/addEvent.html.twig', array('lieu'=>$lieu, 'categorie'=>$categorie));
       
     }
 

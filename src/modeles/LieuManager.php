@@ -15,6 +15,7 @@ class LieuManager {
 
 
     public static function find($idLieu) {
+
         $db = DbConnection::getInstance();
         // instancier la connexion à la base de données
         // Préparation de la requête SQL
@@ -29,5 +30,18 @@ class LieuManager {
         return new Lieu($data);
     }
 
+    public static function findAll() {
 
+        $db = DbConnection::getInstance();
+
+        $listVille = [];
+        $req = $db->prepare('SELECT * FROM lieux ');
+        $req->execute();
+        $reponse= $req->fetchAll();
+        foreach( $reponse as $data){
+          $listVille[] = new Lieu($data);
+        }
+        return $listVille;
+      }
+  
 }

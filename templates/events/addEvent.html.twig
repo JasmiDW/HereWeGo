@@ -9,7 +9,7 @@
                         <p class="m-0"> <a href="profil-organisateur.html">Retour ?</a></p>
                         <h1 class="compte mb-5">Ajouter un événement</h1>
                         <div class="form-row">
-                            <form method="get" action="template-event.html" onsubmit="return verificationEvent()">
+                            <form method="get" action="?controller=events&action=addEvent" onsubmit="return verificationEvent()">
                                     <p>
                                         <input class="col-md-6 mb-1 p-2" type="text" id="titre" name="titre" placeholder="titre">
                                     </p>
@@ -18,11 +18,26 @@
                                         <input class="col-md-3 mb-1 p-2 " type="date" id="date-fin" name="fin" placeholder="mot de passe">
                                     </p>
                                     <p>
-                                        <input class="col-md-3 mb-1 p-2 " type="select" id="lieu" name="lieu" placeholder="lieu">
-                                        <input class="col-md-3 mb-1 p-2 " type="select" id="categories" name="categorie" placeholder="categorie">
+                                        <div class="col-md-6 col-sm-6 mb-1 p-2">
+                                            <select class="form-control" id="lieu" name="lieu">
+                                                {% for lieu in lieu %}
+                                                    <option value="{{ lieu.id_lieu }}">{{ lieu.ville }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 mb-1 p-2">
+                                            <select class="form-control" id="categorie" name="categorie">
+                                                {% for categorie in categorie %}
+                                                    <option value="{{ categorie.id_categorie }}">{{ categorie.libelle_categorie }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     </p>
                                     <p>
                                         <input class="col-md-6 mb-1 p-2" type="file" id="photo" name="photo" placeholder="photo">
+                                    </p>
+                                    <p>
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="resume" name="resume" placeholder="Résumé"></textarea>
                                     </p>
                                     <p>
                                         <textarea class="col-md-6 mb-1 p-2" type="text" id="description" name="description" placeholder="Description"></textarea>
