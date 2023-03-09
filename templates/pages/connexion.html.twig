@@ -11,14 +11,16 @@
                     </div>
                     <h1 class="compte mb-5">Connexion</h1>
                     <div class="form-connexion">
-                        <form name="formEx1" method="post" action="?controller=pages&action=login" onsubmit="return verificationForm()">
+                        <form name="formEx1" method="post" action="?controller=users&action=login" onsubmit="return verificationForm()">
                             <p>
-                            <input class="p-2" type="text" id="formMail" placeholder="email"><br/>
+                            <input class="p-2" type="text" id="formMail" placeholder="email" name="mail"><br/>
                             <span id="ErreurMail" class="error"></span>
+                            {{message}}
                             </p>
                             <p>
-                            <input class=" mt-1 p-2" type="password" id="formPassword" placeholder="Mot de passe"><br/>
+                            <input class=" mt-1 p-2" type="password" id="formPassword" placeholder="Mot de passe" name="password"><br/>
                             <span id="ErreurPassword" class="error"></span><br/>
+                            {{message}}
                             </p>
                             <div class="btn">
                                 <a><input class="btn p-0" type="submit" value="Connexion"></a>

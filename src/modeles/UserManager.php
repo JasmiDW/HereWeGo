@@ -13,6 +13,19 @@ class UserManager {
         $this->_db = $db;
     }
 
+
+    public static function getLogin($login){
+
+        $db = DbConnection::getInstance();
+        $sql = "SELECT * FROM utilisateur WHERE mail_user = :mail_user";
+        $req = $db->prepare($sql);
+        $req->execute(array(':mail_user' => $login));
+        $reponse = $req->fetch();
+        $user = new User($reponse);
+
+        return $user;
+    }
+
     public function addUser(User $user) {
         // Préparation de la requête SQL
         $req = $this->_db->prepare('INSERT INTO utilisateur (rs, email, nom, prenom, genre, password, tel, photo, badge, date_inscription, lieu_id, statut_id) VALUES(:rs, :email, :nom, :prenom, :password, :tel, :photo, :badge, :date_inscription, :lieu_id, :statut_id)');
@@ -85,7 +98,7 @@ class UserManager {
 
     }
 
-    public function deleteUser(User$user) {
+    public function deleteUser(User $user) {
         $sql = "DELETE FROM utilisateur WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $user->getId_user(), PDO::PARAM_INT);

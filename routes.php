@@ -41,11 +41,11 @@ function call($controller, $action){
 }
 
 $controllers = array(
-  'pages' => ['home', 'about', 'connexion', 'contact', 'inscription', 'error','filtres','templateTransport','login'],
-  'events' => ['show','filter'],
+  'pages' => ['home', 'about', 'connexion', 'contact', 'inscription', 'error','filtres','templateTransport'],
+  'events' => ['show','addEvent','seeEvent',],
   'participant' => ['addParticipant'],
   'transports' => ['show'],
-  'users' => ['show']
+  'users' => ['show','profil','login','seeProfil','logout']
   );
 
 if(array_key_exists($controller, $controllers)){

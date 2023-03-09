@@ -1,0 +1,20 @@
+{% extends 'base-profil.html.twig' %}
+{% block body %}
+    <section id="profil-orga">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="d-flex d-md-block bg-yellow-1 col-md-4 col-12 p-3"></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5 mb-5 ml-5">
+                        <h1 class="compte mb-5">Mon profil</h1>
+                        <div class="profil">
+                            <a class="nav-link mx-2" href='?controller=users&action=seeProfil&id={{ user.id_user }}'></i>Voir mon profil</a>
+                            <a class="nav-link mx-2" href="?controller=events&action=addEvent"></i>Ajouter un événement</a>
+                            <a class="nav-link mx-2" href="?controller=events&action=seeEvent"></i>Voir mes événements</a>
+                            <a class="nav-link mx-2" href="?controller=users&action=logout"></i>Deconnexion</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}

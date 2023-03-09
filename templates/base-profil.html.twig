@@ -35,14 +35,7 @@
                                     <a class="nav-link mx-2" href="?controller=pages&action=contact"></i>contact</a>
                                 </li>
                                 <div class="btn">
-                                    <div class="btn">
-                                        {% if session.id_user is not defined %}
-                                            <a href="?controller=pages&action=connexion">Connexion</a>
-                                            <a href="?controller=pages&action=inscription">Inscription</a>
-                                        {% else %}
-                                            <a href="?controller=users&action=profil">Profil</a>
-                                        {% endif %}
-                                    </div>
+                                    <a href="?controller=users&action=profil">Profil</a>
                                 </div>
                             </ul>
                         </div>

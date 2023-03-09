@@ -71,8 +71,6 @@ use Twig\Loader\FilesystemLoader;
       $transportManager = new TransportManager();
       $listTransports = $transportManager->getTransport($eventId);
 
-
-
       $localisations = array();
       foreach ($listTransports as $transport) {
         $localisationId = $transport->getId_lieu();
@@ -97,52 +95,27 @@ use Twig\Loader\FilesystemLoader;
         'listTransports' => $listTransports,
         'typeTransport' => $typeTransport,
         'categorie' => $categorie
-    ));
-    
+      ));
+    }
 
-  }
-
-  public function filter()
+    public function addEvent()
     {
-
-    // Récupérez les valeurs des filtres
-    $categories = isset($_GET['categories']) ? $_GET['categories'] : array();
-    $ville = isset($_GET['ville']) ? $_GET['ville'] : '';
-    $dateDebut = isset($_GET['dateDebut']) ? $_GET['dateDebut'] : '';
-    $dateFin = isset($_GET['dateFin']) ? $_GET['dateFin'] : '';
-
-    // Effectuez une requête à votre base de données pour récupérer toutes les données
-    // que vous voulez afficher et stockez-les dans un tableau $donnees
-    $donnees = $this->model->getDonnees();
-
-    // Filtrez les données en fonction des valeurs des filtres
-    if (!empty($categories)) {
-      $donnees = array_filter($donnees, function($event) use ($categories) {
-        return in_array($event['category'], $categories);
-      });
+      $this->loader = new FilesystemLoader('templates');
+      $this->twig = new Environment($this->loader);
+      echo $this->twig->render('events/addEvent.html.twig');
+      
     }
 
-    if (!empty($ville)) {
-      $donnees = array_filter($donnees, function($event) use ($ville) {
-        return $event['location'] == $ville;
-      });
+    public function seeEvent()
+    {
+      $this->loader = new FilesystemLoader('templates');
+      $this->twig = new Environment($this->loader);
+      echo $this->twig->render('events/seeEvent.html.twig');
+      
     }
 
-    if (!empty($dateDebut)) {
-      $donnees = array_filter($donnees, function($event) use ($dateDebut) {
-        return $event['date'] >= $dateDebut;
-      });
-    }
 
-    if (!empty($dateFin)) {
-      $donnees = array_filter($donnees, function($event) use ($dateFin) {
-        return $event['date'] <= $dateFin;
-      });
-    }
 
-    // Chargez la vue et transmettez les données filtrées à Twig
-    $this->view->render('events/filtres.html.twig', array('donnees' => $donnees));
-  }
 
 }
 
