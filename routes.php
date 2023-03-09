@@ -42,10 +42,10 @@ function call($controller, $action){
 
 $controllers = array(
   'pages' => ['home', 'about', 'connexion', 'contact', 'inscription', 'error','filtres','templateTransport'],
-  'events' => ['show','addEvent','seeEvent',],
+  'events' => ['show','addEvent','seeEvent','add'],
   'participant' => ['addParticipant'],
   'transports' => ['show'],
-  'users' => ['show','profil','login','seeProfil','logout']
+  'users' => ['show','profil','login','seeProfil','logout','updateProfil','deleteProfil']
   );
 
 if(array_key_exists($controller, $controllers)){

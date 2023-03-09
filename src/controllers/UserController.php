@@ -110,9 +110,14 @@ class UserController
 
     public function seeProfil(){
 
+        // Récupérer l'user correspondant à l'identifiant dans l'URL
+        $userId = $_GET['id'];
+        $user = UserManager::find($userId);
+        
+
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
-        echo $this->twig->render('users/seeProfil.html.twig');
+        echo $this->twig->render('users/seeProfil.html.twig', ['user'=>$user]);
         
     }
 
@@ -121,6 +126,29 @@ class UserController
         unset($_SESSION['user']);
         header("location: ?controller=pages&action=home");
     }
+
+    public function updateProfil(){
+        
+        // Récupérer l'user correspondant à l'identifiant dans l'URL
+        $userId = $_GET['id'];
+        $user = UserManager::find($userId);
+        
+        $this->loader = new FilesystemLoader('templates');
+        $this->twig = new Environment($this->loader);
+        echo $this->twig->render('users/updateProfil.html.twig', ['user'=>$user]);
+    }
+
+    public function deleteProfil(){
+        
+        // Récupérer l'user correspondant à l'identifiant dans l'URL
+        $userId = $_GET['id'];
+        $user = UserManager::find($userId);
+        
+        $this->loader = new FilesystemLoader('templates');
+        $this->twig = new Environment($this->loader);
+        echo $this->twig->render('users/deleteProfil.html.twig', ['user'=>$user]);
+    }
+
 
     // public function add() {
     //     if($this->loginUser !=""){

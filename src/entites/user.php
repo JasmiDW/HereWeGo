@@ -101,11 +101,11 @@ class User
         return $this;
     }
 
-    public function getTel(){
+    public function getTel_user(){
         return $this->_tel;
     }
 
-    public function setTel($tel){
+    public function setTel_user($tel){
         $this->_tel=$tel;
         return $this;
     }

@@ -110,6 +110,59 @@ use Twig\Loader\FilesystemLoader;
       
     }
 
+    public function add(){
+
+      if (empty($_POST['titre']) || empty($_POST['debut']) || empty($_POST['fin']) || empty($_POST['lieu']) || empty($_POST['categorie'])) {
+        throw new Exception('Merci de remplir les données nécessaires.');
+    }
+
+    $titre_event = $_POST['titre'];
+    $prenom_artist = !empty($_POST['debut']) ? $_POST['debut'] : '';
+    $date_naissance = $_POST['date_naissance'];
+    $date_deces = !empty($_POST['date_deces']) ? $_POST['date_deces'] : '';
+    $site_internet = !empty($_POST['site_internet']) ? $_POST['site_internet'] : '';
+    $nationalite = $_POST['nationalite'];
+    $categorie1_artist = !empty($_POST['categorie1_artist']) ? $_POST['categorie1_artist'] : '';
+    $categorie2_artist = !empty($_POST['categorie2_artist']) ? $_POST['categorie2_artist'] : '';
+
+    if (isset($_FILES['photo']['name'])) {
+        
+        $fileName = $_FILES['photo']['name'];
+        $fileNameArray = explode(".", $fileName);
+        $extension = end($fileNameArray);
+        $uploadedFileName = $nom_artist. "." . $extension;
+        $uploadedFileName = filter_var($uploadedFileName, FILTER_SANITIZE_STRING);
+        $fileToUpload = "uploads/profil_artiste/" . $uploadedFileName;
+    
+        if (move_uploaded_file($_FILES['photo']['tmp_name'], $fileToUpload)) {
+            $photo = $fileToUpload;
+        } else {
+            throw new Exception('Erreur lors du téléchargement de l\'image.');
+        }
+    } else {
+        $photo = $_POST['photo_old'];
+    }
+
+        
+    $event = new Event();
+
+    $event->setNom_artist($nom_artist);
+    $event->setPrenom_artist($prenom_artist);
+    $event->setPhoto($photo);
+    $event->setDate_naissance($date_naissance);
+    $event->setDate_deces($date_deces);
+    $event->setNationalite($nationalite);
+    $event->setSite_Internet($site_internet);
+    $event->setCategorie1_artist($categorie1_artist);
+    $event->setCategorie2_artist($categorie2_artist);
+
+    $id_event = EventManager::add($event);
+ 
+     echo $this->twig->render('events/templateEvent.html.twig', [
+        'id_event' => $id_event]);
+    }
+      
+
     public function seeEvent()
     {
       $this->loader = new FilesystemLoader('templates');
