@@ -42,6 +42,23 @@ class LieuManager {
           $listVille[] = new Lieu($data);
         }
         return $listVille;
-      }
+    }
+
+    public static function findByNom($nomLieu) {
+
+      $db = DbConnection::getInstance();
+      // instancier la connexion à la base de données
+      // Préparation de la requête SQL
+      $req = $db->prepare('SELECT * FROM lieux WHERE ville = :ville');
+      // Bind des valeurs
+      $req->bindValue(':ville', $nomLieu);
+      // Exécution de la requête
+      $req->execute();
+      // Récupération du résultat
+      $data = $req->fetch();
+      // Création de l'objet Utilisateur correspondant
+      return new Lieu($data);
+  }
+
   
 }

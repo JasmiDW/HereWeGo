@@ -252,6 +252,11 @@ a{
     color:#264653;
 }
 
+.form-row textarea{
+    border: 2px solid #264653;
+    color:#264653;
+}
+
 .form-connexion .btn {
     border: none;
     color: #fff;
@@ -278,6 +283,13 @@ a{
     color:#E76F51;
 }
 
+.form-categorie {
+    width: 100%;
+}
+
+.form-ville {
+    width: 100%;
+}
 
 input:focus {
     border-radius: none;

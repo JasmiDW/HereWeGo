@@ -6,38 +6,51 @@
                     <div class="d-flex d-md-block bg-blue-1 col-md-4 col-12 p-3"></div>
                     <div class="col-md-2"></div>
                     <div class="col-md-6">
-                        <p class="m-0"> <a href="profil-organisateur.html">Retour ?</a></p>
+                        <p class="m-0"> <a href="#"  onclick="backOrToPage()">Retour ?</a></p>
                         <h1 class="compte mb-5">Ajouter un événement</h1>
                         <div class="form-row">
                             <form method="get" action="?controller=events&action=add" onsubmit="return verificationEvent()">
                                     <p>
-                                        <input class="col-md-6 mb-1 p-2" type="text" id="titre" name="titre" placeholder="titre">
+                                        
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="titre" name="titre_event" placeholder="titre">
+                                    </p>
+                                    <label for="photo" class="mb-3">Date de début et de fin :</label>
+                                    <p>
+                                        
+                                        <input class="col-md-3 mb-1 p-2 " type="date" id="date-debut" name="date_debut_event" placeholder="mot de passe">
+                                        <input class="col-md-3 mb-1 p-2 " type="date" id="date-fin" name="date_fin_event" placeholder="mot de passe">
                                     </p>
                                     <p>
-                                        <input class="col-md-3 mb-1 p-2 " type="date" id="date-debut" name="debut" placeholder="mot de passe">
-                                        <input class="col-md-3 mb-1 p-2 " type="date" id="date-fin" name="fin" placeholder="mot de passe">
-                                    </p>
-                                    <p>
-                                        <div class="col-md-6 col-sm-6 mb-1 p-2">
-                                            <select class="form-control" id="lieu" name="lieu">
+                                        <div class="col-md-6 col-sm-6">
+                                        
+                                            <select class="form-ville p-2" id="lieu" name="lieu">
                                                 {% for lieu in lieu %}
                                                     <option value="{{ lieu.id_lieu }}">{{ lieu.ville }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
-                                        <div class="col-md-6 col-sm-6 mb-1 p-2">
-                                            <select class="form-control" id="categorie" name="categorie">
-                                                {% for categorie in categorie %}
-                                                    <option value="{{ categorie.id_categorie }}">{{ categorie.libelle_categorie }}</option>
-                                                {% endfor %}
+                                    </p>
+                                    <p>
+                                        <div class="col-md-6 col-sm-6 mb-1">
+                                            <select class="form-categorie p-2" id="categorie" name="select">
+                                            {% for categorie in categorie %}
+                                                        <option value="{{ categorie.id_categorie }}">{{ categorie.libelle_categorie }}</option>
+                                                    {% endfor %}
+
                                             </select>
                                         </div>
                                     </p>
+                                        <label for="photo" class="mb-1">Nombre de places :</label>
                                     <p>
-                                        <input class="col-md-6 mb-1 p-2" type="file" id="photo" name="photo" placeholder="photo">
+                                        <input class="col-md-6 mb-1 p-2" type="number" id="place" name="places" placeholder="place" >
                                     </p>
+                                        <label for="photo" class="mb-1">Photos :</label>
                                     <p>
-                                        <input class="col-md-6 mb-1 p-2" type="text" id="resume" name="resume" placeholder="Résumé"></textarea>
+                                        <input class="col-md-6 mb-1 p-2" type="file" id="photo" name="photo" placeholder="photo" accept=".jpeg,.jpg,.png">
+                                    </p>
+
+                                    <p> 
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="resume" name="resume" placeholder="Résumé (140 caractères)"></textarea>
                                     </p>
                                     <p>
                                         <textarea class="col-md-6 mb-1 p-2" type="text" id="description" name="description" placeholder="Description"></textarea>
@@ -52,4 +65,19 @@
                 </div>
             </div>
     </section>
+    <script>
+        var resume = document.getElementById('resume');
+        var maxLength = 140;
+
+        resume.addEventListener('input', function() {
+            var currentLength = resume.value.length;
+            if (currentLength > maxLength) {
+            var truncatedValue = resume.value.substr(0, maxLength);
+            resume.value = truncatedValue;
+            resume.setCustomValidity('Le résumé doit contenir au maximum ' + maxLength + ' caractères.');
+            } else {
+            resume.setCustomValidity('');
+            }
+        });
+    </script>
 {% endblock %}

@@ -20,7 +20,7 @@ class Event
     private $_idLieu;
     private $ville;
     private $_idCategorie;
-    private $photos;
+    
     
 
 

@@ -111,28 +111,29 @@ use Twig\Loader\FilesystemLoader;
     }
 
     public function add(){
-
-      if (empty($_POST['titre']) || empty($_POST['debut']) || empty($_POST['fin']) || empty($_POST['lieu']) || empty($_POST['categorie'])) {
+       
+      $session=$_SESSION['user'];
+      if (empty($_POST['titre']) || empty($_POST['debut']) || empty($_POST['lieu']) || empty($_POST['categorie']) || empty($_POST['resume'])) {
         throw new Exception('Merci de remplir les données nécessaires.');
     }
 
     $titre_event = $_POST['titre'];
-    $prenom_artist = !empty($_POST['debut']) ? $_POST['debut'] : '';
-    $date_naissance = $_POST['date_naissance'];
-    $date_deces = !empty($_POST['date_deces']) ? $_POST['date_deces'] : '';
-    $site_internet = !empty($_POST['site_internet']) ? $_POST['site_internet'] : '';
-    $nationalite = $_POST['nationalite'];
-    $categorie1_artist = !empty($_POST['categorie1_artist']) ? $_POST['categorie1_artist'] : '';
-    $categorie2_artist = !empty($_POST['categorie2_artist']) ? $_POST['categorie2_artist'] : '';
+    $date_debut = $_POST['date_debut_event'];
+    $date_fin = !empty($_POST['date_fin_event']) ? $_POST['date_fin_event'] : '';
+    $lieu = $_POST['lieu'];
+    $categorie= $_POST['categorie'];
+    $nb_place= $_POST['places'];
+    $resume = $_POST['resume_event'];
+    $content = !empty($_POST['description']) ? $_POST['description'] : '';
 
     if (isset($_FILES['photo']['name'])) {
         
         $fileName = $_FILES['photo']['name'];
         $fileNameArray = explode(".", $fileName);
         $extension = end($fileNameArray);
-        $uploadedFileName = $nom_artist. "." . $extension;
+        $uploadedFileName = $date_debut. "." . $extension;
         $uploadedFileName = filter_var($uploadedFileName, FILTER_SANITIZE_STRING);
-        $fileToUpload = "uploads/profil_artiste/" . $uploadedFileName;
+        $fileToUpload = "public/media/" . $uploadedFileName;
     
         if (move_uploaded_file($_FILES['photo']['tmp_name'], $fileToUpload)) {
             $photo = $fileToUpload;
@@ -143,18 +144,24 @@ use Twig\Loader\FilesystemLoader;
         $photo = $_POST['photo_old'];
     }
 
+    // Récupérer l'objet Lieu correspondant au nom du lieu
+    $lieu = LieuManager::findByNom($nom_lieu);
+
+    // Récupérer l'ID du lieu
+    $id_lieu = $lieu->getId_lieu();
+
         
     $event = new Event();
 
-    $event->setNom_artist($nom_artist);
-    $event->setPrenom_artist($prenom_artist);
-    $event->setPhoto($photo);
-    $event->setDate_naissance($date_naissance);
-    $event->setDate_deces($date_deces);
-    $event->setNationalite($nationalite);
-    $event->setSite_Internet($site_internet);
-    $event->setCategorie1_artist($categorie1_artist);
-    $event->setCategorie2_artist($categorie2_artist);
+    $event->setTitre_event($titre_event);
+    $event->setDate_Debut_event($date_debut);
+    $event->setDate_Fin_event($date_fin);
+    $event->setNb_places($nb_place);
+    $event->setResume_event($resume);
+    $event->setDescription_event($content);
+    $event->setId_Categorie($categorie);
+    $event->setId_lieu($lieu);
+
 
     $id_event = EventManager::add($event);
  
@@ -170,10 +177,6 @@ use Twig\Loader\FilesystemLoader;
       echo $this->twig->render('events/seeEvent.html.twig');
       
     }
-
-
-
-
 }
 
 ?>

@@ -133,6 +133,7 @@ use \PDO;
       $statut = $_POST["statut_coup_coeur"];
       $idLieu = $_POST["id_lieu"];
       $codeUnique = $_POST["code_unique"];
+      $categorie= $_POST['categorie'];
   
       if ($code === null) {
           // Récupérer l'objet Lieu correspondant à l'événement
@@ -143,8 +144,8 @@ use \PDO;
   
       }
   
-      $query=$db->prepare("INSERT INTO event (titre_event, date_debut_event,date_fin_event,resume_event,description_event,code_unique) 
-      VALUES(:titre_event, :date_debut_event,:date_fin_event,:resume_event,:description_event,:code_unique)");
+      $query=$db->prepare("INSERT INTO event (titre_event, date_debut_event,date_fin_event,resume_event,description_event,code_unique, nb_places) 
+      VALUES(:titre_event, :date_debut_event,:date_fin_event,:resume_event,:description_event,:code_unique, :nb_places)");
   
       //On indique les bindValue du titre, date_debut_event, date_fin_event, resume_event, description_event, code_unique et statut_coup_coeur
       $query->bindValue(':titre_event',$title,PDO::PARAM_STR);
@@ -153,7 +154,7 @@ use \PDO;
       $query->bindValue(':resume_event',$resume,PDO::PARAM_STR);
       $query->bindValue(':description_event',$content,PDO::PARAM_STR);
       $query->bindValue(':code_unique',$codeUnique,PDO::PARAM_STR);
-      $query->bindValue(':statut_coup_coeur',$statut,PDO::PARAM_INT);
+  
   
       $query->execute();
   
