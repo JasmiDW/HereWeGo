@@ -56,6 +56,7 @@ class UserController
     }
 
     public function login(){
+
         if(!empty($_POST['mail'])&&!empty($_POST['password'])){
             $login=$_POST['mail'];
             $result = UserManager::getLogin($login);
@@ -110,6 +111,10 @@ class UserController
 
     public function seeProfil(){
 
+        if(isset($_SESSION['user_id'])){
+            $session=$_SESSION['user_id'];
+            $id_user = ['user_id'];
+
         // Récupérer l'user correspondant à l'identifiant dans l'URL
         $userId = $_GET['id'];
         $user = UserManager::find($userId);
@@ -118,6 +123,7 @@ class UserController
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
         echo $this->twig->render('users/seeProfil.html.twig', ['user'=>$user]);
+        }
         
     }
 

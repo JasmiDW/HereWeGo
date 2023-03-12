@@ -100,83 +100,98 @@ use Twig\Loader\FilesystemLoader;
 
     public function addEvent(){
 
+      if(isset($_SESSION['user_id'])){
+        $session=$_SESSION['user_id'];
+        $id_user = ['user_id'];
+
+      // Récupérer l'user correspondant à l'identifiant dans l'URL
+      $userId = $_GET['id'];
+      $user = UserManager::find($userId);
+
       $lieu= LieuManager::findAll();
       $categorie = CategorieManager::findAll();
 
 
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('events/addEvent.html.twig', array('lieu'=>$lieu, 'categorie'=>$categorie));
+      echo $this->twig->render('events/addEvent.html.twig', array('lieu'=>$lieu, 'categorie'=>$categorie, 'user'=> $user));
       
     }
+  }
 
     public function add(){
-       
-      $session=$_SESSION['user'];
-      if (empty($_POST['titre']) || empty($_POST['debut']) || empty($_POST['lieu']) || empty($_POST['categorie']) || empty($_POST['resume'])) {
-        throw new Exception('Merci de remplir les données nécessaires.');
-    }
 
-    $titre_event = $_POST['titre'];
-    $date_debut = $_POST['date_debut_event'];
-    $date_fin = !empty($_POST['date_fin_event']) ? $_POST['date_fin_event'] : '';
-    $lieu = $_POST['lieu'];
-    $categorie= $_POST['categorie'];
-    $nb_place= $_POST['places'];
-    $resume = $_POST['resume_event'];
-    $content = !empty($_POST['description']) ? $_POST['description'] : '';
+      if(isset($_SESSION['user_id'])){
+        $session=$_SESSION['user_id'];
+        $id_user = ['user_id'];
 
-    if (isset($_FILES['photo']['name'])) {
-        
-        $fileName = $_FILES['photo']['name'];
-        $fileNameArray = explode(".", $fileName);
-        $extension = end($fileNameArray);
-        $uploadedFileName = $date_debut. "." . $extension;
-        $uploadedFileName = filter_var($uploadedFileName, FILTER_SANITIZE_STRING);
-        $fileToUpload = "public/media/" . $uploadedFileName;
-    
-        if (move_uploaded_file($_FILES['photo']['tmp_name'], $fileToUpload)) {
-            $photo = $fileToUpload;
-        } else {
-            throw new Exception('Erreur lors du téléchargement de l\'image.');
-        }
-    } else {
-        $photo = $_POST['photo_old'];
-    }
+        if (empty($_POST['titre_event']) || empty($_POST['date_debut_event']) || empty($_POST['resume_event'])) {
+          $message = "Les champs titre, date et resumé sont obligatoires";
+          $this->loader = new FilesystemLoader('templates');
+          $this->twig = new Environment($this->loader);
+          echo $this->twig->render('events/addEvent.html.twig', [
+          'message' => $message]);
+      }
 
-    // Récupérer l'objet Lieu correspondant au nom du lieu
-    $lieu = LieuManager::findByNom($nom_lieu);
+      $titre_event = $_POST['titre_event'];
+      $date_debut = $_POST['date_debut_event'];
+      $date_fin = !empty($_POST['date_fin_event']) ? $_POST['date_fin_event'] : '';
+      $nb_place= $_POST['places'];
+      $resume = $_POST['resume_event'];
+      $content = !empty($_POST['description_event']) ? $_POST['description_event'] : '';
+      $id_lieu = $_POST["lieu"];
+      $id_categorie = $_POST['categorie'];
 
-    // Récupérer l'ID du lieu
-    $id_lieu = $lieu->getId_lieu();
+      $event = new Event();
 
-        
-    $event = new Event();
+      $event->setTitre_event($titre_event);
+      $event->setDate_Debut_event($date_debut);
+      $event->setDate_Fin_event($date_fin);
+      $event->setNb_places($nb_place);
+      $event->setResume_event($resume);
+      $event->setDescription_event($content);
+      $event->setId_Categorie($id_categorie);
+      $event->setId_lieu($id_lieu);
+      $event->setId_user($id_user);
 
-    $event->setTitre_event($titre_event);
-    $event->setDate_Debut_event($date_debut);
-    $event->setDate_Fin_event($date_fin);
-    $event->setNb_places($nb_place);
-    $event->setResume_event($resume);
-    $event->setDescription_event($content);
-    $event->setId_Categorie($categorie);
-    $event->setId_lieu($lieu);
+      $newEvent = EventManager::add($event);
+      var_dump($event);
 
-
-    $id_event = EventManager::add($event);
- 
-     echo $this->twig->render('events/templateEvent.html.twig', [
-        'id_event' => $id_event]);
-    }
-      
-
-    public function seeEvent()
-    {
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('events/seeEvent.html.twig');
+      echo $this->twig->render('events/templateEvent.html.twig', [
+          'event' => $event]);
+    }
+  }
+      
+    public function seeEvent()
+    {
+      if(isset($_SESSION['user_id'])){
+        $session=$_SESSION['user_id'];
+        $id_user = ['user_id'];
+
+      // Récupérer l'user correspondant à l'identifiant dans l'URL
+      $userId = $_GET['id'];
+      $user = UserManager::find($userId);
+
+      // Récupérer une liste d'événement correspondant à l'utilisateur
+      $eventManager = new EventManager();
+      $events = $eventManager->getEventById($userId);
+
+
+      $categories = array();
+      foreach ($events as $categorie) {
+          $categorieId = $categorie->getId_Categorie();
+          $categorie = CategorieManager::find($categorieId);
+          $categories [] = $categorie;
+      }
+
+      $this->loader = new FilesystemLoader('templates');
+      $this->twig = new Environment($this->loader);
+      echo $this->twig->render('events/seeEvent.html.twig',  ['user'=>$user, 'auto_reload' => true , 'list'=> $events, 'categorie' => $categorie]);
       
     }
+  }
 }
 
 ?>

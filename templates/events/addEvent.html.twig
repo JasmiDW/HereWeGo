@@ -9,36 +9,40 @@
                         <p class="m-0"> <a href="#"  onclick="backOrToPage()">Retour ?</a></p>
                         <h1 class="compte mb-5">Ajouter un événement</h1>
                         <div class="form-row">
-                            <form method="get" action="?controller=events&action=add" onsubmit="return verificationEvent()">
-                                    <p>
+                            <form method="post" action="?controller=events&action=add" onsubmit="return verificationEvent()">
+                                <p>
+                                    {{ message }}
                                         
-                                        <input class="col-md-6 mb-1 p-2" type="text" id="titre" name="titre_event" placeholder="titre">
-                                    </p>
-                                    <label for="photo" class="mb-3">Date de début et de fin :</label>
-                                    <p>
-                                        
-                                        <input class="col-md-3 mb-1 p-2 " type="date" id="date-debut" name="date_debut_event" placeholder="mot de passe">
-                                        <input class="col-md-3 mb-1 p-2 " type="date" id="date-fin" name="date_fin_event" placeholder="mot de passe">
-                                    </p>
-                                    <p>
-                                        <div class="col-md-6 col-sm-6">
-                                        
-                                            <select class="form-ville p-2" id="lieu" name="lieu">
-                                                {% for lieu in lieu %}
-                                                    <option value="{{ lieu.id_lieu }}">{{ lieu.ville }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </p>
-                                    <p>
-                                        <div class="col-md-6 col-sm-6 mb-1">
-                                            <select class="form-categorie p-2" id="categorie" name="select">
+                                    <input class="col-md-6 mb-1 p-2" type="text" id="id" name="id_user" value="{{user.id_user}}">
+                                </p>
+                                <p>
+                                    
+                                    <input class="col-md-6 mb-1 p-2" type="text" id="titre" name="titre_event" placeholder="titre">
+                                </p>
+                                <label for="photo" class="mb-3">Date de début et de fin :</label>
+                                <p>
+                                    
+                                    <input class="col-md-3 mb-1 p-2 " type="date" id="date-debut" name="date_debut_event" placeholder="mot de passe">
+                                    <input class="col-md-3 mb-1 p-2 " type="date" id="date-fin" name="date_fin_event" placeholder="mot de passe">
+                                </p>
+                                <p>
+                                    <div class="col-md-6 col-sm-6">
+                                    
+                                        <select class="form-ville p-2" id="lieu" name="lieu">
+                                            {% for lieu in lieu %}
+                                                <option value="{{ lieu.id_lieu }}">{{ lieu.ville }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </p>
+                                <p>
+                                    <div class="col-md-6 col-sm-6 mb-1">
+                                        <select class="form-categorie p-2" id="categorie" name="categorie">
                                             {% for categorie in categorie %}
-                                                        <option value="{{ categorie.id_categorie }}">{{ categorie.libelle_categorie }}</option>
-                                                    {% endfor %}
-
-                                            </select>
-                                        </div>
+                                                <option value="{{ categorie.id_categorie }}">{{ categorie.libelle_categorie }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                     </p>
                                         <label for="photo" class="mb-1">Nombre de places :</label>
                                     <p>
@@ -50,12 +54,11 @@
                                     </p>
 
                                     <p> 
-                                        <input class="col-md-6 mb-1 p-2" type="text" id="resume" name="resume" placeholder="Résumé (140 caractères)"></textarea>
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="resume_event" name="resume_event" placeholder="Résumé (140 caractères)"></textarea>
                                     </p>
                                     <p>
-                                        <textarea class="col-md-6 mb-1 p-2" type="text" id="description" name="description" placeholder="Description"></textarea>
+                                        <textarea class="col-md-6 mb-1 p-2" type="text" id="description_event" name="description_event" placeholder="Description"></textarea>
                                     </p>
-                                </div>
                                 <div class="btn">
                                     <a><input class="btn p-0" type="submit" value="Valider"></a>
                                 </div>

@@ -44,12 +44,12 @@ class LieuManager {
         return $listVille;
     }
 
-    public static function findByNom($nomLieu) {
+    public static function findByVille($nomLieu) {
 
       $db = DbConnection::getInstance();
       // instancier la connexion à la base de données
       // Préparation de la requête SQL
-      $req = $db->prepare('SELECT * FROM lieux WHERE ville = :ville');
+      $req = $db->prepare('SELECT id_lieu FROM lieux WHERE ville = :ville');
       // Bind des valeurs
       $req->bindValue(':ville', $nomLieu);
       // Exécution de la requête

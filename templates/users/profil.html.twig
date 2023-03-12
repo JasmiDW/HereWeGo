@@ -9,8 +9,8 @@
                         <h1 class="compte mb-5">Mon profil</h1>
                         <div class="profil">
                             <a class="nav-link mx-2" href='?controller=users&action=seeProfil&id={{ user.id_user }}'></i>Voir mon profil</a>
-                            <a class="nav-link mx-2" href="?controller=events&action=addEvent"></i>Ajouter un événement</a>
-                            <a class="nav-link mx-2" href="?controller=events&action=seeEvent"></i>Voir mes événements</a>
+                            <a class="nav-link mx-2" href="?controller=events&action=addEvent&id={{ user.id_user }}"></i>Ajouter un événement</a>
+                            <a class="nav-link mx-2" href="?controller=events&action=seeEvent&id={{ user.id_user }}"></i>Voir mes événements</a>
                             <a class="nav-link mx-2" href="?controller=users&action=logout"></i>Deconnexion</a>
                         </div>
                     </div>

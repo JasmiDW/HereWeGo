@@ -44,4 +44,20 @@ use \PDO;
     }
     return $listCategorie;
   }
+
+  public static function findByLibelle($libelleCategorie) {
+
+    $db = DbConnection::getInstance();
+    // instancier la connexion à la base de données
+    // Préparation de la requête SQL
+    $req = $db->prepare('SELECT * FROM categorie WHERE libelle_categorie = :libelle_categorie');
+    // Bind des valeurs
+    $req->bindValue(':libelle_categorie', $libelleCategorie);
+    // Exécution de la requête
+    $req->execute();
+    // Récupération du résultat
+    $data = $req->fetch();
+    // Création de l'objet Utilisateur correspondant
+    return new Categorie($data);
+}
 }

@@ -9,7 +9,7 @@ class Lieu
     private $_adresse;
     private $_longitude;
     private $_latitude;
-    private $_departement;
+    private $_codePostal;
 
 
     
@@ -73,12 +73,12 @@ class Lieu
         return $this;
     }
 
-    public function getDepartement(){
-        return $this->_departement;
+    public function getCode_postal(){
+        return $this->_codePostal;
     }
 
-    public function setDepartement($departement){
-        $this->_departement=$departement;
+    public function setCode_postal($codePostal){
+        $this->_codePostal=$codePostal;
         return $this;
     }
 

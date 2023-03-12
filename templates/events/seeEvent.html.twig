@@ -7,31 +7,19 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-5 mb-5 ml-5">
                     <div class="compte m-0">
-                        <p class="m-0"> <a href="profil-organisateur.html">Retour ?</a></p>
+                        <p class="m-0"> <a href="#"  onclick="backOrToPage()">Retour ?</a></p>
                     </div>
                     <h1 class="compte">Mes événements</h1>
                     <a class="mb-5" href="#"></i>Exporter mes événements</a>
                     <div class="event-profil">
                         <div class="trait mt-5"></div>
-                        <h2 class="compte mb-2 mt-3">Il était une voix</h2>
-                        <p class="mb-3" ><i class="fa-solid fa-music fa-lg"></i>Musical <i class="fa-solid fa-calendar-days fa-xl"></i>6 et 7 mars 2023</p>
-                        <a class="" href="change-event.html">Modifier cet événement</a>
-                        <a class="" href="delete-event.html">Supprimer cet événement</a>
-                        <div class="trait mt-3"></div>
-                        <h2 class="compte mb-2 mt-3">« L'ours, le cygne et la grue », les animaux dans l'entourage du Prince au Palais</h2>
-                        <p class="mb-3" ><i class="fa-solid fa-palette fa-xl"></i>Exposition<i class="fa-solid fa-calendar-days fa-xl"></i>17 Juin 2023</p>
-                        <a class="" href="change-event.html">Modifier cet événement</a>
-                        <a class="" href="delete-event.html">Supprimer cet événement</a>
-                        <div class="trait mt-3"></div>
-                        <h2 class="compte mb-2 mt-3">Collectes de sang dans Grand Poitiers !</h2>
-                        <p class="mb-3" ><i class="fa-solid fa-person fa-xl"></i>Animation<i class="fa-solid fa-calendar-days fa-xl"></i>10 Janvier au 27 Mars 2023</p>
-                        <a class="" href="change-event.html">Modifier cet événement</a>
-                        <a class="" href="delete-event.html">Supprimer cet événement</a>
-                        <div class="trait mt-3"></div>
-                        <h2 class="compte mb-2 mt-3">Visite de la Serre tropicale</h2>
-                        <p class="mb-3" ><i class="fa-solid fa-person fa-xl"></i>Animation<i class="fa-solid fa-calendar-days fa-xl"></i>21 Janvier au 25 Février 2023</p>
-                        <a class="" href="change-event.html">Modifier cet événement</a>
-                        <a class="" href="delete-event.html">Supprimer cet événement</a>
+                        {% for event in list %}
+                            <h2 class="compte mb-2 mt-3">{{ event.titre_event }}</h2>
+                            <p class="mb-3" ><i class="{{categorie.icone_fontawesome}}"></i>{{categorie.libelle_categorie}} <i class="fa-solid fa-calendar-days fa-xl"></i>{{ event.date_debut_event|date('j') }} au {{ event.date_fin_event|date('j F Y') }}</p>
+                            <a class="" href="?controller=events&action=update&id={{ event.id_event }}">Modifier cet événement</a>
+                            <a class="" href="?controller=events&action=delete&id={{ event.id_event }}">Supprimer cet événement</a>
+                            <div class="trait mt-3"></div>
+                        {% endfor %}
                     </div>
                     </div>
                 </div>

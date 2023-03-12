@@ -121,31 +121,36 @@ use \PDO;
     //   return "$id a bien été supprimée de la base de données.";
     // }
 
-    public static function addEvent(){
+    public static function add(){
+
       $db = DbConnection::getInstance();
-  
+
+      // Récupérer l'user correspondant à l'identifiant dans l'URL
+      $userId = $_POST['id_user'];
+
       $title = $_POST["titre_event"];
       $date_debut = $_POST["date_debut_event"];
       $date_fin = $_POST["date_fin_event"];
       $resume = $_POST["resume_event"];
       $content = $_POST["description_event"];
-      $code = $_POST["code_unique"];
-      $statut = $_POST["statut_coup_coeur"];
-      $idLieu = $_POST["id_lieu"];
-      $codeUnique = $_POST["code_unique"];
-      $categorie= $_POST['categorie'];
-  
+      $code = NULL;
+      $id_lieu = $_POST["lieu"];
+      $places = $_POST["places"];
+      $id_categorie= $_POST["categorie"];
+      $statut = 0;
+
+      //Récupérer le code postal de l'id lieu
+      $lieu= LieuManager::find($id_lieu);
+
       if ($code === null) {
-          // Récupérer l'objet Lieu correspondant à l'événement
-          $lieu = LieuManager::find($idLieu);
-  
-          // Générer un code unique avec les 5 derniers caractères de l'identifiant unique et le département
-          $code = substr(uniqid(), -5) . date('Y') . $lieu->getDepartement();
-  
+        // Récupérer les deux premiers chiffres du code postal correspondant au lieu de l'événement
+        $departement = substr($lieu->getCode_postal(), 0, 2);
+        // Générer un code unique avec 5 caractères aléatoires, le tiret, les deux derniers chiffres de l'année en cours et les deux premiers chiffres du département
+        $code = strtoupper(substr(uniqid(), -5) . '-' . date('y') . $departement);
       }
-  
-      $query=$db->prepare("INSERT INTO event (titre_event, date_debut_event,date_fin_event,resume_event,description_event,code_unique, nb_places) 
-      VALUES(:titre_event, :date_debut_event,:date_fin_event,:resume_event,:description_event,:code_unique, :nb_places)");
+
+      $query=$db->prepare("INSERT INTO event (titre_event, date_debut_event, date_fin_event, resume_event, description_event, code_unique, id_user, nb_places, id_categorie, id_lieu, statut_coupcoeur) 
+      VALUES(:titre_event, :date_debut_event, :date_fin_event, :resume_event, :description_event, :code_unique, :id_user, :places, :id_categorie, :id_lieu, :statut)");
   
       //On indique les bindValue du titre, date_debut_event, date_fin_event, resume_event, description_event, code_unique et statut_coup_coeur
       $query->bindValue(':titre_event',$title,PDO::PARAM_STR);
@@ -153,14 +158,18 @@ use \PDO;
       $query->bindValue(':date_fin_event',$date_fin,PDO::PARAM_STR);
       $query->bindValue(':resume_event',$resume,PDO::PARAM_STR);
       $query->bindValue(':description_event',$content,PDO::PARAM_STR);
-      $query->bindValue(':code_unique',$codeUnique,PDO::PARAM_STR);
-  
+      $query->bindValue(':code_unique',$code,PDO::PARAM_STR);
+      $query->bindValue(':id_user',$userId,PDO::PARAM_INT);
+      $query->bindValue(':id_lieu',$id_lieu,PDO::PARAM_INT);
+      $query->bindValue(':id_categorie',$id_categorie,PDO::PARAM_INT);
+      $query->bindValue(':places',$places,PDO::PARAM_INT);
+      $query->bindValue(':statut',$statut,PDO::PARAM_INT);
   
       $query->execute();
   
-      $event = new Event($title, $date_debut, $date_fin, $resume, $content, $code);
+      $event = new Event($title, $date_debut, $date_fin, $resume,$content, $code, $id_lieu, $id_categorie, $statut, $places, $userId);
   
-      return $event;     
+      return $event;
   }
 
     public static function update($id){
