@@ -42,7 +42,7 @@ function call($controller, $action){
 
 $controllers = array(
   'pages' => ['home', 'about', 'connexion', 'contact', 'inscription', 'error','filtres','templateTransport'],
-  'events' => ['show','addEvent','seeEvent','add'],
+  'events' => ['show','addEvent','seeEvent','add','formUpdate','update'],
   'participant' => ['addParticipant'],
   'transports' => ['show'],
   'users' => ['show','profil','login','seeProfil','logout','updateProfil','deleteProfil']

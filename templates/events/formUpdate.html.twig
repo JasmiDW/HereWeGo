@@ -1,29 +1,28 @@
 {% extends 'base-profil.html.twig' %}
 {% block body %}
-    <section id="connexion">
-            <div class="container-fluid">
+<section id="connexion">
+    <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="d-flex d-md-block bg-blue-1 col-md-4 col-12 p-3"></div>
                     <div class="col-md-2"></div>
                     <div class="col-md-6">
                         <p class="m-0"> <a href="#"  onclick="backOrToPage()">Retour ?</a></p>
-                        <h1 class="compte mb-5">Ajouter un événement</h1>
+                        <h1 class="compte mb-5">Modifier un événement</h1>
                         <div class="form-row">
-                            <form method="post" action="?controller=events&action=add" onsubmit="return verificationEvent()">
-                                <p>
-                                    {{ message }}
-                                        
-                                    <input class="col-md-6 mb-1 p-2" type="text" id="id" name="id_user" value="{{user.id_user}}">
+                            <form method="post" action="?controller=events&action=update&id={{event.id_event}}" onsubmit="return verificationEvent()">
+                                <p> 
+                                {{message}}
+                                    <input class="col-md-6 mb-1 p-2" type="hidden" id="id" name="id_user" value="{{user.id_user}}">
                                 </p>
                                 <p>
                                     
-                                    <input class="col-md-6 mb-1 p-2" type="text" id="titre" name="titre_event" placeholder="titre">
+                                    <input class="col-md-6 mb-1 p-2" type="text" id="titre" name="titre_event" value="{{event.titre_event}}">
                                 </p>
                                 <label for="photo" class="mb-3">Date de début et de fin :</label>
                                 <p>
                                     
-                                    <input class="col-md-3 mb-1 p-2 " type="date" id="date-debut" name="date_debut_event" placeholder="mot de passe">
-                                    <input class="col-md-3 mb-1 p-2 " type="date" id="date-fin" name="date_fin_event" placeholder="mot de passe">
+                                    <input class="col-md-3 mb-1 p-2 " type="date" id="date-debut" name="date_debut_event" value="{{ event.date_debut_event|date('Y-m-d') }}">
+                                    <input class="col-md-3 mb-1 p-2 " type="date" id="date-fin" name="date_fin_event" value="{{ event.date_fin_event|date('Y-m-d') }}">
                                 </p>
                                 <p>
                                     <div class="col-md-6 col-sm-6">
@@ -46,7 +45,7 @@
                                     </p>
                                         <label for="photo" class="mb-1">Nombre de places :</label>
                                     <p>
-                                        <input class="col-md-6 mb-1 p-2" type="number" id="place" name="places" placeholder="place" >
+                                        <input class="col-md-6 mb-1 p-2" type="number" id="place" name="places" value="{{event.nb_places}}" >
                                     </p>
                                         <label for="photo" class="mb-1">Photos :</label>
                                     <p>
@@ -54,10 +53,10 @@
                                     </p>
 
                                     <p> 
-                                        <input class="col-md-6 mb-1 p-2" type="text" id="resume_event" name="resume_event" placeholder="Résumé (140 caractères)"></textarea>
+                                        <textarea class="col-md-6 mb-1 p-2" type="text" id="resume_event" name="resume_event" value="{{event.resume_event}}">{{event.resume_event}}</textarea>
                                     </p>
                                     <p>
-                                        <textarea class="col-md-6 mb-1 p-2" type="text" id="description_event" name="description_event" placeholder="Description"></textarea>
+                                        <textarea class="col-md-6 mb-1 p-2" type="text" id="description_event" name="description" value="{{event.description_event}}">{{event.description_event}}</textarea>
                                     </p>
                                 <div class="btn">
                                     <a><input class="btn p-0" type="submit" value="Valider"></a>
@@ -67,20 +66,6 @@
                     </div>
                 </div>
             </div>
-    </section>
-    <script>
-        var resume = document.getElementById('resume_event');
-        var maxLength = 140;
+</section>
 
-        resume.addEventListener('input', function() {
-            var currentLength = resume.value.length;
-            if (currentLength > maxLength) {
-            var truncatedValue = resume.value.substr(0, maxLength);
-            resume.value = truncatedValue;
-            resume.setCustomValidity('Le résumé doit contenir au maximum ' + maxLength + ' caractères.');
-            } else {
-            resume.setCustomValidity('');
-            }
-        });
-    </script>
 {% endblock %}

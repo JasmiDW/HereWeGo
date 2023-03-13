@@ -16,7 +16,7 @@
                         {% for event in list %}
                             <h2 class="compte mb-2 mt-3">{{ event.titre_event }}</h2>
                             <p class="mb-3" ><i class="{{categorie.icone_fontawesome}}"></i>{{categorie.libelle_categorie}} <i class="fa-solid fa-calendar-days fa-xl"></i>{{ event.date_debut_event|date('j') }} au {{ event.date_fin_event|date('j F Y') }}</p>
-                            <a class="" href="?controller=events&action=update&id={{ event.id_event }}">Modifier cet événement</a>
+                            <a class="" href="?controller=events&action=formUpdate&id={{ event.id_event }}">Modifier cet événement</a>
                             <a class="" href="?controller=events&action=delete&id={{ event.id_event }}">Supprimer cet événement</a>
                             <div class="trait mt-3"></div>
                         {% endfor %}
@@ -27,3 +27,41 @@
         </div>
     </section>
 {% endblock %}
+
+
+{# // Connexion à la base de données
+$conn = mysqli_connect("localhost", "nom_utilisateur", "mot_de_passe", "nom_bdd");
+
+// Vérification de la connexion
+if (mysqli_connect_errno()) {
+  echo "Échec de la connexion MySQL : " . mysqli_connect_error();
+  exit();
+}
+
+// Requête SQL pour sélectionner toutes les données de la table "evenements"
+$sql = "SELECT * FROM evenements";
+
+// Exécution de la requête
+$resultat = mysqli_query($conn, $sql);
+
+// Création d'un fichier CSV
+$nom_fichier = 'export_evenements.csv';
+$fichier = fopen($nom_fichier, 'w');
+
+// Écriture de l'en-tête du fichier CSV
+fputcsv($fichier, array('ID', 'Nom', 'Date', 'Lieu'));
+
+// Écriture des données dans le fichier CSV
+while ($row = mysqli_fetch_array($resultat, MYSQLI_ASSOC)) {
+  fputcsv($fichier, $row);
+}
+
+// Fermeture du fichier CSV et de la connexion à la base de données
+fclose($fichier);
+mysqli_close($conn);
+
+// Téléchargement du fichier CSV généré
+header('Content-Type: application/csv');
+header('Content-Disposition: attachment; filename="' . $nom_fichier . '";');
+readfile($nom_fichier);
+exit(); #}

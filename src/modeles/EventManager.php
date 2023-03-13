@@ -172,41 +172,31 @@ use \PDO;
       return $event;
   }
 
-    public static function update($id){
+    public static function update(Event $event){
+      $db = DbConnection::getInstance();
+      $query = $db->prepare("UPDATE event
+          SET titre_event = :titre_event,
+              date_debut_event = :date_debut_event,
+              date_fin_event = :date_fin_event,
+              resume_event = :resume_event,
+              description_event = :description_event,
+              id_lieu = :id_lieu,
+              id_categorie = :id_categorie,
+              nb_places = :places
+          WHERE id_event = :id");
 
-        $id = $_GET['id'];
+      $query->bindValue(':id', $event->getId_event(), PDO::PARAM_INT);
+      $query->bindValue(':titre_event', $event->getTitre_event(), PDO::PARAM_STR);
+      $query->bindValue(':date_debut_event', $event->getDate_Debut_event(), PDO::PARAM_STR);
+      $query->bindValue(':date_fin_event', $event->getDate_Fin_event(), PDO::PARAM_STR);
+      $query->bindValue(':resume_event', $event->getResume_event(), PDO::PARAM_STR);
+      $query->bindValue(':description_event', $event->getDescription_event(), PDO::PARAM_STR);
+      $query->bindValue(':id_lieu', $event->getId_lieu(), PDO::PARAM_INT);
+      $query->bindValue(':id_categorie', $event->getId_Categorie(), PDO::PARAM_INT);
+      $query->bindValue(':places', $event->getNb_places(), PDO::PARAM_INT);
 
-        // créer une requête SELECT pour récupérer les données de l'article
-        $db = Db::getInstance();
-        $requete = $db->prepare("SELECT * FROM event WHERE id = :id");
-        $requete->bindValue(':id', $id, PDO::PARAM_INT);
-        $requete->execute();
-        $result = $requete->fetch(PDO::FETCH_ASSOC);
 
-        // stocker les données récupérées dans des variables
-        $title = $result["titre_event"];
-        $date_debut = $result["date_debut_event"];
-        $date_fin = $result["date_fin_event"];
-        $resume = $result["resume_event"];
-        $content = $result["description_event"];
-
-        $requete=$db->prepare("UPDATE event
-          SET titre = :titre_event, :date_debut_event,:date_fin_event,:resume_event,:description_event,:code_unique,:statut_coup_coeur
-          WHERE id=:id");
-          $id = $_GET["id"];
-          $title = $_POST["titre"];
-          $content = $_POST["description"];
-          $date= $_POST["date"];
-
-          $requete->bindValue(':titre',$title, PDO::PARAM_STR);
-          $requete->bindValue(':description_article',$content, PDO::PARAM_STR);
-          $requete->bindValue(':date_article',$date, PDO::PARAM_STR);
-          $requete->bindValue(':id',$id, PDO::PARAM_INT);
-
-          $requete->execute();
-
-          $post = new Post($result);
-          return $post; 
+      $query->execute();
 
     }
 }
