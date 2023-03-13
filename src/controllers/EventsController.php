@@ -217,7 +217,7 @@ use Twig\Loader\FilesystemLoader;
     if(isset($_SESSION['user_id'])){
       $session = $_SESSION['user_id'];
       $id_user = $session['user_id'];
-      var_dump($id_user);
+
   
       if (empty($_POST['titre_event']) || empty($_POST['date_debut_event']) || empty($_POST['resume_event'])) {
         $message = "Les champs titre, date et resumé sont obligatoires";
@@ -239,7 +239,7 @@ use Twig\Loader\FilesystemLoader;
   
         $event = new Event();
   
-        $event->setId_event($eventId);
+        $event->setId_event($session);
         $event->setTitre_event($titre_event);
         $event->setDate_Debut_event($date_debut);
         $event->setDate_Fin_event($date_fin);
@@ -253,18 +253,49 @@ use Twig\Loader\FilesystemLoader;
         $event = EventManager::update($event);
 
         // Récupérer une liste d'événement correspondant à l'utilisateur
-      $eventManager = new EventManager();
-      $events = $eventManager->getEventById($id_user);
-        var_dump($events);
+        $eventManager = new EventManager();
+        $events = $eventManager->getEventById($session);
+
+
+        $categories = array();
+        foreach ($events as $categorie) {
+          $categorieId = $categorie->getId_Categorie();
+          $categorie = CategorieManager::find($categorieId);
+          $categories [] = $categorie;
+      }
   
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
         echo $this->twig->render('events/seeEvent.html.twig', [
-          'event' => $event
+          'list' => $events , 'categorie' => $categorie
         ]);
       }
     }
   }
+
+  public function delete(){
+    if (!isset($_GET['id_event'])){
+          return call('pages', 'error');
+    } 
+
+     // Récupérer une liste d'événement correspondant à l'utilisateur
+     $eventManager = new EventManager();
+     $events = $eventManager->getEventById($session);
+
+
+     $categories = array();
+     foreach ($events as $categorie) {
+       $categorieId = $categorie->getId_Categorie();
+       $categorie = CategorieManager::find($categorieId);
+       $categories [] = $categorie;
+   }
+
+     $this->loader = new FilesystemLoader('templates');
+     $this->twig = new Environment($this->loader);
+     echo $this->twig->render('events/seeEvent.html.twig', [
+       'list' => $events , 'categorie' => $categorie
+     ]);
+}
 }
 
 ?>

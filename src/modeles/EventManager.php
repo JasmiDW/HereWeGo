@@ -106,21 +106,6 @@ use \PDO;
       return $event;
     }
 
-    // public static function delete($id){
-    //     $db = DbConnection::getInstance();
-    //     // we make sure $id is an integer
-    //     $id = intval($id);
-    //     $sql="DELETE FROM event WHERE id=:id";
-    //     $query=$this->_db->prepare($sql);
-    //     $query->bindValue(':id', $obj->getId(), PDO::PARAM_INT);
-    //     $query->execute();
-    // //   $req=$db->prepare("DELETE FROM event WHERE id= :id");
-    // //   $req->execute(array('id' => $id));
-    // //   $event = $req->fetch();
-
-    //   return "$id a bien été supprimée de la base de données.";
-    // }
-
     public static function add(){
 
       $db = DbConnection::getInstance();
@@ -174,6 +159,7 @@ use \PDO;
 
     public static function update(Event $event){
       $db = DbConnection::getInstance();
+
       $query = $db->prepare("UPDATE event
           SET titre_event = :titre_event,
               date_debut_event = :date_debut_event,
@@ -198,6 +184,18 @@ use \PDO;
 
       $query->execute();
 
+    }
+
+    
+    public static function delete($id_event){
+
+        $db = DbConnection::getInstance();
+        $id_event = intval($id_event);
+
+        $query = $db->prepare("DELETE FROM event WHERE id_event =:id_event");
+        $query->bindValue('id_event',$id_event,PDO::PARAM_INT);
+        $query->execute();
+        
     }
 }
 ?>
