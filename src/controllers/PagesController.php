@@ -35,10 +35,10 @@ use Twig\Loader\FilesystemLoader;
         $medias = array();
         foreach ($events as $event) {
 
-          // Récupérer l'utilisateur correspondant à l'événement
-          $userId = $event->getId_User();
-          $user = UserManager::find($userId);
-          $users[] = $user;
+        // Récupérer l'utilisateur correspondant à l'événement
+        $userId = $event->getId_User();
+        $user = UserManager::find($userId);
+        $users[] = $user;
 
         // Récupérer les médias correspondants à l'événement
         $eventId = $event->getId_event();
