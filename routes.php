@@ -45,7 +45,7 @@ $controllers = array(
   'events' => ['show','addEvent','seeEvent','add','formUpdate','update','delete'],
   'participant' => ['addParticipant'],
   'transports' => ['show'],
-  'users' => ['show','profil','login','seeProfil','logout','updateProfil','deleteProfil']
+  'users' => ['show','profil','login','seeProfil','logout','formUpdateProfil','deleteProfil']
   );
 
 if(array_key_exists($controller, $controllers)){

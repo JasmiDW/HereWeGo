@@ -1,0 +1,74 @@
+{% extends 'base-profil.html.twig' %}
+{% block body %}
+    <section id="connexion">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="d-flex d-md-block bg-yellow-1 col-md-4 col-12 p-3"></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-6">
+                        <p class="m-0"> <a href="profil.html">Retour ?</a></p>
+                        <h1 class="compte mb-5">Modifier mon profil</h1>
+                            <div class="compte">
+                                <p class="mb-2"> 
+                                    Etes-vous un organisateur ?
+                                        {% if statut.libelle_statut == 'organisateur' %}
+                                            <input class="ms-5" type="checkbox" checked disabled> Oui
+                                            <input class="ms-3" type="checkbox" disabled> Non
+                                        {% else %}
+                                            <input class="ms-5" type="checkbox" disabled> Oui
+                                            <input class="ms-3" type="checkbox" checked disabled> Non
+                                        {% endif %}
+                                </p>
+                            </div>
+                            <form method="post" action="?controller=users&action=update&id_user={{user.id_user}}">
+                                <div class="form-row">
+                                    <p>
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="raison sociale" name="raison_sociale" placeholder="raison sociale" value="{{user.raison_sociale}}">
+                                    </p>
+                                    <p>
+                                        <input class="col-md-3 mb-1 p-2 " type="text" id="nom" placeholder="nom" name="nom" value="{{user.nom_user}}">
+                                        <input class="col-md-3 mb-1 p-2 " type="text" id="prenom" name="prenom" placeholder="prenom" value="{{user.prenom_user}}">
+                                    </p>
+                                    <p>
+                                        <input class="col-md-3 mb-1 p-2 " type="text" id="lieu" name="mail" placeholder="email" value="{{user.mail_user}}">
+                                        <input class="col-md-3 mb-1 p-2 " type="text" id="categories" name="password" placeholder="mot de passe">
+                                    </p>
+                                    <p>
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="adresse" name="adresse" placeholder="adresse" value="{{user.adresse_user}}">
+                                    </p>
+                                    <p>
+                                        <select class="form col-md-3 mb-1 p-2" id="codepostal" name="codepostal">
+                                            {% for cp in cp %}
+                                                {% if lieu.id_lieu == event.id_lieu %}
+                                                    <option value="{{ lieu.id_lieu }}" selected>{{ lieu.code_postal }}</option>
+                                                {% else %}
+                                                    <option value="{{ lieu.id_lieu }}">{{ lieu.code_postal }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                        
+                                        <select class="form col-md-3 mb-1 p-2" id="lieu" name="lieu">
+                                            {% for lieu in lieu %}
+                                                {% if lieu.id_lieu == event.id_lieu %}
+                                                    <option value="{{ lieu.id_lieu }}" selected>{{ lieu.ville }}</option>
+                                                {% else %}
+                                                    <option value="{{ lieu.id_lieu }}">{{ lieu.ville }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    
+                                    </p>
+                                    <p>
+                                        <input class="col-md-6 mb-1 p-2" type="text" id="telephone" name="telephone" placeholder="téléphone" value="{{user.tel_user}}">
+                                    </p>
+                                </div>
+                                <div class="btn">
+                                    <a><input class="btn p-0" type="submit" value="Modifier"></a>
+                                </div>
+                    </div>
+                            </form>
+                </div>
+            </div>
+        </section>
+
+{% endblock %}

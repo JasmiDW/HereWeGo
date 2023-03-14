@@ -11,6 +11,7 @@ use App\modeles\EventManager;
 use App\modeles\UserManager;
 use App\modeles\PageManager;
 use App\modeles\LieuManager;
+use App\modeles\MediaManager;
 use App\modeles\ParticipantManager;
 use App\modeles\TransportManager;
 use App\modeles\TypeTransportManager;
@@ -49,6 +50,7 @@ use Twig\Loader\FilesystemLoader;
     
       // Récupérer l'événement correspondant à l'identifiant dans l'URL
       $eventId = $_GET['id'];
+
       $event = EventManager::find($eventId);
 
       // Récupérer les categories correspondant à chaque événement
@@ -70,6 +72,11 @@ use Twig\Loader\FilesystemLoader;
       // Récupérer les transports correspondant à l'événement
       $transportManager = new TransportManager();
       $listTransports = $transportManager->getTransport($eventId);
+
+      // Récupérer les médias correspondant à l'événement
+      $mediaManager = new MediaManager();
+      $listMedia = $mediaManager->findByEvent($eventId);
+      var_dump($listMedia);
 
       $localisations = array();
       foreach ($listTransports as $transport) {
@@ -93,7 +100,8 @@ use Twig\Loader\FilesystemLoader;
         'remainingPlaces' => $remainingPlaces,
         'listTransports' => $listTransports,
         'typeTransport' => $typeTransport,
-        'categorie' => $categorie
+        'categorie' => $categorie,
+        'listMedia' => $listMedia
       ));
     }
 

@@ -10,22 +10,24 @@ class MediaManager {
 
     private $_db;
 
-    public function __construct($db) {
+    public function __construct() {
         $this->_db = DbConnection::getInstance();
     }
 
     public static function findByEvent($eventId) {
         $db = DbConnection::getInstance();
-        // we make sure $id is an integer
         $eventId = intval($eventId);
-        $req = $db->prepare('SELECT * FROM `media`
-        WHERE id_event = :id_event');
-        // the query was prepared, now we replace :id with our actual $id value
+    
+        $list = [];
+        $req = $db->prepare('SELECT * FROM `media` WHERE id_event = :id_event');
         $req->execute(array('id_event' => $eventId));
-        $media = $req->fetch(PDO::FETCH_ASSOC);
-  
-        return new Media($media);
-        
+        $results = $req->fetchAll(PDO::FETCH_ASSOC);
+            
+        foreach($results as $media) {
+            $list[] = new Media($media);
+        }
+            
+        return $list; 
     }
 
         public static function add(Media $obj){

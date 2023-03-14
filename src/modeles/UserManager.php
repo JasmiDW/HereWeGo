@@ -61,9 +61,9 @@ class UserManager {
         return new User($data);
     }
 
-    public function updateUser(User $user) {
+    public function update(User $user) {
         // Préparation de la requête SQL
-        $req = $this->_db->prepare('UPDATE utilisateur SET email = :email, nom = :nom, prenom = :prenom, password = :password, tel = :tel, photo = :photo , lieu_id = :lieu_id WHERE id_user = :id_user');
+        $req = $this->_db->prepare('UPDATE utilisateur SET email = :email, nom = :nom, prenom = :prenom, mail =:mail, adresse = :adresse, password = :password, telephone = :telephone, lieu_id = :lieu_id WHERE id_user = :id_user');
 
         // Bind des valeurs
         $req->bindValue(':email', $user->getMail_user());
@@ -73,7 +73,7 @@ class UserManager {
         $req->bindValue(':tel', $user->getTel());
         $req->bindValue(':photo', $user->getPhoto());
 
-        $req->bindValue(':date_inscription', $user->getDateInscription());
+        $req->bindValue(':adresse', $user->getAdresse());
         $req->bindValue(':lieu_id', $user->getLieuId());
 
 

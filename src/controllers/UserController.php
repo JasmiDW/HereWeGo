@@ -6,6 +6,7 @@ use App\entites\User;
 use App\entites\Categorie;
 use App\modeles\UserManager;
 use App\modeles\EventManager;
+use App\modeles\LieuManager;
 use App\modeles\CategorieManager;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -133,16 +134,21 @@ class UserController
         header("location: ?controller=pages&action=home");
     }
 
-    public function updateProfil(){
-        
+    public function formUpdateProfil(){
+
+        if(isset($_SESSION['user_id'])){
+            $session=$_SESSION['user_id'];
         // Récupérer l'user correspondant à l'identifiant dans l'URL
-        $userId = $_GET['id'];
+        $userId = $_GET['id_user'];
         $user = UserManager::find($userId);
-        
+
+        $lieu= LieuManager::findAll();
+
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
-        echo $this->twig->render('users/updateProfil.html.twig', ['user'=>$user]);
+        echo $this->twig->render('users/formUpdateProfil.html.twig', ['user'=>$user, 'lieu'=>$lieu]);
     }
+}
 
     public function deleteProfil(){
         
@@ -169,23 +175,50 @@ class UserController
         
     // }
 
-    // public function edit() {
-    //     if($this->loginUser !=""){
-    //         if (!isset($_GET['id'])){
-    //             echo $this->twig->render('pages/error.html.twig', ['auto_reload' => true]);
-    //         }else{
-    //             $user = $this->userManager->get($_GET['id']);
-    //             $this->loader = new \Twig\Loader\FilesystemLoader('templates');
-    //             $this->twig = new \Twig\Environment($this->loader);
-    //             echo $this->twig->render('user/edit.html.twig', ['loginUser'=> $this->loginUser, 'user'=>$user,'auto_reload' => true, 'programTitle' => $this->programmTitle]);
-    //         }
-    //     }else{
-    //         $this->loader = new \Twig\Loader\FilesystemLoader('templates');
-    //         $this->twig = new \Twig\Environment($this->loader);
-    //         echo $this->twig->render('pages/acces_denied.html.twig', ['loginUser'=> $this->loginUser, 'auto_reload' => true, 'programTitle' => $this->programmTitle]);
-    //     }
-        
-    // }
+    public function update() {
+        if(isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+      
+            if(empty($_POST['raison_sociale']) || empty($_POST['mail']) || empty($_POST['telephone']) || empty($_POST['password'])) {
+                $message = "Les champs titre, date et resumé sont obligatoires";
+                $loader = new FilesystemLoader('templates');
+                $twig = new Environment($loader);
+                echo $twig->render('events/formUpdateProfil.html.twig', ['message' => $message]);
+            } else {
+                $userId = $_GET['id_user'];
+                $rs = $_POST['raison_sociale'];
+                $nom = !empty($_POST['nom']) ? $_POST['nom'] : '';
+                $prenom = !empty($_POST['prenom']) ? $_POST['prenom'] : '';
+                $mail = $_POST['mail'];
+                $password = $_POST['password'];
+                $adresse = !empty($_POST['adresse']) ? $_POST['adresse'] : '';
+                $lieuId = $_POST["lieu"];
+                $telephone = $_POST['telephone'];
+                $categorieId = $_POST['categorie'];
+      
+                $user = new User();
+                $user->setRS($rs);
+                $user->setNom($nom);
+                $user->setPrenom($prenom);
+                $user->setMail($mail);
+                $user->setPassword($password);
+                $user->setAdresse($adresse);
+                $user->setTelephone($telephone);
+                $user->setId_lieu($lieuId);
+                $user->setId_user($userId);
+      
+                UserManager::update($user);
+      
+                // Récupérer une liste d'événement correspondant à l'utilisateur
+                $eventManager = new EventManager();
+                $events = $eventManager->getEventById($userId);
+      
+                $this->loader = new FilesystemLoader('templates');
+                $this->twig = new Environment($this->loader);
+                echo $this->twig->render('users/seeProfil.html.twig', ['user'=>$user]);
+            }
+            }
+        }  
 
     // public function create(){
     //     if($this->loginUser !=""){
