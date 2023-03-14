@@ -4,97 +4,47 @@ namespace App\modeles;
 
 use App\entites\Media;
 use App\controllers\MediaController;
+use \PDO;
 
 class MediaManager {
 
     private $_db;
 
     public function __construct($db) {
-        $this->_db = $db;
+        $this->_db = DbConnection::getInstance();
     }
 
-    public function addMedia(Media $user) {
-        // Préparation de la requête SQL
-        $req = $this->_db->prepare('INSERT INTO media (url, id_event) VALUES(:url, :id_event)');
-        // Bind des valeurs
-        $req->bindValue(':url', $media->getURL());
-        $req->bindValue(':id_event', $media->getId_event());
-        // Exécution de la requête
-        $req->execute();
-    }
-
-    public static function find($idMedia) {
+    public static function findByEvent($eventId) {
         $db = DbConnection::getInstance();
-        // instancier la connexion à la base de données
-        // Préparation de la requête SQL
-        $req = $db->prepare('SELECT * FROM media WHERE id_media = :id_media');
-        // Bind des valeurs
-        $req->bindValue(':id_media', $idMedia);
-        // Exécution de la requête
-        $req->execute();
-        // Récupération du résultat
-        $data = $req->fetch();
-        // Création de l'objet Utilisateur correspondant
-        return new Media($data);
+        // we make sure $id is an integer
+        $eventId = intval($eventId);
+        $req = $db->prepare('SELECT * FROM `media`
+        WHERE id_event = :id_event');
+        // the query was prepared, now we replace :id with our actual $id value
+        $req->execute(array('id_event' => $eventId));
+        $media = $req->fetch(PDO::FETCH_ASSOC);
+  
+        return new Media($media);
+        
     }
 
-    public function updateUser(Utilisateur $user) {
-        // Préparation de la requête SQL
-        $req = $this->_db->prepare('UPDATE utilisateur SET email = :email, nom = :nom, prenom = :prenom, password = :password, tel = :tel, photo = :photo , lieu_id = :lieu_id WHERE id_user = :id_user');
-
-        // Bind des valeurs
-        $req->bindValue(':email', $user->getMail_user());
-        $req->bindValue(':nom', $user->getNom_user());
-        $req->bindValue(':prenom', $user->getPrenom_user());
-        $req->bindValue(':password', $user->getPassword());
-        $req->bindValue(':tel', $user->getTel());
-        $req->bindValue(':photo', $user->getPhoto());
-
-        $req->bindValue(':date_inscription', $user->getDateInscription());
-        $req->bindValue(':lieu_id', $user->getLieuId());
-
-
-        // Vérification de la valeur de la raison sociale
-        if ($user->getRS() !== null) {
-            $req->bindValue(':rs', $user->getRS());
-        } else {
-            $req->bindValue(':rs', null, PDO::PARAM_NULL);
-        }
-
-        // Exécution de la requête
-        $req->execute();
-
-        $lieuManager = new LieuManager($this->_db);
-        $lieu = $lieuManager->getLieuById($user->getLieuId());
-        $user->setLieu($lieu);
-
-        $result=$req->fetch(PDO::FETCH_ASSOC);
-
-        $utilisateur=new Utilisateur($result);
-        return $utilisateur;
-
-    }
-
-    public function deleteUser(Utilisateur $user) {
-        $sql = "DELETE FROM utilisateur WHERE id = :id";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':id', $user->getId_user(), PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->rowCount() > 0;
-    }
-
-    public function getAllUsers() {
-        $sql = "SELECT * FROM utilisateur";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        public static function add(Media $obj){
+            
+        $db = DbConnect::getInstance();
     
-        $users = [];
-        foreach ($result as $data) {
-            $user = new Utilisateur($data);
-            $users[] = $user;
+        $sql="INSERT INTO medias(categorie_file,title,url_file,date_modif,id_artwork,id_language,id_artist)VALUES(:categorie_file,:title,:url_file,:date_modif,:id_artwork,:id_language,:id_artist)";
+            
+            $query = $db  ->prepare($sql);
+            $query->bindValue(':categorie_file', $obj->getCategorie_file(), PDO::PARAM_STR);
+            $query->bindValue(':title',$obj->getTitle(), PDO::PARAM_STR);
+            $query->bindValue(':url_file', $obj->getUrl_file(), PDO::PARAM_STR);
+            $query->bindValue(':date_modif', $obj->getDate_modif(), PDO::PARAM_STR);
+            $query->bindValue(':id_artwork', $obj->getId_artwork(), PDO::PARAM_INT);
+            $query->bindValue(':id_language',$obj->getId_language(), PDO::PARAM_STR);
+            $query->bindValue(':id_artist',$obj->getId_artist(), PDO::PARAM_INT);
+            $query->execute();
+            
+            return $id_file=$db->lastInsertId();
         }
-        return $users;
     }
 
-}

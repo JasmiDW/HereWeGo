@@ -16,8 +16,8 @@
                         {% for event in list %}
                             <h2 class="compte mb-2 mt-3">{{ event.titre_event }}</h2>
                             <p class="mb-3" ><i class="{{categorie.icone_fontawesome}}"></i>{{categorie.libelle_categorie}} <i class="fa-solid fa-calendar-days fa-xl"></i>{{ event.date_debut_event|date('j') }} au {{ event.date_fin_event|date('j F Y') }}</p>
-                            <a class="" href="?controller=events&action=formUpdate&id={{ event.id_event }}">Modifier cet événement</a>
-                            <a class="" href="?controller=events&action=delete&id={{ event.id_event }}">Supprimer cet événement</a>
+                            <a class="" href="?controller=events&action=formUpdate&id_event={{ event.id_event }}">Modifier cet événement</a>
+                            <a class="" href="?controller=events&action=delete&id_event={{ event.id_event }}">Supprimer cet événement</a>
                             <div class="trait mt-3"></div>
                         {% endfor %}
                     </div>

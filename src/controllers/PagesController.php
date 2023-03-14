@@ -11,40 +11,50 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 
-class PagesController{
+  class PagesController{
 
-  private $eventsController;
+    private $eventsController;
 
-  public function __construct($eventsController) {
-      $this->eventsController = $eventsController;
-  }
-
-  public function home() {
-
-      $eventsController = new EventsController();
-      $events = $this->eventsController->getEvenements();
-      $favoriteEvent = $this->eventsController->showFavoriteEvent();
-      // $media = $this ->mediaController->getMedia();
-
-      // Récupérer l'utilisateur correspondant à l'événement
-      // $userId = $events->getId_User();
-      // $user = UserManager::find($userId);
-      
-      $users = array();
-      foreach ($events as $event) {
-        $userId = $event->getId_User();
-        $user = UserManager::find($userId);
-        $users[] = $user;
-      }
-
-      // $localisationEvent = $this->eventsController->getEventByLocalisation();
-      $this->loader = new FilesystemLoader('templates');
-      $this->twig = new Environment($this->loader, [
-        'date_format' => 'd/m/Y',
-    ]);
-      // $this->twig->getExtension('Twig_Extension_Core')->setLocale('fr_FR');
-        echo $this->twig->render('pages/home.html.twig', ['list' => $events, 'favoriteEvent'=> $favoriteEvent, 'user'=> $users]);
+    public function __construct($eventsController) {
+        $this->eventsController = $eventsController;
     }
+
+    public function home() {
+
+        $eventsController = new EventsController();
+        $events = $this->eventsController->getEvenements();
+        $favoriteEvent = $this->eventsController->showFavoriteEvent();
+        
+
+        // Récupérer l'utilisateur correspondant à l'événement
+        // $userId = $events->getId_User();
+        // $user = UserManager::find($userId);
+        // Récupérer le média correspondant à l'événement
+        
+        $users = array();
+        $medias = array();
+        foreach ($events as $event) {
+
+          // Récupérer l'utilisateur correspondant à l'événement
+          $userId = $event->getId_User();
+          $user = UserManager::find($userId);
+          $users[] = $user;
+
+        // Récupérer les médias correspondants à l'événement
+        $eventId = $event->getId_event();
+        $media = MediaManager::findByEvent($eventId);
+        $medias[] = $media;
+
+        }
+
+        // $localisationEvent = $this->eventsController->getEventByLocalisation();
+        $this->loader = new FilesystemLoader('templates');
+        $this->twig = new Environment($this->loader, [
+          'date_format' => 'd/m/Y',
+      ]);
+        // $this->twig->getExtension('Twig_Extension_Core')->setLocale('fr_FR');
+          echo $this->twig->render('pages/home.html.twig', ['list' => $events, 'favoriteEvent'=> $favoriteEvent, 'user'=> $users, 'media'=> $medias]);
+      }
      
     public function about()
     {

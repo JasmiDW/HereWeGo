@@ -9,7 +9,7 @@
                         <p class="m-0"> <a href="#"  onclick="backOrToPage()">Retour ?</a></p>
                         <h1 class="compte mb-5">Modifier un événement</h1>
                         <div class="form-row">
-                            <form method="post" action="?controller=events&action=update&id={{event.id_event}}" onsubmit="return verificationEvent()">
+                            <form method="post" action="?controller=events&action=update&id_event={{event.id_event}}" onsubmit="return verificationEvent()">
                                 <p> 
                                 {{message}}
                                     <input class="col-md-6 mb-1 p-2" type="hidden" id="id" name="id_user" value="{{user.id_user}}">
@@ -26,10 +26,13 @@
                                 </p>
                                 <p>
                                     <div class="col-md-6 col-sm-6">
-                                    
                                         <select class="form-ville p-2" id="lieu" name="lieu">
                                             {% for lieu in lieu %}
-                                                <option value="{{ lieu.id_lieu }}">{{ lieu.ville }}</option>
+                                                {% if lieu.id_lieu == event.id_lieu %}
+                                                    <option value="{{ lieu.id_lieu }}" selected>{{ lieu.ville }}</option>
+                                                {% else %}
+                                                    <option value="{{ lieu.id_lieu }}">{{ lieu.ville }}</option>
+                                                {% endif %}
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -38,7 +41,12 @@
                                     <div class="col-md-6 col-sm-6 mb-1">
                                         <select class="form-categorie p-2" id="categorie" name="categorie">
                                             {% for categorie in categorie %}
-                                                <option value="{{ categorie.id_categorie }}">{{ categorie.libelle_categorie }}</option>
+                                                {% if categorie.id_categorie == event.id_categorie %}
+                                                    <option value="{{ categorie.id_categorie }}" selected>{{ categorie.libelle_categorie }}</option>
+                                                {% else %}
+                                                    <option value="{{ categorie.id_categorie }}">{{ categorie.libelle_categorie }}</option>
+                                                {% endif %}
+                                                
                                             {% endfor %}
                                         </select>
                                     </div>

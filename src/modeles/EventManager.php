@@ -169,9 +169,9 @@ use \PDO;
               id_lieu = :id_lieu,
               id_categorie = :id_categorie,
               nb_places = :places
-          WHERE id_event = :id");
+          WHERE id_event = :id_event");
 
-      $query->bindValue(':id', $event->getId_event(), PDO::PARAM_INT);
+      $query->bindValue(':id_event', $event->getId_event(), PDO::PARAM_INT);
       $query->bindValue(':titre_event', $event->getTitre_event(), PDO::PARAM_STR);
       $query->bindValue(':date_debut_event', $event->getDate_Debut_event(), PDO::PARAM_STR);
       $query->bindValue(':date_fin_event', $event->getDate_Fin_event(), PDO::PARAM_STR);
@@ -183,6 +183,8 @@ use \PDO;
 
 
       $query->execute();
+
+      return $event;
 
     }
 

@@ -100,12 +100,16 @@
             </div>
           </div>
         </div>
+        
       <div class="row mb-5 mt-5 d-flex justify-content-center align-items-center">
         {% for event in list %}
           <div class="col-ld-3 col-md-3 col-12 col-sm-6 mb-5 ">
             <a href="?controller=events&action=show&id={{event.id_event}}" class="border-bottom">
+            
               <div class="card baseBlock mx-auto ">
-                <img class="card-img-top" src="#" alt="Card image cap">
+              {% set media = media[loop.index] %}
+                <img class="card-img-top" src="public\media\{{ media.url }}" alt="Card image cap">
+
                 <div class="card-body face face2">
                   <h5 class="card-title">{{ event.titre_event }}</h5>
                   <h6 class="card-text mb-4">{{ event.date_debut_event|date('j') }} au {{ event.date_fin_event|date('j F Y') }}</h6>
