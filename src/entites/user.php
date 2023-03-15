@@ -137,11 +137,11 @@ class User
         return $this;
     }
     
-    public function getLieuId(){
+    public function getId_lieu(){
         return $this->_lieuId;
     }
     
-    public function setLieuId($lieuId){
+    public function setId_lieu($lieuId){
         $this->_lieuId = $lieuId;
         return $this;
     }

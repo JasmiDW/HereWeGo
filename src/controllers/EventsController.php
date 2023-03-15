@@ -184,18 +184,18 @@ use Twig\Loader\FilesystemLoader;
       // Récupérer une liste d'événement correspondant à l'utilisateur
       $eventManager = new EventManager();
       $events = $eventManager->getEventById($userId);
-
+      
 
       $categories = array();
-      foreach ($events as $categorie) {
-          $categorieId = $categorie->getId_Categorie();
+      foreach ($events as $event) {
+          $categorieId = $event->getId_Categorie();
           $categorie = CategorieManager::find($categorieId);
-          $categories [] = $categorie;
+          $categories[] = $categorie;
       }
 
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('events/seeEvent.html.twig',  ['user'=>$user, 'auto_reload' => true , 'list'=> $events, 'categorie' => $categorie]);
+      echo $this->twig->render('events/seeEvent.html.twig',  ['user'=>$user, 'auto_reload' => true , 'list'=> $events, 'categories' => $categories]);
       
     }
   }

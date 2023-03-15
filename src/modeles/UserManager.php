@@ -4,6 +4,7 @@ namespace App\modeles;
 
 use App\entites\User;
 use App\controllers\UserController;
+use \PDO;
 
 class UserManager {
 
@@ -36,11 +37,11 @@ class UserManager {
         $req->bindValue(':prenom', $user->getPrenom_user());
         $req->bindValue(':genre', $user->getGenre());
         $req->bindValue(':password', $user->getPassword());
-        $req->bindValue(':tel', $user->getTel());
+        $req->bindValue(':tel', $user->getTel_user());
         $req->bindValue(':photo', $user->getPhoto());
         $req->bindValue(':badge', $user->getBadge());
         $req->bindValue(':date_inscription', $user->getDateInscription());
-        $req->bindValue(':lieu_id', $user->getLieuId());
+        $req->bindValue(':lieu_id', $user->getId_lieu());
         $req->bindValue(':statut_id', $user->getStatutId());
         // Exécution de la requête
         $req->execute();
@@ -61,64 +62,51 @@ class UserManager {
         return new User($data);
     }
 
-    public function update(User $user) {
+    public static function update(User $user) {
+
+        $db = DbConnection::getInstance();
         // Préparation de la requête SQL
-        $req = $this->_db->prepare('UPDATE utilisateur SET email = :email, nom = :nom, prenom = :prenom, mail =:mail, adresse = :adresse, password = :password, telephone = :telephone, lieu_id = :lieu_id WHERE id_user = :id_user');
+        $req = $db->prepare('UPDATE utilisateur 
+                            SET raison_sociale = :rs,
+                            mail_user = :email,
+                            nom_user = :nom, 
+                            prenom_user = :prenom, 
+                            password = :password, 
+                            tel_user = :telephone, 
+                            id_lieu = :id_lieu
+                            WHERE id_user = :id_user');
 
         // Bind des valeurs
+        $req->bindValue(':rs', $user->getRaison_sociale() !== null ? $user->getRaison_sociale() : null, PDO::PARAM_STR);
         $req->bindValue(':email', $user->getMail_user());
         $req->bindValue(':nom', $user->getNom_user());
         $req->bindValue(':prenom', $user->getPrenom_user());
         $req->bindValue(':password', $user->getPassword());
-        $req->bindValue(':tel', $user->getTel());
-        $req->bindValue(':photo', $user->getPhoto());
-
-        $req->bindValue(':adresse', $user->getAdresse());
-        $req->bindValue(':lieu_id', $user->getLieuId());
-
-
-        // Vérification de la valeur de la raison sociale
-        if ($user->getRS() !== null) {
-            $req->bindValue(':rs', $user->getRS());
-        } else {
-            $req->bindValue(':rs', null, PDO::PARAM_NULL);
-        }
+        $req->bindValue(':telephone', $user->getTel_user());
+        $req->bindValue(':id_lieu', $user->getId_lieu());
+        $req->bindValue(':id_user', $user->getId_user());
 
         // Exécution de la requête
         $req->execute();
 
-        $lieuManager = new LieuManager($this->_db);
-        $lieu = $lieuManager->getLieuById($user->getLieuId());
+        $lieuManager = new LieuManager($db);
+        $lieu = $lieuManager->find($user->getId_lieu());
         $user->setLieu($lieu);
 
-        $result=$req->fetch(PDO::FETCH_ASSOC);
+        return $user;
 
-        $utilisateur=new User($result);
-        return $utilisateur;
-
-    }
-
-    public function deleteUser(User $user) {
-        $sql = "DELETE FROM utilisateur WHERE id = :id";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':id', $user->getId_user(), PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->rowCount() > 0;
-    }
-
-    public function getAllUsers() {
-        $sql = "SELECT * FROM utilisateur";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-        $users = [];
-        foreach ($result as $data) {
-            $user = new User($data);
-            $users[] = $user;
         }
-        return $users;
+
+    public static function deleteProfil($id_user) {
+        $db = DbConnection::getInstance();
+
+        $req = $db->prepare("DELETE FROM utilisateur WHERE id_user = :id_user");
+
+        $req->bindValue(':id_user', $id_user, PDO::PARAM_INT);
+        $req->execute();
+
     }
+
 }
 
 ?>

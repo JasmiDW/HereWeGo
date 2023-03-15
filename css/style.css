@@ -291,6 +291,12 @@ a{
     width: 100%;
 }
 
+input[type=text]{
+    font-family: 'Kanit';
+    font-size: 15px;
+    font-weight: 500;
+}
+
 input:focus {
     border-radius: none;
     border: 2px solid #E76F51;
