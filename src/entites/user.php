@@ -155,11 +155,11 @@ class User
         return $this;
     }
 
-    public function getStatutId(){
+    public function getId_statut(){
         return $this->_statutId;
     }
     
-    public function setStatutId($statutId){
+    public function setId_statut($statutId){
         $this->_statutId = $statutId;
         return $this;
     }
