@@ -1,7 +1,7 @@
 <?php 
 namespace App\entites;
 
-class Particpant
+class Participant
 {
 
     private $_idParticipant;

@@ -61,6 +61,24 @@ use \PDO;
     return $list;
   }
 
+  public static function findByParticipant($userId)
+    {
+      $db = DbConnection::getInstance();
+        // instancier la connexion à la base de données
+      $req=$db->prepare ("SELECT event.* FROM event
+      JOIN participant ON event.id_event = participant.id_event
+      WHERE participant.id_user = :userId"); 
+      $req->bindParam(':userId', $userId, PDO::PARAM_INT);
+      $req->execute();
+      $results=$req->fetchAll(PDO::FETCH_ASSOC);
+   
+      foreach($results as $event) {
+           $list[] = new Event($event);
+      }
+   
+       return $list;
+    }
+
     public function showFavoriteEvent()
     {
         $db = DbConnection::getInstance();

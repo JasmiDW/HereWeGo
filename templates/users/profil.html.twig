@@ -8,15 +8,17 @@
                     <div class="col-md-5 mb-5 ml-5">
                         <h1 class="compte mb-5">Mon profil</h1>
                         <div class="profil">
+                        {% for statut in listStatut %}
                             <a class="nav-link mx-2" href='?controller=users&action=seeProfil&id={{ user.id_user }}'></i>Voir mon profil</a>
-                            {% if statut.libelle_statut == 'organisateur'%}
-                            <a class="nav-link mx-2" href="?controller=events&action=addEvent&id={{ user.id_user }}"></i>Ajouter un événement</a>
-                            <a class="nav-link mx-2" href="?controller=events&action=seeEvent&id={{ user.id_user }}"></i>Voir mes événements</a>
+                            {% if statut =='organisateur'%}
+                                <a class="nav-link mx-2" href="?controller=events&action=addEvent&id={{ user.id_user }}"></i>Ajouter un événement</a>
+                                <a class="nav-link mx-2" href="?controller=events&action=seeEvent&id={{ user.id_user }}"></i>Voir mes événements</a>
                             {% else %}
-                            <a class="nav-link mx-2" href="?controller=transports&action=addTransport&id={{ user.id_user }}"></i>Ajouter un transport</a>
-                            <a class="nav-link mx-2" href="?controller=events&action=seeTransport&id={{ user.id_user }}"></i>Voir mes transports</a>
+                                <a class="nav-link mx-2" href="?controller=transports&action=addTransport&id={{ user.id_user }}"></i>Ajouter un transport</a>
+                                <a class="nav-link mx-2" href="?controller=transports&action=seeTransport&id={{ user.id_user }}"></i>Voir mes transports</a>
                             {% endif %}
-                            <a class="nav-link mx-2" href="?controller=users&action=logout"></i>Deconnexion</a>
+                                <a class="nav-link mx-2" href="?controller=users&action=logout"></i>Deconnexion</a>
+                        {% endfor %}
                         </div>
                     </div>
                 </div>

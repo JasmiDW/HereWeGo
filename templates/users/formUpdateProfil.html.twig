@@ -23,8 +23,14 @@
                             <form method="post" action="?controller=users&action=update&id_user={{user.id_user}}">
                                 <div class="form-row">
                                     <p>
-                                    {{message}}
-                                        <input class="col-md-6 mb-1 p-2" type="text" id="raison sociale" name="raison_sociale" placeholder="raison sociale" value="{{user.raison_sociale}}">
+                                        {{message}}
+                                        {% for statut in listStatut %}
+                                            {% if statut =='organisateur'%}
+                                                <input class="col-md-6 mb-1 p-2" type="text" id="raison sociale" name="raison_sociale" placeholder="raison sociale" value="{{user.raison_sociale}}">
+                                            {% else %}
+                                                <input class="col-md-6 mb-1 p-2" type="hidden" id="raison sociale" name="raison_sociale" placeholder="raison sociale" value="{{user.raison_sociale}}">
+                                            {% endif %}
+                                        {% endfor %}
                                     </p>
                                     <p>
                                         <input class="col-md-3 mb-1 p-2 " type="text" id="nom" placeholder="nom" name="nom" value="{{user.nom_user}}">

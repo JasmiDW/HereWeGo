@@ -32,4 +32,18 @@ use \PDO;
       // Création de l'objet Utilisateur correspondant
       return new TypeTransport($data);
   }
+
+  public static function findAll() {
+
+    $db = DbConnection::getInstance();
+
+    $listTypeTransport = [];
+    $req = $db->prepare('SELECT * FROM type_transport ');
+    $req->execute();
+    $reponse= $req->fetchAll();
+    foreach( $reponse as $data){
+      $listTypeTransport[] = new TypeTransport($data);
+    }
+    return $listTypeTransport;
+}
 }

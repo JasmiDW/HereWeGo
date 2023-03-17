@@ -101,27 +101,41 @@ use \PDO;
     public static function add(){
         $db = DbConnection::getInstance();
 
-        $title = $_POST["titre_event"];
-        $date_debut = $_POST["date_debut_event"];
-        $date_fin = $_POST["date_fin_event"];
-        $resume = $_POST["resume_event"];
-        $content = $_POST["description_event"];
-        $code = $_POST["code_unique"];
-        $statut = $_POST["statut_coup_coeur"];
+        $id_event = $_POST['titre_event'];
+        $id_type_transport = $_POST['type_transport'];
+        $date_depart = $_POST['date_depart'];
+        $heure_depart = $_POST['heure_depart'];
+        $heure_arrivee = !empty($_POST['heure_arrivee']) ? $_POST['heure_arrivee'] : '';
+        $nb_place = $_POST['places'];
+        $nb_dispo = $_POST['places'];
+        $prix = $_POST['prix'];
+        $contact = $_POST['contact'];
+        $content = !empty($_POST['description']) ? $_POST['description'] : '';
+        $id_lieu = $_POST["lieu"];
+        $id_participant = $_POST['id_participant'];
 
-        $query=$db->prepare("INSERT INTO event (titre_event, date_debut_event,date_fin_event,resume_event,description_event,code_unique,statut_coup_coeur) 
-          VALUES(:titre_event, :date_debut_event,:date_fin_event,:resume_event,:description_event,:code_unique,:statut_coup_coeur)");
-          $id= $_POST["id_user"];
+        $query=$db->prepare("INSERT INTO moyen_de_transport (id_event, id_type_transport, date_depart_transport, heure_depart, heure_arrivee, nb_place, nb_dispo, tarif, info_contact, descriptif, id_lieu, id_participant) 
+          VALUES(:id_event, :id_type_transport, :date_depart_transport, :heure_depart, :heure_arrivee, :nb_place, :nb_dispo, :tarif, :info_contact, :descriptif, :id_lieu, :id_participant )");
+
           //On indique les bindValue du nom et du mot de passe
-          $query->bindValue(':titre_event',$title,PDO::PARAM_STR);
-          $query->bindValue(':date_debut_event',$date_debut,PDO::PARAM_STR);
-          $query->bindValue(':date_fin_event',$date_fin,PDO::PARAM_STR);
+          $query->bindValue(':id_event',$id_event,PDO::PARAM_INT);
+          $query->bindValue(':id_type_transport',$id_type_transport,PDO::PARAM_INT);
+          $query->bindValue(':date_depart_transport',$date_depart,PDO::PARAM_STR);
+          $query->bindValue(':heure_depart',$heure_depart,PDO::PARAM_STR);
+          $query->bindValue(':heure_arrivee',$heure_arrivee,PDO::PARAM_STR);
+          $query->bindValue(':nb_place',$nb_place,PDO::PARAM_INT);
+          $query->bindValue(':nb_dispo',$nb_dispo,PDO::PARAM_INT);
+          $query->bindValue(':tarif',$prix,PDO::PARAM_INT);
+          $query->bindValue(':info_contact',$contact,PDO::PARAM_STR);
+          $query->bindValue(':descriptif',$content,PDO::PARAM_STR);
+          $query->bindValue(':id_lieu',$id_lieu,PDO::PARAM_INT);
+          $query->bindValue(':id_participant',$id_participant,PDO::PARAM_INT);
 
           $query->execute();
 
-        $event = new Event($title, $date_debut, $date_fin, $resume, $content, $code, $statut);
+        $transport = new Transport();
 
-        return $event;     
+        return $transport;     
     }
 
     public static function update($id){

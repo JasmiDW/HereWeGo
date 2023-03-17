@@ -7,6 +7,7 @@ use App\entites\Categorie;
 use App\modeles\UserManager;
 use App\modeles\EventManager;
 use App\modeles\LieuManager;
+use App\modeles\StatutManager;
 use App\modeles\CategorieManager;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -74,12 +75,18 @@ class UserController
                     $id_statut = $result->getId_statut();
 
                      // Récupérer l'utilisateur correspondant à l'événement
-                    $idStatut = $id_user->getId_Statut();
-                    $statut = SatutManager::find($idStatut);
+                     $user = UserManager::find($result->getId_user());
+    
+                     $statuts = array();
+                     $id_statut = $user->getId_statut();
+                     $statut = StatutManager::find($id_statut);
+                     $libelle_statut = $statut->getLibelle_statut();
+                     $statuts [] = $libelle_statut;
 
+                     $this->loader = new FilesystemLoader('templates');
+                     $this->twig = new Environment($this->loader);
+                     echo $this->twig->render('users/profil.html.twig',['user'=>$user, 'listStatut'=>$statuts]);
 
-                    // on redirige l'utilisateur vers sa page de profil
-                    header("location: ?controller=users&action=profil&id=" . $result->getId_user() .$result->getId_statut() );
                 }else{
                     $message="Identifiants invalides";
                     $this->loader = new FilesystemLoader('templates');
@@ -149,13 +156,23 @@ class UserController
 
         // Récupérer l'user correspondant à l'identifiant dans l'URL
         $userId = $_GET['id_user'];
+
+        // Récupérer l'utilisateur correspondant à l'événement
         $user = UserManager::find($userId);
+
+        $statuts = array();
+        $id_statut = $user->getId_statut();
+        $statut = StatutManager::find($id_statut);
+        $libelle_statut = $statut->getLibelle_statut();
+        $statuts [] = $libelle_statut;
+        
+        var_dump($statuts);
 
         $lieu= LieuManager::findAll();
 
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
-        echo $this->twig->render('users/formUpdateProfil.html.twig', ['user'=>$user, 'lieu'=>$lieu]);
+        echo $this->twig->render('users/formUpdateProfil.html.twig', ['user'=>$user, 'lieu'=>$lieu, 'listStatut'=>$statuts]);
     }
 }
 

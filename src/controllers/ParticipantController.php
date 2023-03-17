@@ -56,7 +56,8 @@ class ParticipantController {
                 'localisation' => $localisation,
                 'remainingPlaces' => $remainingPlaces,
             ));
-}
+    }
+    
 }
 
 ?>
