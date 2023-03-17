@@ -44,25 +44,15 @@ use \PDO;
  
     }
 
-    
-    // public function all() {
- 
-    //   $sql="SELECT * FROM event";
-    //   $query=$this->_db->prepare($sql);
-    //   $query->execute();
+    public static function getNbDispo($transportId){
+      $db = DbConnection::getInstance();
+      $req = $db->prepare('SELECT nb_dispo FROM moyen_de_transport WHERE id_mdt = :id_mdt');
+      $req->bindParam(':id_mdt', $transportId, PDO::PARAM_INT);
+      $req->execute();
+      $transport = $req->fetch();
+      return $transport['nb_dispo'];
 
-    //   $list = [];
-    //   // $results=$req->fetchAll(PDO::FETCH_ASSOC);
-      
-    //  // var_dump($results);
-    //   // we create a list of Post objects from the database results
-    //   foreach($query as $event) {
-    //       //var_dump($post);
-    //     $list[] = new Event($event);
-    //   }
-
-    //   return $list;
-    // }
+  }
 
     public static function find($id) {
       $db = DbConnection::getInstance();
@@ -143,7 +133,7 @@ use \PDO;
         $id = $_GET['id'];
 
         // créer une requête SELECT pour récupérer les données de l'article
-        $db = Db::getInstance();
+        $db = DbConnection::getInstance();
         $requete = $db->prepare("SELECT * FROM event WHERE id = :id");
         $requete->bindValue(':id', $id, PDO::PARAM_INT);
         $requete->execute();

@@ -50,10 +50,9 @@
                     <div class="form-row">
                         <label for="places">Nombre de places</label>
                         <select name="places" id="places" form="placesform">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                            {% for i in range(1, nbPlacesDispo) %}
+                                <option value="{{ i+1 }}">{{ i+1 }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>

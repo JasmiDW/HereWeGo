@@ -54,6 +54,8 @@ use Twig\Loader\FilesystemLoader;
       $typeId = $transports->getID_Type_Transport();  
       $typeTransport = TypeTransportManager::find($typeId);
 
+      $nbPlacesDispo = TransportManager::getNbDispo($transportId);
+
 
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
@@ -62,7 +64,8 @@ use Twig\Loader\FilesystemLoader;
         'transport' => $transports,
         'localisation' => $localisation,
         'event' => $event,
-        'type' => $typeTransport
+        'type' => $typeTransport,
+        'nbPlacesDispo' => $nbPlacesDispo
     ));
     }
 
@@ -121,6 +124,7 @@ use Twig\Loader\FilesystemLoader;
     $id_lieu = $_POST["lieu"];
     $id_participant = $_POST['id_participant'];
 
+
     $transport = new Transport();
 
     $transport->setId_event($id_event);
@@ -147,10 +151,12 @@ use Twig\Loader\FilesystemLoader;
     $eventId = $transport->getId_Event();
     $event = EventManager::find($eventId);
 
-
     // Récupérer les types de transports correspondant au transport
     $typeId = $transport->getID_Type_Transport();  
     $typeTransport = TypeTransportManager::find($typeId);
+
+    //Récupérer l'user correspondant au transport
+
 
 
     $this->loader = new FilesystemLoader('templates');
