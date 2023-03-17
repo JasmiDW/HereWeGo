@@ -5,6 +5,7 @@ namespace App\controllers;
 use App\modeles\UserManager;
 use App\entites\Event;
 use App\entites\Lieu;
+use App\entites\Participant;
 use App\entites\Transport;
 use App\modeles\EventManager;
 use App\modeles\PageManager;
@@ -49,6 +50,11 @@ use Twig\Loader\FilesystemLoader;
       $eventId = $transports->getId_Event();
       $event = EventManager::find($eventId);
 
+      //Récupérer l'user correspondant au transport
+      $participantId = $transports->getId_participant();
+      $participant = ParticipantManager::find($participantId);
+      $userParticipant = UserManager::find($participant);
+      var_dump($participantId);
 
       // Récupérer les types de transports correspondant au transport
       $typeId = $transports->getID_Type_Transport();  
@@ -65,7 +71,8 @@ use Twig\Loader\FilesystemLoader;
         'localisation' => $localisation,
         'event' => $event,
         'type' => $typeTransport,
-        'nbPlacesDispo' => $nbPlacesDispo
+        'nbPlacesDispo' => $nbPlacesDispo,
+        'user' => $user
     ));
     }
 

@@ -58,6 +58,23 @@ class ParticipantManager {
         return new Participant($data);
     }
 
+    public static function find($idParticipant) {
+
+        $db = DbConnection::getInstance();
+        // instancier la connexion à la base de données
+        // Préparation de la requête SQL
+        $req = $db->prepare('SELECT * FROM participant WHERE id_participant = :id_participant');
+        // Bind des valeurs
+        $req->bindValue(':id_participant', $idParticipant);
+        // Exécution de la requête
+        $req->execute();
+        // Récupération du résultat
+        $data = $req->fetch();
+        // Création de l'objet Utilisateur correspondant
+        return new Participant($data);
+    }
+
+
 }
 
 ?>
