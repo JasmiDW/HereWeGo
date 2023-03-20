@@ -44,7 +44,7 @@ $controllers = array(
   'pages' => ['home', 'about', 'connexion', 'contact', 'inscription', 'error','filtres','templateTransport'],
   'events' => ['show','addEvent','seeEvent','add','formUpdate','update','delete'],
   'participant' => ['addParticipant'],
-  'transports' => ['show','addTransport','add'],
+  'transports' => ['show','addTransport','add','seeTransport','formUpdate'],
   'users' => ['show','profil','login','seeProfil','logout','formUpdateProfil','deleteProfil','update']
   );
 

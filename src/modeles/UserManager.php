@@ -49,6 +49,7 @@ class UserManager {
 
     public static function find($userId) {
         $db = DbConnection::getInstance();
+        $userId = intval($userId);
         // instancier la connexion à la base de données
         // Préparation de la requête SQL
         $req = $db->prepare('SELECT * FROM utilisateur WHERE id_user = :id_user');

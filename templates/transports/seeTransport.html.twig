@@ -1,0 +1,47 @@
+{% extends 'base-profil.html.twig' %}
+{% block body %}
+    <section id="profil-event">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="d-flex d-md-block bg-yellow-1 col-md-4 col-12 p-3"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5 mb-5 ml-5">
+                    <div class="compte m-0">
+                        <p class="m-0"> <a href="#"  onclick="backOrToPage()">Retour ?</a></p>
+                    </div>
+                    <h1 class="compte">Mes transports</h1>
+                    <a class="mb-5" href="#"></i>Exporter mes transports</a>
+                    <p class="mt-3">Filtrer par : 
+                    <div class="col-md-4 col-sm-6">   
+                        <select class="form-ville p-2" id="lieu" name="lieu">
+                            {% for lieu in lieu %}
+                                <option value="{{ lieu.id_lieu }}">{{ lieu.ville }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    </p>
+                    <div class="event-profil">
+                        <div class="trait mt-5"></div>
+                        {% for key,transport in list %}
+                            <h2 class="compte mb-2 mt-3">{{ event.titre_event }}</h2>
+                            <p class="mb-3" ><i class="{{ typeTransport[key].icone_fontawesome }}"></i>{{ typeTransport[key].libelle_type_transport }} <i class="fa-solid fa-calendar-days fa-xl"></i>{{ transport.date_depart_transport|date('j') }} au {{ transport.date_fin_event|date('j F Y') }}</p>
+                            <a class="" href="?controller=transports&action=formUpdate&id_transport={{ transport.id_mdt }}">Modifier ce transport</a>
+                            <a class="" href="?controller=transports&action=delete&id_transport={{ transport.id_mdt }}">Supprimer ce transport</a>
+                            <div class="trait mt-3"></div>
+                        {% endfor %}
+                        <nav aria-label="Page navigation example" class="mt-3">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

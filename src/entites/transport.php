@@ -63,11 +63,11 @@ class Transport
         return $this;
     }
 
-    public function getContact(){
+    public function getInfo_contact(){
         return $this->_contact;
     }
 
-    public function setContact($contact){
+    public function setInfo_contact($contact){
         $this->_contact=$contact;
         return $this;
     }

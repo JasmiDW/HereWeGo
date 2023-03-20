@@ -44,6 +44,32 @@ use \PDO;
  
     }
 
+    public static function getTransportByParticipant($participantId)
+    {
+ 
+      $list = [];
+      $db = DbConnection::getInstance();
+      $participantId = intval($participantId);
+      $req=$db->prepare('SELECT moyen_de_transport.*, participant.id_participant, lieux.id_lieu, type_transport.id_type_transport FROM moyen_de_transport 
+      LEFT JOIN event ON moyen_de_transport.id_event = event.id_event 
+      LEFT JOIN lieux ON moyen_de_transport.id_lieu = lieux.id_lieu 
+      LEFT JOIN participant ON moyen_de_transport.id_participant = participant.id_participant 
+      LEFT JOIN type_transport ON moyen_de_transport.id_type_transport = type_transport.id_type_transport  
+      WHERE moyen_de_transport.id_participant= :id_participant
+      GROUP BY moyen_de_transport.id_mdt');
+     
+      $req->bindParam(':id_participant', $participantId, PDO::PARAM_INT);
+      $req->execute();
+      $results=$req->fetchAll(PDO::FETCH_ASSOC);
+
+      foreach($results as $transport) {
+          $list[] = new Transport($transport);
+      }
+      
+      return $list;
+ 
+    }
+
     public static function getNbDispo($transportId){
       $db = DbConnection::getInstance();
       $req = $db->prepare('SELECT nb_dispo FROM moyen_de_transport WHERE id_mdt = :id_mdt');
