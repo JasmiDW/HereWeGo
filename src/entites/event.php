@@ -20,6 +20,8 @@ class Event
     private $_idLieu;
     private $ville;
     private $_idCategorie;
+    private $url_photo;
+    private $_libelleColor;
     
     
 
@@ -37,8 +39,6 @@ class Event
     if (method_exists($this, $method)){
         // On appelle le setter.
         $this->$method($value);
-    }else{
-        echo $method." introuvable";
     }
     }
 }
@@ -116,22 +116,22 @@ class Event
 
     }
     
-    public function getId_Categorie(){
+    public function getId_categorie(){
         return $this->_idCategorie;
     }
 
-    public function setId_Categorie($idCategorie){
+    public function setId_categorie($idCategorie){
         $this->_idCategorie=$idCategorie;
         return $this;
     }
 
-    public function getUrl(){
-        $this->_photos=$photos;
-        return $this;
+    public function getUrl_photo(){
+        return $this->url_photo;
     }
 
-    public function setUrl($photos){
-        $this->_photos=$photos;
+    public function setUrl_photo($photos){
+        //echo "____".$photos;
+        $this->url_photo=$photos;
         return $this;
     }
 
@@ -164,6 +164,23 @@ class Event
 
     }
 
+    public function getLibelle_couleur(){
+        return $this->_libelleColor;
+    }
+
+    public function setLibelle_couleur($libelleColor){
+        $this->_libelleColor=$libelleColor;
+        return $this;
+    }
+
+    public function getLibelle_categorie(){
+        return $this->_libelleCategorie;
+    }
+
+    public function setLibelle_categorie($libelleCategorie){
+        $this->_libelleCategorie=$libelleCategorie;
+        return $this;
+    }
    
 
 }

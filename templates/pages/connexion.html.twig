@@ -13,12 +13,21 @@
                     <div class="form-connexion">
                         <form name="formEx1" method="post" action="?controller=users&action=login" onsubmit="return verificationForm()">
                             <p>
-                            <input class="p-2" type="text" id="formMail" placeholder="email" name="mail"><br/>
+                                <div class="textbox">
+                                    <input
+                                        class="p-2" id="formMail" placeholder="email" name="mail" required spellcheck="false"
+                                        type="text"/>
+                                    <label for="textbox">Email</label>
+                                </div>
                             <span id="ErreurMail" class="error"></span>
                             {{message}}
                             </p>
                             <p>
-                            <input class=" mt-1 p-2" type="password" id="formPassword" placeholder="Mot de passe" name="password"><br/>
+                            <div class="textbox2">
+                                <input
+                                    class="p-2" type="password" id="formPassword" placeholder="Mot de passe" name="password" required spellcheck="false" type="text"/>
+                                <label for="textbox">Mot de passe</label>
+                            </div>
                             <span id="ErreurPassword" class="error"></span><br/>
                             {{message}}
                             </p>

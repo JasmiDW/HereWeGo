@@ -48,6 +48,7 @@ class UserManager {
     }
 
     public static function find($userId) {
+
         $db = DbConnection::getInstance();
         $userId = intval($userId);
         // instancier la connexion à la base de données
@@ -106,6 +107,21 @@ class UserManager {
         $req->bindValue(':id_user', $id_user, PDO::PARAM_INT);
         $req->execute();
 
+    }
+
+    public static function updateProfileImage(User $obj){
+            
+        $db = DbConnection::getInstance();
+    
+        $sql="UPDATE utilisateur SET url_photo = :url_photo WHERE id_user = :id_user";
+            
+            $query = $db ->prepare($sql);
+            $query->bindValue(':id_user',$obj->getId_user(), PDO::PARAM_INT);
+            $query->bindValue(':url_photo', $obj->getUrl_photo(), PDO::PARAM_STR);
+
+            $query->execute();
+            
+            return $obj;
     }
 
 }

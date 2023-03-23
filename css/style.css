@@ -8,6 +8,110 @@ h1{
     font-size: 40px;
 }
 
+h3{
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    color:#264653;
+    letter-spacing:1px;
+    font-size: 20px;
+}
+
+#events-accueil h4{
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    color:#264653;
+    font-weight: 300;
+    font-size: 12px;
+}
+
+.textbox {
+    position: relative;
+  }
+  
+  .textbox label {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    transform-origin: 0% 0%;
+    pointer-events: none;
+    top: 4px;
+    left: 4px;
+    height: 34px;
+    width: 100px;
+    background: #E76F51;
+    transition: 0.3s;
+    color:#fff;
+  }
+  
+  .textbox input {
+
+    background: #fff;
+    border: 0;
+    padding-left: 126px;
+    font-size: 16px;
+    font-family: inherit;
+    color: #264653;
+    outline: none;
+    transition: 0.3s;
+  }
+  
+  .textbox input::placeholder {
+    color: #264653;
+  }
+  
+  .textbox :is(input:focus, input:valid) {
+    padding-left: 20px;
+  }
+  
+  .textbox :is(input:focus, input:valid) ~ label {
+    translate: 0 -40px;
+    scale: 0.825;
+  }
+
+  .textbox2 {
+    position: relative;
+}
+  
+  .textbox2 label {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    transform-origin: 0% 0%;
+    pointer-events: none;
+    top: 4px;
+    left: 4px;
+    height: 34px;
+    width: 100px;
+    background: #E76F51;
+    transition: 0.3s;
+    color:#fff;
+  }
+
+  .textbox2 input {
+    width: 100px;
+    background: #fff;
+    border: 0;
+    padding-left: 126px;
+    font-size: 16px;
+    font-family: inherit;
+    color: #264653;
+    outline: none;
+    transition: 0.3s;
+  }
+  
+  .textbox2 input::placeholder {
+    color: #264653;
+  }
+  
+  .textbox2 :is(input:focus, input:valid) {
+    padding-left: 20px;
+  }
+  
+  .textbox2 :is(input:focus, input:valid) ~ label {
+    translate: 0 45px;
+    scale: 0.825;
+  }
+
 .floating-heart {
     position: absolute;
     animation: 2s linear heart normal infinite;
@@ -184,15 +288,57 @@ header{
 }
 
 .bg-yellow-1{
-    height: 100vh;
+    height: 140vh;
     background-color: #E9C46A;
     border-right: 3px solid black;
 }
 
 .bg-blue-1{
-    height: 100vh;
+    height: 140vh;
     background-color: #264653;
     border-right: 3px solid black;
+}
+
+.bg-jaune-2{
+    background-color: #E9C46A;
+    width:100%;
+    height: 20px;
+}
+
+.bg-bleu-2{
+    background-color: #264653;
+    width:100%;
+    height: 20px;
+}
+
+.bg-orange-2{
+    background-color: #E76F51;
+    width:100%;
+    height: 20px;
+}
+
+.bg-rose-2{
+    background-color: #DDCECD;
+    width:100%;
+    height: 20px;
+}
+
+.bg-marron-2{
+    background-color: #382633;
+    width:100%;
+    height: 20px;
+}
+
+.bg-vert-2{
+    background-color: #92BDA3;
+    width:100%;
+    height: 20px;
+}
+
+.bg-orange-clair-2{
+    background-color: #F4A261;
+    width:100%;
+    height: 20px;
 }
 
 @media (max-width: 767px) {
@@ -294,7 +440,7 @@ a{
 input[type=text]{
     font-family: 'Kanit';
     font-size: 15px;
-    font-weight: 500;
+
 }
 
 input:focus {
@@ -338,6 +484,60 @@ input:focus {
     border-bottom: 3px solid black;
 }
 
+.bg-jaune-event{
+    background-color: #E9C46A;
+    border-bottom: 3px solid black;
+    height: auto;
+    color: #fff;
+}
+
+.bg-bleu-event{
+    background-color: #264653;
+    border-bottom: 3px solid black;
+    height: auto;
+    color: #fff;
+
+}
+
+.bg-orange-event{
+    background-color: #E76F51;
+    border-bottom: 3px solid black;
+    height: auto;
+    color: #fff;
+}
+
+.bg-rose-event{
+    background-color: #DDCECD;
+    border-bottom: 3px solid black;
+    height: auto;
+    color: #fff;
+
+}
+
+.bg-marron-event{
+    background-color: #382633;
+    border-bottom: 3px solid black;
+    height: auto;
+    color: #fff;
+
+}
+
+.bg-vert-event{
+    background-color: #92BDA3;
+    border-bottom: 3px solid black;
+    height: auto;
+    color: #fff;
+
+}
+
+.bg-orange-clair-event{
+    background-color: #F4A261;
+    border-bottom: 3px solid black;
+    height: auto;
+    color: #fff;
+
+}
+
 .card{
     border-radius: 0;
     border: 2px solid black;
@@ -355,7 +555,7 @@ input:focus {
 }
 
 .card .card-body{
-    height: auto;
+    height: 250px;
     width: auto;
 }
 

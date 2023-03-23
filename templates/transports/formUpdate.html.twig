@@ -7,11 +7,13 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-6">
                     <p class="m-0"> <a href="profil-participant.html">Retour ?</a></p>
-                    <h1 class="compte mb-5">Modifier un transport</h1>
+                    <h1>Modifier le transport </h1>
+                    <h3 class="compte mb-5"> Pour l'événement : {{event.titre_event}}</h3>
                         <form method="post" action="?controller=transports&action=update&id_transport={{transport.id_mdt}}">
                             <div class="form-row">
-                                <p>
-                                    <input class="col-md-6 mb-1 p-2 " type="text" id="titre" placeholder="Titre de l'événement" value="{{event.titre_event}}" disabled>
+                                <p> 
+                                    <input type="hidden" id="event_id" name="event_id" value="{{event.id_event}}">
+                                    <input type="hidden" id="transport_id" name="transport_id" value="{{transport.id_mdt}}">
                                 </p>
                                 <p>
                                     <select class="col-md-6 mb-1 p-2" type="text" name="type_transport" placeholder="type transport">
@@ -49,7 +51,7 @@
                                     <input class="col-md-6 mb-1 p-2 " type="text" id="contact" name="contact" placeholder="contact" value="{{transport.info_contact}}">
                                 </p>
                                 <p>
-                                    <input class="col-md-3 mb-1 p-2 " type="text" id="lieu" name="place" placeholder="place dispo" value="{{transport.nb_dispo}} places disponibles">
+                                    <input class="col-md-3 mb-1 p-2 " type="text" id="lieu" name="places" placeholder="place dispo" value="{{transport.nb_dispo}} places disponibles">
                                     <input class="col-md-3 mb-1 p-2" type="text" id="photo" name="prix" placeholder="prix par personne"  value="{{transport.tarif}}€">
                                 </p>
                                 <p>

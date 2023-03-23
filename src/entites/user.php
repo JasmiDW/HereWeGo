@@ -110,11 +110,11 @@ class User
         return $this;
     }
 
-    public function getPhoto(){
+    public function getUrl_photo(){
         return $this->_photo;
     }
 
-    public function setPhoto($photo){
+    public function setUrl_photo($photo){
         $this->_photo=$photo;
         return $this;
     }

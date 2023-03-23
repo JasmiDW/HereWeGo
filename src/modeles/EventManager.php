@@ -22,7 +22,11 @@ use \PDO;
       require_once 'src/entites/event.php';
       $list = [];
       $db = DbConnection::getInstance();
-      $req=$db->prepare('SELECT event.id_event, event.titre_event, event.date_debut_event, event.date_fin_event, event.resume_event, event.nb_places, event.code_unique, MIN(media.url) as url_photo FROM event LEFT JOIN media  ON event.id_event = media.id_event
+      $req=$db->prepare('SELECT event.id_event, event.titre_event, event.date_debut_event, event.date_fin_event, event.resume_event, event.nb_places, event.code_unique, event.id_categorie, MIN(media.url) as url_photo, couleurs.libelle_couleur, categorie.libelle_categorie
+      FROM event
+      LEFT JOIN media ON event.id_event = media.id_event
+      LEFT JOIN categorie ON event.id_categorie = categorie.id_categorie
+      LEFT JOIN couleurs ON categorie.id_couleur = couleurs.id_couleur
       GROUP BY event.id_event');
      
       $req->execute();
@@ -94,11 +98,14 @@ use \PDO;
       $db = DbConnection::getInstance();
       // we make sure $id is an integer
       $id = intval($id);
-      $req = $db->prepare('SELECT event.* , utilisateur.id_user, utilisateur.raison_sociale, lieux.ville
+      $req = $db->prepare('SELECT * , utilisateur.id_user, utilisateur.raison_sociale, lieux.ville, event.id_categorie, couleurs.libelle_couleur, categorie.libelle_categorie, media.url
       FROM event 
       INNER JOIN utilisateur ON event.id_user = utilisateur.id_user
-      INNER JOIN lieux ON event.id_lieu = lieux.id_lieu 
-      WHERE id_event = :id_event');
+      INNER JOIN lieux ON event.id_lieu = lieux.id_lieu
+      INNER JOIN categorie ON event.id_categorie = categorie.id_categorie
+      INNER JOIN couleurs ON categorie.id_couleur = couleurs.id_couleur
+      LEFT JOIN media on media.id_event = event.id_event
+      WHERE event.id_event = :id_event');
       // the query was prepared, now we replace :id with our actual $id value
       $req->execute(array('id_event' => $id));
       $event = $req->fetch(PDO::FETCH_ASSOC);

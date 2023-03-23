@@ -59,5 +59,6 @@ use \PDO;
     $data = $req->fetch();
     // Création de l'objet Utilisateur correspondant
     return new Categorie($data);
-}
+  }
+
 }

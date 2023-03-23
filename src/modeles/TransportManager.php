@@ -46,17 +46,18 @@ use \PDO;
 
     public static function getTransportByParticipant($participantId)
     {
- 
+
       $list = [];
       $db = DbConnection::getInstance();
       $participantId = intval($participantId);
-      $req=$db->prepare('SELECT moyen_de_transport.*, participant.id_participant, lieux.id_lieu, type_transport.id_type_transport FROM moyen_de_transport 
+
+      $req=$db->prepare('SELECT DISTINCT moyen_de_transport.*, participant.id_participant, lieux.id_lieu, type_transport.id_type_transport 
+      FROM moyen_de_transport 
       LEFT JOIN event ON moyen_de_transport.id_event = event.id_event 
       LEFT JOIN lieux ON moyen_de_transport.id_lieu = lieux.id_lieu 
       LEFT JOIN participant ON moyen_de_transport.id_participant = participant.id_participant 
       LEFT JOIN type_transport ON moyen_de_transport.id_type_transport = type_transport.id_type_transport  
-      WHERE moyen_de_transport.id_participant= :id_participant
-      GROUP BY moyen_de_transport.id_mdt');
+      WHERE moyen_de_transport.id_participant = :id_participant');
      
       $req->bindParam(':id_participant', $participantId, PDO::PARAM_INT);
       $req->execute();
@@ -65,7 +66,7 @@ use \PDO;
       foreach($results as $transport) {
           $list[] = new Transport($transport);
       }
-      
+
       return $list;
  
     }
@@ -154,42 +155,51 @@ use \PDO;
         return $transport;     
     }
 
-    public static function update($id){
+    public static function update(Transport $transport){
 
-        $id = $_GET['id'];
+        $mdtId = $_POST['transport_id'];
 
         // créer une requête SELECT pour récupérer les données de l'article
         $db = DbConnection::getInstance();
-        $requete = $db->prepare("SELECT * FROM event WHERE id = :id");
-        $requete->bindValue(':id', $id, PDO::PARAM_INT);
+        $requete = $db->prepare("UPDATE moyen_de_transport
+        SET  
+        id_type_transport = :id_type_transport,
+        date_depart_transport = :date_depart_transport, 
+        heure_depart = :heure_depart,
+        heure_arrivee = :heure_arrivee, 
+        nb_dispo = :nb_dispo,
+        tarif = :tarif, 
+        info_contact = :info_contact,
+        descriptif = :descriptif,
+        id_lieu = :id_lieu
+        WHERE id_mdt = :id_mdt");
+
+        $requete->bindValue(':id_mdt', $mdtId, PDO::PARAM_INT);
+        $requete->bindValue(':date_depart_transport', $transport->getDate_depart_transport(), PDO::PARAM_STR);
+        $requete->bindValue(':heure_depart', $transport->getHeure_depart(), PDO::PARAM_STR);
+        $requete->bindValue(':heure_arrivee', $transport->getHeure_arrivee(), PDO::PARAM_STR);
+        $requete->bindValue(':tarif', $transport->getTarif(), PDO::PARAM_STR);
+        $requete->bindValue(':descriptif', $transport->getDescriptif(), PDO::PARAM_STR);
+        $requete->bindValue(':info_contact', $transport->getInfo_contact(), PDO::PARAM_STR);
+        $requete->bindValue(':id_lieu', $transport->getId_lieu(), PDO::PARAM_INT);
+        $requete->bindValue(':id_type_transport', $transport->getid_type_transport(), PDO::PARAM_INT);
+        $requete->bindValue(':nb_dispo', $transport->getNb_dispo(), PDO::PARAM_INT);
+
+
         $requete->execute();
-        $result = $requete->fetch(PDO::FETCH_ASSOC);
 
-        // stocker les données récupérées dans des variables
-        $title = $result["titre_event"];
-        $date_debut = $result["date_debut_event"];
-        $date_fin = $result["date_fin_event"];
-        $resume = $result["resume_event"];
-        $content = $result["description_event"];
-
-        $requete=$db->prepare("UPDATE event
-          SET titre = :titre_event, :date_debut_event,:date_fin_event,:resume_event,:description_event,:code_unique,:statut_coup_coeur
-          WHERE id=:id");
-          $id = $_GET["id"];
-          $title = $_POST["titre"];
-          $content = $_POST["description"];
-          $date= $_POST["date"];
-
-          $requete->bindValue(':titre',$title, PDO::PARAM_STR);
-          $requete->bindValue(':description_article',$content, PDO::PARAM_STR);
-          $requete->bindValue(':date_article',$date, PDO::PARAM_STR);
-          $requete->bindValue(':id',$id, PDO::PARAM_INT);
-
-          $requete->execute();
-
-          $post = new Post($result);
-          return $post; 
+        return $transport;
 
     }
+
+    public static function delete($mdtId){
+
+      $db = DbConnection::getInstance();
+      $mdtId = intval($mdtId);
+      $query = $db->prepare("DELETE FROM moyen_de_transport WHERE id_mdt =:id_mdt");
+      $query->bindValue(':id_mdt',$mdtId,PDO::PARAM_INT);
+      $query->execute();
+      
+  }
 }
 ?>

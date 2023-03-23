@@ -30,23 +30,19 @@ class MediaManager {
         return $list; 
     }
 
-        public static function add(Media $obj){
+        public static function updateImage(Media $obj){
             
-        $db = DbConnect::getInstance();
+        $db = DbConnection::getInstance();
     
-        $sql="INSERT INTO medias(categorie_file,title,url_file,date_modif,id_artwork,id_language,id_artist)VALUES(:categorie_file,:title,:url_file,:date_modif,:id_artwork,:id_language,:id_artist)";
+        $sql="UPDATE SET url_photo = :url_photo WHERE id_user = :id_user";
             
-            $query = $db  ->prepare($sql);
-            $query->bindValue(':categorie_file', $obj->getCategorie_file(), PDO::PARAM_STR);
-            $query->bindValue(':title',$obj->getTitle(), PDO::PARAM_STR);
-            $query->bindValue(':url_file', $obj->getUrl_file(), PDO::PARAM_STR);
-            $query->bindValue(':date_modif', $obj->getDate_modif(), PDO::PARAM_STR);
-            $query->bindValue(':id_artwork', $obj->getId_artwork(), PDO::PARAM_INT);
-            $query->bindValue(':id_language',$obj->getId_language(), PDO::PARAM_STR);
-            $query->bindValue(':id_artist',$obj->getId_artist(), PDO::PARAM_INT);
+            $query = $db ->prepare($sql);
+            $query->bindValue(':id_user',$obj->getId_user(), PDO::PARAM_INT);
+            $query->bindValue(':url_photo', $obj->getUrl_photo(), PDO::PARAM_STR);
+
             $query->execute();
             
-            return $id_file=$db->lastInsertId();
+            return $obj;
         }
     }
 

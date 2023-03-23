@@ -105,16 +105,20 @@ class UserController
     public function profil(){
 
         if(isset($_SESSION['user_id'])){
-            $session=$_SESSION['user_id'];
-            $id_user = ['user_id'];
 
         // Récupérer l'user correspondant à l'identifiant dans l'URL
-        $userId = $_GET['id'];
+        $userId = $_SESSION['user_id'];
         $user = UserManager::find($userId);
-        
+
+        $statuts = array();
+        $id_statut = $user->getId_statut();
+        $statut = StatutManager::find($id_statut);
+        $libelle_statut = $statut->getLibelle_statut();
+        $statuts [] = $libelle_statut;
+
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
-        echo $this->twig->render('users/profil.html.twig', ['user'=>$user]);
+        echo $this->twig->render('users/profil.html.twig', ['user'=>$user, 'listStatut'=>$statuts]);
 
         }else{
 
@@ -134,8 +138,7 @@ class UserController
         // Récupérer l'user correspondant à l'identifiant dans l'URL
         $userId = $_GET['id'];
         $user = UserManager::find($userId);
-        
-
+            
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
         echo $this->twig->render('users/seeProfil.html.twig', ['user'=>$user]);
@@ -145,7 +148,7 @@ class UserController
 
 
     public function logout(){
-        unset($_SESSION['user']);
+        unset($_SESSION['user_id']);
         header("location: ?controller=pages&action=home");
     }
 
@@ -165,8 +168,6 @@ class UserController
         $statut = StatutManager::find($id_statut);
         $libelle_statut = $statut->getLibelle_statut();
         $statuts [] = $libelle_statut;
-        
-        var_dump($statuts);
 
         $lieu= LieuManager::findAll();
 
@@ -243,6 +244,49 @@ class UserController
             }
         }
         
+        public function updateProfileImage(){
+            if(isset($_SESSION['user_id'])) {
+                $userId = $_SESSION['user_id'];
+
+                $image = $_FILES['photo'];
+                // Vérifier si le fichier est une image valide
+                $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
+                $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
+                if(!in_array($extension, $allowedExtensions)){
+                    return "Le fichier doit être une image valide (JPG, JPEG, PNG ou GIF)";
+                }
+                
+                // Déplacer le fichier vers le dossier de téléchargement
+                $uploadsDir = "public/media/";
+                $tempFile = $image['tmp_name'];
+                $newFileName = date('Ymd') . "." . $extension;
+                $targetFile = $uploadsDir . $newFileName;
+                if(move_uploaded_file($tempFile, $targetFile)){
+
+                    $user = new User();
+                    $user->setId_user($userId);
+                    $user->setUrl_photo($targetFile);
+
+                    UserManager::updateProfileImage($user);
+
+                    $message = 'La photo de profil a bien été mis à jour.';
+
+                     // Récupérer l'user correspondant à l'identifiant dans l'URL
+                    $userId = $_GET['id_user'];
+                    $user = UserManager::find($userId);
+
+                    $this->loader = new FilesystemLoader('templates');
+                    $this->twig = new Environment($this->loader);
+                    echo $this->twig->render('users/seeProfil.html.twig', ['user'=>$user, 'message'=>$message]);
+
+                }else{
+                    return "Une erreur s'est produite lors du téléchargement de l'image";
+                }
+            }else{
+                return "L'utilisateur n'est pas connecté";
+            }
+        }
+
 
 
     // public function create(){

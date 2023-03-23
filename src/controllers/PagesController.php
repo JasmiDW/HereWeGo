@@ -7,6 +7,8 @@ use App\controllers\EventsController;
 use App\modeles\EventManager;
 use App\modeles\UserManager;
 use App\modeles\MediaManager;
+use App\modeles\CategorieManager;
+use App\modeles\CouleurManager;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -14,9 +16,16 @@ use Twig\Loader\FilesystemLoader;
   class PagesController{
 
     private $eventsController;
+    private $session;
 
     public function __construct($eventsController) {
         $this->eventsController = $eventsController;
+        if(isset($_SESSION['user_id'])){
+          $this->session=true;
+        }else{
+          $this->session=false;
+        }
+        
     }
 
     public function home() {
@@ -25,14 +34,8 @@ use Twig\Loader\FilesystemLoader;
         $events = $this->eventsController->getEvenements();
         $favoriteEvent = $this->eventsController->showFavoriteEvent();
         
-
-        // Récupérer l'utilisateur correspondant à l'événement
-        // $userId = $events->getId_User();
-        // $user = UserManager::find($userId);
-        // Récupérer le média correspondant à l'événement
-        
         $users = array();
-        $medias = array();
+        $categories = array();
         foreach ($events as $event) {
 
         // Récupérer l'utilisateur correspondant à l'événement
@@ -40,22 +43,23 @@ use Twig\Loader\FilesystemLoader;
         $user = UserManager::find($userId);
         $users[] = $user;
 
-        // Récupérer les médias correspondants à l'événement
-        $eventId = $event->getId_event();
-        $media = MediaManager::findByEvent($eventId);
-        $medias[] = $media;
+        $categorieId = $event->getId_categorie();
+        $categorie = CategorieManager::find($categorieId);
+        $categories[] = $categorie;
 
         }
 
         // $localisationEvent = $this->eventsController->getEventByLocalisation();
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader, [
-          'date_format' => 'd/m/Y',
+          'date_format' => 'd/m/Y', 'debug'=> true
       ]);
+       $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         // $this->twig->getExtension('Twig_Extension_Core')->setLocale('fr_FR');
-          echo $this->twig->render('pages/home.html.twig', ['list' => $events, 'favoriteEvent'=> $favoriteEvent, 'user'=> $users, 'media'=> $medias]);
+          echo $this->twig->render('pages/home.html.twig', ['list' => $events, 'favoriteEvent'=> $favoriteEvent, 'listCategorie'=> $categories,'user'=> $users, 'session'=>$this->session]);
       }
      
+
     public function about()
     {
       $this->loader = new FilesystemLoader('templates');

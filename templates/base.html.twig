@@ -3,6 +3,7 @@
         <head>
             <meta charset="UTF-8">
             <script src="https://kit.fontawesome.com/76ee8ef51d.js" crossorigin="anonymous"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
             <link rel="stylesheet" href="css/bootstrap.min.css">
             <link rel="stylesheet" href="css/style.css">
             <script src="public/script/popper.min.js"></script>
@@ -36,7 +37,8 @@
                                 </li>
                                 <div class="btn">
                                     <div class="btn">
-                                        {% if session.id_user is not defined %}
+                                   
+                                        {% if session == false %}
                                             <a href="?controller=pages&action=connexion">Connexion</a>
                                             <a href="?controller=pages&action=inscription">Inscription</a>
                                         {% else %}

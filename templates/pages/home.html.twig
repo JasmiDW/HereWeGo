@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-
   <section id="intro">
     <div class="d-flex bg-orange">
       <div class="container mt-5 mb-5">
@@ -10,7 +9,7 @@
               <i class="fa-solid fa-heart floating-heart"></i>
               <i class="fa-solid fa-heart floating-heart"></i> 
             <div class="d-flex justify-content-left">
-              <h2>Coup de coeur de la semaine</h2>
+              <h2 class="animate__animated animate__pulse animate__infinite	infinite">Coup de coeur de la semaine</h2>
             </div>
             
               <div class="d-flex justify-content-left">
@@ -101,14 +100,12 @@
           </div>
         </div>
       <div class="row mb-5 mt-5 d-flex justify-content-center align-items-center">
-        {% for key, event in list %}
+        {% for event in list %}
           <div class="col-ld-3 col-md-3 col-12 col-sm-6 mb-5 ">
             <a href="?controller=events&action=show&id={{event.id_event}}" class="border-bottom">
-            
               <div class="card baseBlock mx-auto ">
-
-                <img class="card-img-top" src="public\media\{{ medias[key].url }}" alt="Card image cap">
-
+                <img class="card-img-top" src="public\media\{{ event.url_photo }}" alt="Card image cap">
+                <div class="bg-{{ event.libelle_couleur }}-2"><h4 class="card-text">{{ event.libelle_categorie }}</h4></div>
                 <div class="card-body face face2">
                   <h5 class="card-title">{{ event.titre_event }}</h5>
                   <h6 class="card-text mb-4">{{ event.date_debut_event|date('j') }} au {{ event.date_fin_event|date('j F Y') }}</h6>

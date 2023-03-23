@@ -21,6 +21,7 @@
                     </div>
                     </p>
                     <div class="event-profil">
+                    {{message}}
                         <div class="trait mt-5"></div>
                         {% for key,transport in list %}
                             <h2 class="compte mb-2 mt-3">{{ event.titre_event }}</h2>
@@ -31,11 +32,19 @@
                         {% endfor %}
                         <nav aria-label="Page navigation example" class="mt-3">
                             <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                {% if page > 1 %}
+                                    <li class="page-item"><a class="page-link" href="?controller=transports&action=seeTransport&id={{ userId }}&page={{ page - 1 }}&limit={{ limit }}">Previous</a></li>
+                                {% endif %}
+                                {% for i in 1..numPages %}
+                                    {% if i == page %}
+                                        <li class="page-item active"><a class="page-link" href="?controller=transports&action=seeTransport&id=2&page={{ i }}">{{ i }}</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?controller=transports&action=seeTransport&id=2&page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page < numPages %}
+                                    <li class="page-item"><a class="page-link" href="?controller=transports&action=seeTransport&id={{ userId }}&page={{ page + 1 }}&limit={{ limit }}">Next</a></li>
+                                {% endif %}
                             </ul>
                         </nav>
                     </div>

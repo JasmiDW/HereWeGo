@@ -47,7 +47,7 @@ class ParticipantManager {
         $db = DbConnection::getInstance();
         // instancier la connexion à la base de données
         // Préparation de la requête SQL
-        $req = $db->prepare('SELECT * FROM participant WHERE id_user = :id_user');
+        $req = $db->prepare('SELECT id_participant FROM participant WHERE id_user = :id_user');
         // Bind des valeurs
         $req->bindValue(':id_user', $idUser);
         // Exécution de la requête

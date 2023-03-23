@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <section id="intro">
-      <div class="d-flex bg-orange">
+      <div class="d-flex bg-{{ event.libelle_couleur }}-event ">
+      
         <div class="container mt-5 mb-5">
             <div class="d-flex justify-content-left">
             <h2>{{ event.titre_event }}</h2>
@@ -18,7 +19,7 @@
               <a href="#" class="event-tag"> {{ event.code_unique }}</a>
               <!-- <h6>Modifier l'événement ?</h6> -->
             </div>
-            
+
         </div>
       </div>
     </section>
@@ -40,7 +41,7 @@
         <div class="row mt-5 d-flex justify-content-around">
           <div class="col-md-4 mb-5 ml-5 mx-auto">
             <div class="img-event">
-              <img class="img-event" src="{{ media.url }}" alt="Card image cap">
+              <img class="img-event" src="public\media\{{ event.url_photo }}" alt="Card image cap">
             </div>
           </div>
           <div class="col-md-4 mb-5 ml-5 mx-auto">

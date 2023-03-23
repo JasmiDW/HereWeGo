@@ -56,8 +56,6 @@ use Twig\Loader\FilesystemLoader;
       $userId = ParticipantManager::findUser($participantId);
       $user = UserManager::find($userId);
 
-      var_dump($user);
-
       // Récupérer les types de transports correspondant au transport
       $typeId = $transports->getID_Type_Transport();  
       $typeTransport = TypeTransportManager::find($typeId);
@@ -82,11 +80,11 @@ use Twig\Loader\FilesystemLoader;
 
       if(isset($_SESSION['user_id'])){
         $session=$_SESSION['user_id'];
-        $id_user = ['user_id'];
+
 
       // Récupérer l'user correspondant à l'identifiant dans l'URL
       $userId = $_GET['id'];
-      $user = UserManager::find($userId);
+      $user = UserManager::find($session);
 
       // Récupérer l'id participant correspondant à l'identifiant dans l'URL
       $participant = ParticipantManager::findByUser($userId);
@@ -108,7 +106,7 @@ use Twig\Loader\FilesystemLoader;
 
     if(isset($_SESSION['user_id'])){
       $session=$_SESSION['user_id'];
-      $id_user = ['user_id'];
+
 
       if (empty($_POST['titre_event']) || empty($_POST['type_transport']) || empty($_POST['places']) || empty($_POST['prix']) || empty($_POST['contact']) || empty($_POST['date_depart']) || empty($_POST['heure_depart']) || empty($_POST['lieu']) ) {
         $messageTitre = "Le champs titre est obligatoire";
@@ -144,7 +142,7 @@ use Twig\Loader\FilesystemLoader;
     $transport->setHeure_arrivee($heure_arrivee);
     $transport->setDescriptif($content);
     $transport->setTarif($prix);
-    $transport->setContact($contact);
+    $transport->setInfo_contact($contact);
     $transport->setId_type_transport($id_type_transport);
     $transport->setId_lieu($id_lieu);
     $transport->setId_participant($id_participant);
@@ -183,17 +181,24 @@ use Twig\Loader\FilesystemLoader;
         $session=$_SESSION['user_id'];
 
       // Récupérer le participant correspondant à l'identifiant dans l'URL
-      $userId = $_GET['id'];
-      $participantId = ParticipantManager::find($userId);
+      $participantId = ParticipantManager::findByUser($session);
+      
 
       // Récupérer une liste d'événement correspondant à l'utilisateur
       $transportManager = new TransportManager();
-      $transports = $transportManager->getTransportByParticipant($participantId);
+
+      $page = isset($_GET['page']) ? $_GET['page'] : 1;
+      $limit = isset($_GET['limit']) ? $_GET['limit'] : 1;
+      $offset = ($page - 1) * $limit;
+    
+      $transports = $transportManager->getTransportByParticipant($participantId, $offset, $limit);
+
+      $count = count($transports);
+
+      $numPages = ceil($count / $limit);
 
       //Récupérer les événements correspondants aux transport 
       $eventId = EventManager::find($participantId);
-      
-      
       
       $typeTransports = array();
       foreach ($transports as $transport) {
@@ -204,7 +209,7 @@ use Twig\Loader\FilesystemLoader;
 
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$user, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId]);
+      echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'numPages'=>$numPages]);
       
     }
   }
@@ -213,6 +218,8 @@ use Twig\Loader\FilesystemLoader;
 
     if(isset($_SESSION['user_id'])){
       $session = $_SESSION['user_id'];
+
+    $participantId = ParticipantManager::findByUser($session);
 
     $lieu= LieuManager::findAll();
     $typeTransport = TypeTransportManager::findAll();
@@ -231,59 +238,124 @@ use Twig\Loader\FilesystemLoader;
 
 
 
-public function update() {
-  if(isset($_SESSION['user_id'])) {
-      $userId = $_SESSION['user_id'];
+  public function update() {
 
-      if(empty($_POST['type_transport']) || empty($_POST['date_depart']) || empty($_POST['lieu'])  || empty($_POST['contact'])) {
-          $message = "Les champs type de transport, date, ville et contact sont obligatoires";
-          $loader = new FilesystemLoader('templates');
-          $twig = new Environment($loader);
-          echo $twig->render('transports/formUpdate.html.twig', ['message' => $message]);
+    if(isset($_SESSION['user_id'])){
+      $session = $_SESSION['user_id'];
+
+    // Vérifier si l'utilisateur est connecté et s'il a les autorisations nécessaires
+    if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $session) {
+      $transportId = $_POST['transport_id'];
+      
+      // Vérifier si le transport existe et s'il appartient à l'utilisateur
+      $transport = TransportManager::find($transportId);
+      var_dump($transport->getId_participant());
+      var_dump($session);
+      $participantId = ParticipantManager::findByUser($session);
+      if($transport && $transport->getId_participant() == $participantId) {
+        // Traitement des données de formulaire et mise à jour du transport
+        $session = $_SESSION['user_id'];
+        // Récupérer le participant correspondant à l'identifiant dans l'URL
+        $participantId = ParticipantManager::findByUser($session);
+        
+        if(empty($_POST['type_transport']) || empty($_POST['date_depart']) || empty($_POST['lieu']) || empty($_POST['contact']) || empty($_POST['prix']) ) {
+            $message = "Les champs type de transport, date, ville, contact et prix sont obligatoires";
+            $loader = new FilesystemLoader('templates');
+            $twig = new Environment($loader);
+            echo $twig->render('transports/formUpdate.html.twig', ['message' => $message]);
+
+        } else {
+
+            $transportId = $_POST['transport_id'];
+            $typeTransportId = $_POST['type_transport'];
+            $date_depart = $_POST['date_depart'];
+            $heure_depart = $_POST['heure_depart'];
+            $heure_arrivee = !empty($_POST['heure_arrivee']) ? $_POST['heure_arrivee'] : '';
+            $info_contact = $_POST['contact'];
+            $prix = $_POST['prix'];
+            $nb_places = !empty($_POST['places']) ? $_POST['places'] : '';
+            $description = !empty($_POST['description']) ? $_POST['description'] : '';
+            $lieuId = $_POST["lieu"];
+            $eventId = $_POST['event_id'];
+
+            $transport = new Transport();
+            $transport->setId_event($eventId);
+            $transport->setId_lieu($lieuId);
+            $transport->setId_type_transport($typeTransportId);
+            $transport->setDate_depart_transport($date_depart);
+            $transport->setHeure_depart($heure_depart);
+            $transport->setHeure_arrivee($heure_arrivee);
+            $transport->setNb_dispo($nb_places);
+            $transport->setTarif($prix);
+            $transport->setInfo_contact($info_contact);
+            $transport->setDescriptif($description);
+            $transport->setId_participant($participantId);
+            $transport->setId_mdt($transportId);
+
+            TransportManager::update($transport);
+
+            // Récupérer une liste d'événement correspondant à l'utilisateur
+            $transportManager = new TransportManager();
+            $transports = $transportManager->getTransportByParticipant($participantId);
+
+            //Récupérer les événements correspondants aux transport 
+            $eventId = EventManager::find($participantId);
+            
+            $typeTransports = array();
+            foreach ($transports as $transport) {
+                $typeId = $transport->getId_type_transport();
+                $typeTransport = TypeTransportManager::find($typeId);
+                $typeTransports[] = $typeTransport;
+            }
+
+            $this->loader = new FilesystemLoader('templates');
+            $this->twig = new Environment($this->loader);
+            echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId]);
+        }
       } else {
-          $transportId = $_GET['id_transport'];
-          $type_transport = $_POST['type_transport'];
-          $date_depart = $_POST['date_depart'];
-          $heure_depart = $_POST['heure_depart'];
-          $date_fin = !empty($_POST['date_fin_event']) ? $_POST['date_fin_event'] : '';
-          $nb_places = $_POST['places'];
-          $resume = $_POST['resume_event'];
-          $description = !empty($_POST['description_event']) ? $_POST['description_event'] : '';
-          $lieuId = $_POST["lieu"];
-          $categorieId = $_POST['categorie'];
-
-          $event = new Event();
-          $event->setId_event($eventId);
-          $event->setTitre_event($titre_event);
-          $event->setDate_Debut_event($date_debut);
-          $event->setDate_Fin_event($date_fin);
-          $event->setNb_places($nb_places);
-          $event->setResume_event($resume);
-          $event->setDescription_event($description);
-          $event->setId_lieu($lieuId);
-          $event->setId_Categorie($categorieId);
-          $event->setId_user($userId);
-
-          EventManager::update($event);
-
-          // Récupérer une liste d'événement correspondant à l'utilisateur
-          $eventManager = new EventManager();
-          $events = $eventManager->getEventById($userId);
-
-          $categories = array();
-          foreach ($events as $event) {
-              $categorieId = $event->getId_Categorie();
-              $categorie = CategorieManager::find($categorieId);
-              $categories [] = $categorie;
-          }
-
-          $loader = new FilesystemLoader('templates');
-          $twig = new Environment($loader);
-          echo $twig->render('events/seeEvent.html.twig', ['list' => $events, 'categorie' => $categories]);
+        // Le transport n'existe pas ou n'appartient pas à l'utilisateur
+        // Afficher un message d'erreur ou rediriger vers une page d'erreur
+        echo "Transport n'existe pas ou ne vous appartient pas";
       }
+    } else {
+      // L'utilisateur n'est pas connecté ou n'a pas les autorisations nécessaires
+      // Afficher un message d'erreur ou rediriger vers une page de connexion
+      echo "Vous ne pouvez pas faire ça";
+    }
   }
-}
 
+  }
+
+  public function delete(){
+    if(isset($_SESSION['user_id'])){
+      $session = $_SESSION['user_id'];
+
+      $transportId =  $_GET['id_transport'];
+
+      $transport = TransportManager::delete($transportId);
+      $messageDelete = "Le transport a bien été supprimé";
+      // Récupérer le participant correspondant à l'identifiant dans l'URL
+      $participantId = ParticipantManager::findByUser($session);
+      
+      // Récupérer une liste d'événement correspondant à l'utilisateur
+      $transportManager = new TransportManager();
+      $transports = $transportManager->getTransportByParticipant($participantId);
+      //Récupérer les événements correspondants aux transport 
+      $eventId = EventManager::find($participantId);
+      
+      $typeTransports = array();
+      foreach ($transports as $transport) {
+          $typeId = $transport->getId_type_transport();
+          $typeTransport = TypeTransportManager::find($typeId);
+          $typeTransports[] = $typeTransport;
+      }
+
+      // Rediriger vers la page seeTransport après la suppression
+      $this->loader = new FilesystemLoader('templates');
+      $this->twig = new Environment($this->loader);
+      echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'message'=>$messageDelete]);
+  }
+    }
 }
 
 ?>

@@ -12,6 +12,7 @@ use App\modeles\UserManager;
 use App\modeles\PageManager;
 use App\modeles\LieuManager;
 use App\modeles\MediaManager;
+use App\modeles\CouleurManager;
 use App\modeles\ParticipantManager;
 use App\modeles\TransportManager;
 use App\modeles\TypeTransportManager;
@@ -57,7 +58,10 @@ use Twig\Loader\FilesystemLoader;
       $idCategorie = $event->getId_Categorie();  
       $categorie = CategorieManager::find($idCategorie);
 
-    
+      //Récupérer la couleur qui correspond à la catégorie 
+      $colorId = $categorie->getId_couleur();
+      $color = CouleurManager::find($colorId);
+
       // Récupérer l'utilisateur correspondant à l'événement
       $userId = $event->getId_User();
       $user = UserManager::find($userId);
@@ -76,7 +80,7 @@ use Twig\Loader\FilesystemLoader;
       // Récupérer les médias correspondant à l'événement
       $mediaManager = new MediaManager();
       $listMedia = $mediaManager->findByEvent($eventId);
-      var_dump($listMedia);
+
 
       $localisations = array();
       foreach ($listTransports as $transport) {
@@ -89,10 +93,10 @@ use Twig\Loader\FilesystemLoader;
       $typeTransport = TypeTransportManager::find($typeId);
 
       }
-      
+      var_dump($event);
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-    
+      $this->twig->addExtension(new \Twig\Extension\DebugExtension());
       echo $this->twig->render('events/templateEvent.html.twig', array(
         'event' => $event,
         'user' => $user,
@@ -101,7 +105,8 @@ use Twig\Loader\FilesystemLoader;
         'listTransports' => $listTransports,
         'typeTransport' => $typeTransport,
         'categorie' => $categorie,
-        'listMedia' => $listMedia
+        'listMedia' => $listMedia,
+        'color' =>$color
       ));
     }
 
@@ -121,6 +126,8 @@ use Twig\Loader\FilesystemLoader;
 
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
+
+
       echo $this->twig->render('events/addEvent.html.twig', array('lieu'=>$lieu, 'categorie'=>$categorie, 'user'=> $user));
       
     }
@@ -276,7 +283,6 @@ public function update() {
   public function delete(){
     if(isset($_SESSION['user_id'])){
       $session = $_SESSION['user_id'];
-      $id_user = $session['user_id'];
 
       $eventId =  $_GET['id_event'];
       $event = EventManager::delete($eventId);

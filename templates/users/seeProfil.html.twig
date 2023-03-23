@@ -11,13 +11,50 @@
                 </div>
                 <h1 class="compte mb-5">Mon profil</h1>
                 <div class="profil">
-                    {% if user.genre == 0 %}
-                        <img src="img/Plan de travail 3.png"  alt="profil">
+                    
+                    {% if user.url_photo == NULL %}
+                        {% if user.genre == 0 %}
+                            <img src="img/Plan de travail 3.png"  alt="profil">
+                        {% else %}
+                            <img src="img/Plan de travail 4.png"  alt="profil">
+                        {% endif %}
                     {% else %}
-                        <img src="img/Plan de travail 4.png"  alt="image2">
+                        <img class="mb-3" src="{{user.url_photo}}"  alt="profil">
                     {% endif %}
+
                     <p>
-                        <a class="" href="change-photo.html"></i>Modifier ma photo</a>
+                        <a class="change-photo-link"  data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">Modifier ma photo</a>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title" id="exampleModalLabel">Filtres</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="?controller=users&action=updateProfileImage" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-10">
+                                                <div class="form-connexion mb-5">
+                                                    <label for="photo">Choisir une nouvelle photo:</label>
+                                                    <input type="file" id="photo" name="photo">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="btn">
+                                            <a><input class="btn p-0" data-bs-dismiss="modal" value="Fermer"></a>
+                                            </div>
+                                            <div class="btn">
+                                            <a><input class="btn p-0" type="submit" value="Valider"></a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
                     </p>
                     <div class="trait"></div>
                     <h2 class="compte mb-2 mt-3">Informations</h2>
@@ -37,4 +74,15 @@
         </div>
     </div>     
 </section>
+<script>
+    // Récupérer le lien et ajouter un écouteur d'événement
+    var changePhotoLink = document.querySelector('.change-photo-link');
+    changePhotoLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Empêcher le lien de se comporter comme un lien normal
+
+        // Afficher la modal
+        var modal = document.querySelector('#change-photo-modal');
+        modal.style.display = 'block';
+    });
+</script>
 {% endblock %}
