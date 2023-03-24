@@ -65,7 +65,7 @@ use Twig\Loader\FilesystemLoader;
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
 
-      echo $this->twig->render('pages/about.html.twig');
+      echo $this->twig->render('pages/about.html.twig',['session'=>$this->session]);
     }
 
     public function contact()
@@ -73,7 +73,7 @@ use Twig\Loader\FilesystemLoader;
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
 
-      echo $this->twig->render('pages/contact.html.twig');
+      echo $this->twig->render('pages/contact.html.twig',['session'=>$this->session]);
     }
 
     public function connexion()
@@ -81,7 +81,7 @@ use Twig\Loader\FilesystemLoader;
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
 
-      echo $this->twig->render('pages/connexion.html.twig');
+      echo $this->twig->render('pages/connexion.html.twig',['session'=>$this->session]);
     }
 
     public function inscription()
@@ -89,7 +89,7 @@ use Twig\Loader\FilesystemLoader;
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
 
-      echo $this->twig->render('pages/inscription.html.twig');
+      echo $this->twig->render('pages/inscription.html.twig',['session'=>$this->session]);
     }
 
     public function error() {
@@ -97,15 +97,38 @@ use Twig\Loader\FilesystemLoader;
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
 
-      echo $this->twig->render('pages/error.html.twig');
+      echo $this->twig->render('pages/error.html.twig',['session'=>$this->session]);
     }
 
-    public function templateEvent() {
+    public function event() {
       
-      $this->loader = new FilesystemLoader('templates');
-      $this->twig = new Environment($this->loader);
+      $eventsController = new EventsController();
+      $events = $this->eventsController->getEvenements();
+      $favoriteEvent = $this->eventsController->showFavoriteEvent();
+      
+      $users = array();
+      $categories = array();
+      foreach ($events as $event) {
 
-      echo $this->twig->render('pages/templateEvent.html.twig');
+      // Récupérer l'utilisateur correspondant à l'événement
+      $userId = $event->getId_User();
+      $user = UserManager::find($userId);
+      $users[] = $user;
+
+      $categorieId = $event->getId_categorie();
+      $categorie = CategorieManager::find($categorieId);
+      $categories[] = $categorie;
+
+      }
+
+      // $localisationEvent = $this->eventsController->getEventByLocalisation();
+      $this->loader = new FilesystemLoader('templates');
+      $this->twig = new Environment($this->loader, [
+        'date_format' => 'd/m/Y', 'debug'=> true
+    ]);
+     $this->twig->addExtension(new \Twig\Extension\DebugExtension());
+      // $this->twig->getExtension('Twig_Extension_Core')->setLocale('fr_FR');
+        echo $this->twig->render('pages/event.html.twig', ['list' => $events, 'favoriteEvent'=> $favoriteEvent, 'listCategorie'=> $categories,'user'=> $users, 'session'=>$this->session]);
     }
 
     public function filtres() {

@@ -7,7 +7,7 @@ use App\modeles\LieuManager;
 class Event 
 {
 
-    private $_id;
+    private $_idEvent;
     private $_resume;
     private $_title;
     private $_content;
@@ -18,10 +18,11 @@ class Event
     private $_idUser;
     private $user;
     private $_idLieu;
-    private $ville;
+    private $_ville;
     private $_idCategorie;
     private $url_photo;
     private $_libelleColor;
+    private $_codeHexa;
     
     
 
@@ -44,11 +45,11 @@ class Event
 }
 
     public function getId_event(){
-        return $this->_id;
+        return $this->_idEvent;
     }
 
-    public function setId_event($id){
-        $this->_id=$id;
+    public function setId_event($idEvent){
+        $this->_idEvent=$idEvent;
         return $this;
     }
 
@@ -170,6 +171,15 @@ class Event
 
     public function setLibelle_couleur($libelleColor){
         $this->_libelleColor=$libelleColor;
+        return $this;
+    }
+
+    public function getCode_hexadecimal(){
+        return $this->_codeHexa;
+    }
+
+    public function setCode_hexadecimal($codeHexa){
+        $this->_codeHexa=$codeHexa;
         return $this;
     }
 

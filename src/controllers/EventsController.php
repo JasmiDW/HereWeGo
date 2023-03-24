@@ -25,10 +25,16 @@ use Twig\Loader\FilesystemLoader;
 
     private $eventManager;
     private $transportManager;
+    private $session;
 
     public function __construct(){
         $this->eventManager = new EventManager();
         $this->transportController = new TransportManager();
+        if(isset($_SESSION['user_id'])){
+          $this->session=true;
+        }else{
+          $this->session=false;
+        }
     }
 
     public function getEvenements()
@@ -79,34 +85,38 @@ use Twig\Loader\FilesystemLoader;
 
       // Récupérer les médias correspondant à l'événement
       $mediaManager = new MediaManager();
-      $listMedia = $mediaManager->findByEvent($eventId);
+      $media = $mediaManager->findAllByEvent($eventId);
 
+            // initialiser $typeTransport à null
+      $typeTransport = null;
 
       $localisations = array();
-      foreach ($listTransports as $transport) {
-        $localisationId = $transport->getId_lieu();
-        $localisation = LieuManager::find($localisationId);
-        $localisations[] = $localisation;
-      
-      // Récupérer les types de transports correspondant à chaque transport
-      $typeId = $transport->getID_Type_Transport();  
-      $typeTransport = TypeTransportManager::find($typeId);
-
+            
+      if (!empty($listTransports)) {
+          foreach ($listTransports as $transport) {
+              $localisationId = $transport->getId_lieu();
+              $localisation = LieuManager::find($localisationId);
+              $localisations[] = $localisation;
+          
+              // récupérer les types de transports correspondant à chaque transport
+              $typeId = $transport->getID_Type_Transport();  
+              $typeTransport = TypeTransportManager::find($typeId);
+          }
       }
-      var_dump($event);
+
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
       $this->twig->addExtension(new \Twig\Extension\DebugExtension());
       echo $this->twig->render('events/templateEvent.html.twig', array(
-        'event' => $event,
-        'user' => $user,
-        'localisation' => $localisation,
-        'remainingPlaces' => $remainingPlaces,
-        'listTransports' => $listTransports,
-        'typeTransport' => $typeTransport,
-        'categorie' => $categorie,
-        'listMedia' => $listMedia,
-        'color' =>$color
+          'event' => $event,
+          'user' => $user,
+          'localisation' => $localisation,
+          'remainingPlaces' => $remainingPlaces,
+          'listTransports' => $listTransports,
+          'typeTransport' => $typeTransport,
+          'categorie' => $categorie,
+          'media' => $media,
+          'color' =>$color, 'session'=>$this->session
       ));
     }
 
@@ -128,7 +138,7 @@ use Twig\Loader\FilesystemLoader;
       $this->twig = new Environment($this->loader);
 
 
-      echo $this->twig->render('events/addEvent.html.twig', array('lieu'=>$lieu, 'categorie'=>$categorie, 'user'=> $user));
+      echo $this->twig->render('events/addEvent.html.twig', array('lieu'=>$lieu, 'categorie'=>$categorie, 'user'=> $user, 'session'=>$this->session));
       
     }
   }
@@ -144,7 +154,7 @@ use Twig\Loader\FilesystemLoader;
           $this->loader = new FilesystemLoader('templates');
           $this->twig = new Environment($this->loader);
           echo $this->twig->render('events/addEvent.html.twig', [
-          'message' => $message]);
+          'message' => $message, 'session'=>$this->session]);
       }
 
       $titre_event = $_POST['titre_event'];
@@ -174,7 +184,7 @@ use Twig\Loader\FilesystemLoader;
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
       echo $this->twig->render('events/templateEvent.html.twig', [
-          'event' => $event]);
+          'event' => $event, 'session'=>$this->session]);
     }
   }
       
@@ -202,7 +212,7 @@ use Twig\Loader\FilesystemLoader;
 
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('events/seeEvent.html.twig',  ['user'=>$user, 'auto_reload' => true , 'list'=> $events, 'categories' => $categories]);
+      echo $this->twig->render('events/seeEvent.html.twig',  ['user'=>$user, 'auto_reload' => true , 'list'=> $events, 'categories' => $categories, 'session'=>$this->session]);
       
     }
   }
@@ -222,7 +232,7 @@ use Twig\Loader\FilesystemLoader;
     
     $this->loader = new FilesystemLoader('templates');
     $this->twig = new Environment($this->loader);
-    echo $this->twig->render('events/formUpdate.html.twig',  ['lieu'=>$lieu, 'categorie'=>$categorie, 'auto_reload' => true , 'event'=> $event]);
+    echo $this->twig->render('events/formUpdate.html.twig',  ['lieu'=>$lieu, 'categorie'=>$categorie, 'auto_reload' => true , 'event'=> $event, 'session'=>$this->session]);
   }
 }
 
@@ -275,7 +285,7 @@ public function update() {
 
           $loader = new FilesystemLoader('templates');
           $twig = new Environment($loader);
-          echo $twig->render('events/seeEvent.html.twig', ['list' => $events, 'categorie' => $categories]);
+          echo $twig->render('events/seeEvent.html.twig', ['list' => $events, 'categorie' => $categories, 'session'=>$this->session]);
       }
   }
 }
@@ -302,7 +312,7 @@ public function update() {
      $this->loader = new FilesystemLoader('templates');
      $this->twig = new Environment($this->loader);
      echo $this->twig->render('events/seeEvent.html.twig', [
-       'list' => $events , 'categorie' => $categorie
+       'list' => $events , 'categorie' => $categorie, 'session'=>$this->session
      ]);
 }
 }

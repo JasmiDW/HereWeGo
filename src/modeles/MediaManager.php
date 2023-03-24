@@ -14,7 +14,7 @@ class MediaManager {
         $this->_db = DbConnection::getInstance();
     }
 
-    public static function findByEvent($eventId) {
+    public static function findAllByEvent($eventId) {
         $db = DbConnection::getInstance();
         $eventId = intval($eventId);
     
@@ -29,6 +29,8 @@ class MediaManager {
             
         return $list; 
     }
+
+    
 
         public static function updateImage(Media $obj){
             

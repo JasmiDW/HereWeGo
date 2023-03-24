@@ -12,14 +12,12 @@
             </div>
             <div class="d-flex justify-content-left">
               <img class="img-label mt-3" src="img/logo.png" alt="Card image cap">
-              
               <!-- <h6>Modifier l'événement ?</h6> -->
             </div>
             <div class="d-flex justify-content-left ms-1">
               <a href="#" class="event-tag"> {{ event.code_unique }}</a>
               <!-- <h6>Modifier l'événement ?</h6> -->
             </div>
-
         </div>
       </div>
     </section>
@@ -27,7 +25,7 @@
       <div class="d-flex bg-white">
         <div class="container mb-5">
           <div class="d-flex justify-content-left mt-5">
-            <h1><i class="{{categorie.icone_fontawesome}}"></i>{{categorie.libelle_categorie}}</h1>
+            <h1 style="color: {{event.code_hexadecimal}}"><i class="{{categorie.icone_fontawesome}}"></i>{{categorie.libelle_categorie}}</h1>
           </div>
           <div class="d-flex justify-content-left">
             <p><i class="fa-solid fa-calendar-days fa-xl"></i>{{ event.date_debut_event|date('j') }} au {{ event.date_fin_event|date('j F Y') }}</p>
@@ -39,21 +37,15 @@
             <p class="content me-3"><i class="fa-solid fa-quote-right fa-xl"></i>{{ event.description_event }}</p>
         </div>
         <div class="row mt-5 d-flex justify-content-around">
-          <div class="col-md-4 mb-5 ml-5 mx-auto">
-            <div class="img-event">
-              <img class="img-event" src="public\media\{{ event.url_photo }}" alt="Card image cap">
+          {% for m in media %}
+            <div class="col-md-4 mb-5 ml-5 mx-auto">
+              <a href="public/media/{{ m.url }}" data-fancybox="gallery" data-caption="{{event.titre_event }}">
+                <div class="img-event">
+                  <img class="img-event" src="public/media/{{ m.url }}" alt="{{event.titre_event }}">
+                </div>
+              </a>
             </div>
-          </div>
-          <div class="col-md-4 mb-5 ml-5 mx-auto">
-            <div class="img-event">
-              <img class="img-event" src="{{ media.url }}" alt="Card image cap">
-            </div>
-          </div>
-          <div class="col-md-4 mb-5 ml-5 mx-auto">
-            <div class="img-event">
-              <img class="img-event" src="{{ media.url }}" alt="Card image cap">
-            </div>
-          </div>
+          {% endfor %}
         </div>
         <div class="row mb-3">
           <div class="col-md-12  ml-5 d-flex  justify-content-between">

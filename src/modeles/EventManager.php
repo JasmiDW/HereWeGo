@@ -94,11 +94,12 @@ use \PDO;
         return new Event($favoriteEvent);
     }
 
-    public static function find($id) {
+    public static function find($idEvent) {
       $db = DbConnection::getInstance();
       // we make sure $id is an integer
-      $id = intval($id);
-      $req = $db->prepare('SELECT * , utilisateur.id_user, utilisateur.raison_sociale, lieux.ville, event.id_categorie, couleurs.libelle_couleur, categorie.libelle_categorie, media.url
+      $idEvent = intval($idEvent);
+
+      $req = $db->prepare('SELECT * , utilisateur.id_user, utilisateur.raison_sociale, lieux.ville, event.id_categorie, couleurs.libelle_couleur, couleurs.code_hexadecimal, categorie.libelle_categorie, media.url
       FROM event 
       INNER JOIN utilisateur ON event.id_user = utilisateur.id_user
       INNER JOIN lieux ON event.id_lieu = lieux.id_lieu
@@ -106,10 +107,12 @@ use \PDO;
       INNER JOIN couleurs ON categorie.id_couleur = couleurs.id_couleur
       LEFT JOIN media on media.id_event = event.id_event
       WHERE event.id_event = :id_event');
+      
       // the query was prepared, now we replace :id with our actual $id value
-      $req->execute(array('id_event' => $id));
-      $event = $req->fetch(PDO::FETCH_ASSOC);
+      $req->execute(array('id_event' => $idEvent));
 
+      $event = $req->fetch(PDO::FETCH_ASSOC);
+      
       return new Event($event);
       
     }

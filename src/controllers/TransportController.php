@@ -24,6 +24,11 @@ use Twig\Loader\FilesystemLoader;
 
     public function __construct(){
       $this->transportManager = new TransportManager();
+      if(isset($_SESSION['user_id'])){
+        $this->session=true;
+      }else{
+        $this->session=false;
+      }
     }
 
     public function getTransport()
@@ -72,7 +77,7 @@ use Twig\Loader\FilesystemLoader;
         'event' => $event,
         'type' => $typeTransport,
         'nbPlacesDispo' => $nbPlacesDispo,
-        'user' => $user
+        'user' => $user, 'session'=>$this->session
     ));
     }
 
@@ -97,7 +102,7 @@ use Twig\Loader\FilesystemLoader;
 
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('transports/addTransport.html.twig', array('lieu'=>$lieu, 'user'=> $user, 'listTypeTransport'=> $typeTransport, 'listEvent'=> $event, 'participant' => $participant));
+      echo $this->twig->render('transports/addTransport.html.twig', array('lieu'=>$lieu, 'user'=> $user, 'listTypeTransport'=> $typeTransport, 'listEvent'=> $event, 'participant' => $participant, 'session'=>$this->session));
       
     }
   }
@@ -115,7 +120,7 @@ use Twig\Loader\FilesystemLoader;
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
         echo $this->twig->render('transports/addTransport.html.twig', [
-        'messageTitre' => $messageTitre]);
+        'messageTitre' => $messageTitre, 'session'=>$this->session]);
     }
 
     $id_event = $_POST['titre_event'];
@@ -170,7 +175,7 @@ use Twig\Loader\FilesystemLoader;
       'transport' => $transport,
       'localisation' => $localisation,
       'event' => $event,
-      'type' => $typeTransport
+      'type' => $typeTransport, 'session'=>$this->session
     ));
     }
   }
@@ -209,7 +214,7 @@ use Twig\Loader\FilesystemLoader;
 
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'numPages'=>$numPages]);
+      echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'numPages'=>$numPages, 'session'=>$this->session]);
       
     }
   }
@@ -232,7 +237,7 @@ use Twig\Loader\FilesystemLoader;
 
     $this->loader = new FilesystemLoader('templates');
     $this->twig = new Environment($this->loader);
-    echo $this->twig->render('transports/formUpdate.html.twig',  ['lieu'=>$lieu, 'list'=> $typeTransport, 'auto_reload' => true , 'transport'=> $transport, 'event'=>$event]);
+    echo $this->twig->render('transports/formUpdate.html.twig',  ['lieu'=>$lieu, 'list'=> $typeTransport, 'auto_reload' => true , 'transport'=> $transport, 'event'=>$event, 'session'=>$this->session]);
   }
 }
 
@@ -262,7 +267,7 @@ use Twig\Loader\FilesystemLoader;
             $message = "Les champs type de transport, date, ville, contact et prix sont obligatoires";
             $loader = new FilesystemLoader('templates');
             $twig = new Environment($loader);
-            echo $twig->render('transports/formUpdate.html.twig', ['message' => $message]);
+            echo $twig->render('transports/formUpdate.html.twig', ['message' => $message, 'session'=>$this->session]);
 
         } else {
 
@@ -310,7 +315,7 @@ use Twig\Loader\FilesystemLoader;
 
             $this->loader = new FilesystemLoader('templates');
             $this->twig = new Environment($this->loader);
-            echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId]);
+            echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'session'=>$this->session]);
         }
       } else {
         // Le transport n'existe pas ou n'appartient pas à l'utilisateur
@@ -353,7 +358,7 @@ use Twig\Loader\FilesystemLoader;
       // Rediriger vers la page seeTransport après la suppression
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'message'=>$messageDelete]);
+      echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'message'=>$messageDelete, 'session'=>$this->session]);
   }
     }
 }

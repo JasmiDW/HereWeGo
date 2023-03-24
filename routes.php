@@ -41,7 +41,7 @@ function call($controller, $action){
 }
 
 $controllers = array(
-  'pages' => ['home', 'about', 'connexion', 'contact', 'inscription', 'error','filtres','templateTransport'],
+  'pages' => ['home', 'about', 'connexion', 'contact', 'inscription', 'error','filtres','templateTransport','event'],
   'events' => ['show','addEvent','seeEvent','add','formUpdate','update','delete'],
   'participant' => ['addParticipant'],
   'transports' => ['show','addTransport','add','seeTransport','formUpdate','update','delete'],
