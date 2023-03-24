@@ -30,8 +30,6 @@ class MediaManager {
         return $list; 
     }
 
-    
-
         public static function updateImage(Media $obj){
             
         $db = DbConnection::getInstance();
@@ -46,5 +44,20 @@ class MediaManager {
             
             return $obj;
         }
-    }
+
+        public static function add(Media $obj){
+            
+            $db = DbConnection::getInstance();
+        
+            $sql="INSERT INTO media (url, id_event)  VALUES (:url, :id_event)";
+                
+                $query = $db ->prepare($sql);
+                $query->bindValue(':id_event',$obj->getId_event(), PDO::PARAM_INT);
+                $query->bindValue(':url', $obj->getURL(), PDO::PARAM_STR);
+    
+                $query->execute();
+                
+                return $obj;
+            }
+        }
 

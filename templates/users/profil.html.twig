@@ -11,7 +11,7 @@
                         {% for statut in listStatut %}
                             <a class="nav-link mx-2" href='?controller=users&action=seeProfil&id={{ user.id_user }}'></i>Voir mon profil</a>
                             {% if statut =='organisateur'%}
-                                <a class="nav-link mx-2" href="?controller=events&action=addEvent&id={{ user.id_user }}"></i>Ajouter un événement</a>
+                                <a class="nav-link mx-2" href="?controller=events&action=formAddEvent&id={{ user.id_user }}"></i>Ajouter un événement</a>
                                 <a class="nav-link mx-2" href="?controller=events&action=seeEvent&id={{ user.id_user }}"></i>Voir mes événements</a>
                             {% else %}
                                 <a class="nav-link mx-2" href="?controller=transports&action=addTransport&id={{ user.id_user }}"></i>Ajouter un transport</a>

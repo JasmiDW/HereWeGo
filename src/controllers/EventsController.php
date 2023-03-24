@@ -7,6 +7,7 @@ use App\entites\Event;
 use App\entites\Lieu;
 use App\entites\TypeTransport;
 use App\entites\Categorie;
+use App\entites\Media;
 use App\modeles\EventManager;
 use App\modeles\UserManager;
 use App\modeles\PageManager;
@@ -120,7 +121,7 @@ use Twig\Loader\FilesystemLoader;
       ));
     }
 
-    public function addEvent(){
+    public function formAddEvent(){
 
       if(isset($_SESSION['user_id'])){
         $session=$_SESSION['user_id'];
@@ -147,7 +148,7 @@ use Twig\Loader\FilesystemLoader;
 
       if(isset($_SESSION['user_id'])){
         $session=$_SESSION['user_id'];
-        $id_user = ['user_id'];
+
 
         if (empty($_POST['titre_event']) || empty($_POST['date_debut_event']) || empty($_POST['resume_event'])) {
           $message = "Les champs titre, date et resumé sont obligatoires";
@@ -176,17 +177,42 @@ use Twig\Loader\FilesystemLoader;
       $event->setDescription_event($content);
       $event->setId_Categorie($id_categorie);
       $event->setId_lieu($id_lieu);
-      $event->setId_user($id_user);
+      $event->setId_user($session);
 
-      $newEvent = EventManager::add($event);
-      var_dump($event);
+      $id_event = EventManager::add($event);
 
-      $this->loader = new FilesystemLoader('templates');
-      $this->twig = new Environment($this->loader);
-      echo $this->twig->render('events/templateEvent.html.twig', [
-          'event' => $event, 'session'=>$this->session]);
-    }
+      var_dump($id_event);
+
+      $image = $_FILES['photo'];
+      // Vérifier si le fichier est une image valide
+      $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
+      $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
+      if(!in_array($extension, $allowedExtensions)){
+          return "Le fichier doit être une image valide (JPG, JPEG, PNG ou GIF)";
+      }
+      
+        // Déplacer le fichier vers le dossier de téléchargement
+        $uploadsDir = "public/media/events";
+        $tempFile = $image['tmp_name'];
+        $newFileName = "-" . $id_event . date('Ymd') . "." . $extension;
+        $targetFile = $uploadsDir . $newFileName;
+        if(move_uploaded_file($tempFile, $targetFile)){
+
+          $media = new Media();
+
+          $media->setURL($targetFile);
+          $media->setId_event($id_event);
+        
+
+        $this->loader = new FilesystemLoader('templates');
+        $this->twig = new Environment($this->loader);
+        echo $this->twig->render('events/templateEvent.html.twig', [
+            'event' => $event, 'session'=>$this->session]);
+       }else{
+      return "Une erreur s'est produite lors du téléchargement de l'image";
   }
+}
+    }
       
     public function seeEvent()
     {

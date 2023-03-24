@@ -177,13 +177,14 @@ use \PDO;
       $query->bindValue(':id_categorie',$id_categorie,PDO::PARAM_INT);
       $query->bindValue(':places',$places,PDO::PARAM_INT);
       $query->bindValue(':statut',$statut,PDO::PARAM_INT);
+
   
       $query->execute();
-  
-      $event = new Event($title, $date_debut, $date_fin, $resume,$content, $code, $id_lieu, $id_categorie, $statut, $places, $userId);
-  
-      return $event;
+
+      $id_event = $db->lastInsertId();
+      return $id_event;
   }
+      
 
     public static function update(Event $event){
       $db = DbConnection::getInstance();
@@ -196,7 +197,8 @@ use \PDO;
               description_event = :description_event,
               id_lieu = :id_lieu,
               id_categorie = :id_categorie,
-              nb_places = :places
+              nb_places = :places,
+              url = :url
           WHERE id_event = :id_event");
 
       $query->bindValue(':id_event', $event->getId_event(), PDO::PARAM_INT);
@@ -208,6 +210,7 @@ use \PDO;
       $query->bindValue(':id_lieu', $event->getId_lieu(), PDO::PARAM_INT);
       $query->bindValue(':id_categorie', $event->getId_Categorie(), PDO::PARAM_INT);
       $query->bindValue(':places', $event->getNb_places(), PDO::PARAM_INT);
+      $query->bindValue(':url', $event->getURL(), PDO::PARAM_INT);
 
 
       $query->execute();
