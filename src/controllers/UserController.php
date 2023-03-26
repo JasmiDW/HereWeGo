@@ -25,6 +25,13 @@ class UserController
 
     public function __construct()
     {
+        if(isset($_SESSION['user_id'])){
+            $this->session=true;
+            $this->user_id = $_SESSION['user_id'];
+          }else{
+            $this->session=false;
+            $this->user_id = null;
+          }
         
     }
 
@@ -53,7 +60,7 @@ class UserController
             $this->loader = new FilesystemLoader('templates');
             $this->twig = new Environment($this->loader);
 
-            echo $this->twig->render('users/showProfil.html.twig', ['user'=>$user, 'auto_reload' => true , 'list'=> $events, 'categorie' => $categorie]);
+            echo $this->twig->render('users/showProfil.html.twig', ['user'=>$user, 'auto_reload' => true , 'list'=> $events, 'categorie' => $categorie, 'session'=>$this->session, 'userSession'=>$this->user_id]);
     
     }
 
@@ -118,7 +125,7 @@ class UserController
 
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
-        echo $this->twig->render('users/profil.html.twig', ['user'=>$user, 'listStatut'=>$statuts]);
+        echo $this->twig->render('users/profil.html.twig', ['user'=>$user, 'listStatut'=>$statuts, 'session'=>$this->session, 'userSession'=>$this->user_id]);
 
         }else{
 
@@ -141,7 +148,7 @@ class UserController
             
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
-        echo $this->twig->render('users/seeProfil.html.twig', ['user'=>$user]);
+        echo $this->twig->render('users/seeProfil.html.twig', ['user'=>$user, 'session'=>$this->session, 'userSession'=>$this->user_id]);
         }
         
     }
@@ -173,7 +180,7 @@ class UserController
 
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
-        echo $this->twig->render('users/formUpdateProfil.html.twig', ['user'=>$user, 'lieu'=>$lieu, 'listStatut'=>$statuts]);
+        echo $this->twig->render('users/formUpdateProfil.html.twig', ['user'=>$user, 'lieu'=>$lieu, 'listStatut'=>$statuts, 'session'=>$this->session, 'userSession'=>$this->user_id]);
     }
 }
 
@@ -207,7 +214,7 @@ class UserController
 
                 $loader = new FilesystemLoader('templates');
                 $twig = new Environment($loader);
-                echo $twig->render('users/formUpdateProfil.html.twig', ['message' => $message, 'user'=>$user, 'lieu'=>$lieu]);
+                echo $twig->render('users/formUpdateProfil.html.twig', ['message' => $message, 'user'=>$user, 'lieu'=>$lieu, 'session'=>$this->session, 'userSession'=>$this->user_id]);
 
             } else {
                 $userId = $_GET['id_user'];
@@ -239,7 +246,7 @@ class UserController
       
                 $this->loader = new FilesystemLoader('templates');
                 $this->twig = new Environment($this->loader);
-                echo $this->twig->render('users/seeProfil.html.twig', ['user'=>$user]);
+                echo $this->twig->render('users/seeProfil.html.twig', ['user'=>$user, 'session'=>$this->session, 'userSession'=>$this->user_id]);
             }
             }
         }
@@ -257,9 +264,9 @@ class UserController
                 }
                 
                 // Déplacer le fichier vers le dossier de téléchargement
-                $uploadsDir = "public/media/";
+                $uploadsDir = "public/media/users/";
                 $tempFile = $image['tmp_name'];
-                $newFileName = date('Ymd') . "." . $extension;
+                $newFileName = $uderId . date('Ymd') . "." . $extension;
                 $targetFile = $uploadsDir . $newFileName;
                 if(move_uploaded_file($tempFile, $targetFile)){
 

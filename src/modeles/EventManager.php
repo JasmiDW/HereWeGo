@@ -27,7 +27,8 @@ use \PDO;
       LEFT JOIN media ON event.id_event = media.id_event
       LEFT JOIN categorie ON event.id_categorie = categorie.id_categorie
       LEFT JOIN couleurs ON categorie.id_couleur = couleurs.id_couleur
-      GROUP BY event.id_event');
+      GROUP BY event.id_event
+      ORDER BY event.date_debut_event ASC');
      
       $req->execute();
       $results=$req->fetchAll(PDO::FETCH_ASSOC);
@@ -99,14 +100,14 @@ use \PDO;
       // we make sure $id is an integer
       $idEvent = intval($idEvent);
 
-      $req = $db->prepare('SELECT * , utilisateur.id_user, utilisateur.raison_sociale, lieux.ville, event.id_categorie, couleurs.libelle_couleur, couleurs.code_hexadecimal, categorie.libelle_categorie, media.url
+      $req = $db->prepare("SELECT event.*, utilisateur.id_user, utilisateur.raison_sociale, lieux.ville, event.id_categorie, couleurs.libelle_couleur, couleurs.code_hexadecimal, categorie.libelle_categorie, MIN(media.url)
       FROM event 
       INNER JOIN utilisateur ON event.id_user = utilisateur.id_user
       INNER JOIN lieux ON event.id_lieu = lieux.id_lieu
       INNER JOIN categorie ON event.id_categorie = categorie.id_categorie
       INNER JOIN couleurs ON categorie.id_couleur = couleurs.id_couleur
       LEFT JOIN media on media.id_event = event.id_event
-      WHERE event.id_event = :id_event');
+      WHERE event.id_event = :id_event");
       
       // the query was prepared, now we replace :id with our actual $id value
       $req->execute(array('id_event' => $idEvent));
@@ -114,6 +115,7 @@ use \PDO;
       $event = $req->fetch(PDO::FETCH_ASSOC);
       
       return new Event($event);
+
       
     }
 
@@ -187,8 +189,9 @@ use \PDO;
       
 
     public static function update(Event $event){
-      $db = DbConnection::getInstance();
 
+
+      $db = DbConnection::getInstance();
       $query = $db->prepare("UPDATE event
           SET titre_event = :titre_event,
               date_debut_event = :date_debut_event,
@@ -197,8 +200,8 @@ use \PDO;
               description_event = :description_event,
               id_lieu = :id_lieu,
               id_categorie = :id_categorie,
-              nb_places = :places,
-              url = :url
+              nb_places = :places
+
           WHERE id_event = :id_event");
 
       $query->bindValue(':id_event', $event->getId_event(), PDO::PARAM_INT);
@@ -210,8 +213,6 @@ use \PDO;
       $query->bindValue(':id_lieu', $event->getId_lieu(), PDO::PARAM_INT);
       $query->bindValue(':id_categorie', $event->getId_Categorie(), PDO::PARAM_INT);
       $query->bindValue(':places', $event->getNb_places(), PDO::PARAM_INT);
-      $query->bindValue(':url', $event->getURL(), PDO::PARAM_INT);
-
 
       $query->execute();
 

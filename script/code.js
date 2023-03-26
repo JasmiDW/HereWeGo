@@ -252,3 +252,11 @@ function verification() {
       return true;
   }
 
+  function backOrToPage() {
+    if (document.referrer === "") {
+        // Si la page précédente n'existe pas, rediriger vers une autre page
+        window.location.href = "?controller=pages&action=home"; // Remplacez "/" par l'URL de votre choix
+    } else {
+        history.back(); // Retourner à la page précédente
+    }
+}

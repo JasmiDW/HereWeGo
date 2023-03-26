@@ -19,7 +19,7 @@ h3{
 #events-accueil h4{
     font-family: 'Kanit';
     text-transform: uppercase;
-    color:#264653;
+    color:#fff;
     font-weight: 300;
     font-size: 12px;
 }
@@ -461,11 +461,20 @@ input:focus {
     color: #fff;
 }
 
-.bg-custom{
+#intro .bg-custom{
     height: auto;
-    border-bottom: 3px solid black;
+    border: 3px solid black;
+    background-color: #fff;
+    color: #264653;
 }
 
+.bg-custom p:hover{
+    color: #E76F51;
+}
+
+#intro .bg-custom p{
+    color:#264653;
+}
 
 .bg-blue{
     background-color: #264653;
@@ -554,6 +563,11 @@ input:focus {
     border-bottom: 3px solid black;
 }
 
+#transport .card .card-body{
+    height: 200px;
+    width: auto;
+}
+
 .card .card-body{
     height: 250px;
     width: auto;
@@ -611,7 +625,7 @@ input:focus {
 
 .img-label{
     border: 2px solid black;
-    box-shadow:  -5px 5px 10px black;
+
 }
 
 .form-row select {
@@ -674,7 +688,18 @@ select:focus {
 }
 
 #intro a:hover {
-    color: #264653;
+    cursor:pointer;
+    color:#000;
+}
+
+.event-tag{
+    background-color: #264653;
+    border: 2px solid black;
+
+}
+
+.event-tag :hover{
+    color:#fff;
 }
 
 #intro h5{
@@ -810,6 +835,7 @@ h2{
     width: auto;
     object-fit: cover;
     border-radius: 0;
+    border: 3px solid black;
 }
 
 #transport h2{

@@ -62,10 +62,10 @@
         </div>
       <div class="row mb-5 mt-5 d-flex justify-content-center align-items-center">
         {% for event in list %}
-          <div class="col-ld-3 col-md-3 col-12 col-sm-6 mb-5 ">
+          <div class="col-ld-2 col-md-2 col-12 col-sm-6 mb-5 ">
             <a href="?controller=events&action=show&id={{event.id_event}}" class="border-bottom">
               <div class="card baseBlock mx-auto ">
-                <img class="card-img-top" src="public\media\{{ event.url_photo }}" alt="Card image cap">
+                <img class="card-img-top" src="{{ event.url_photo }}" alt="Card image cap">
                 <div class="bg-{{ event.libelle_couleur }}-2"><h4 class="card-text">{{ event.libelle_categorie }}</h4></div>
                 <div class="card-body face face2">
                   <h5 class="card-title">{{ event.titre_event }}</h5>

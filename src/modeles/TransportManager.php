@@ -100,21 +100,6 @@ use \PDO;
       
     }
 
-    // public static function delete($id){
-    //     $db = DbConnection::getInstance();
-    //     // we make sure $id is an integer
-    //     $id = intval($id);
-    //     $sql="DELETE FROM event WHERE id=:id";
-    //     $query=$this->_db->prepare($sql);
-    //     $query->bindValue(':id', $obj->getId(), PDO::PARAM_INT);
-    //     $query->execute();
-    // //   $req=$db->prepare("DELETE FROM event WHERE id= :id");
-    // //   $req->execute(array('id' => $id));
-    // //   $event = $req->fetch();
-
-    //   return "$id a bien été supprimée de la base de données.";
-    // }
-
     public static function add(){
         $db = DbConnection::getInstance();
 

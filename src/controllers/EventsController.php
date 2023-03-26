@@ -33,8 +33,10 @@ use Twig\Loader\FilesystemLoader;
         $this->transportController = new TransportManager();
         if(isset($_SESSION['user_id'])){
           $this->session=true;
+          $this->user_id = $_SESSION['user_id'];
         }else{
           $this->session=false;
+          $this->user_id = null;
         }
     }
 
@@ -117,7 +119,7 @@ use Twig\Loader\FilesystemLoader;
           'typeTransport' => $typeTransport,
           'categorie' => $categorie,
           'media' => $media,
-          'color' =>$color, 'session'=>$this->session
+          'color' =>$color, 'session'=>$this->session, 'userSession'=> $this->user_id
       ));
     }
 
@@ -181,8 +183,6 @@ use Twig\Loader\FilesystemLoader;
 
       $id_event = EventManager::add($event);
 
-      var_dump($id_event);
-
       $image = $_FILES['photo'];
       // Vérifier si le fichier est une image valide
       $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
@@ -192,9 +192,9 @@ use Twig\Loader\FilesystemLoader;
       }
       
         // Déplacer le fichier vers le dossier de téléchargement
-        $uploadsDir = "public/media/events";
+        $uploadsDir = "public/media/events/";
         $tempFile = $image['tmp_name'];
-        $newFileName = "-" . $id_event . date('Ymd') . "." . $extension;
+        $newFileName = $id_event . date('YmdHs') . "." . $extension;
         $targetFile = $uploadsDir . $newFileName;
         if(move_uploaded_file($tempFile, $targetFile)){
 
@@ -202,14 +202,16 @@ use Twig\Loader\FilesystemLoader;
 
           $media->setURL($targetFile);
           $media->setId_event($id_event);
-        
+
+          $id_media = MediaManager::add($media);
 
         $this->loader = new FilesystemLoader('templates');
         $this->twig = new Environment($this->loader);
         echo $this->twig->render('events/templateEvent.html.twig', [
             'event' => $event, 'session'=>$this->session]);
        }else{
-      return "Une erreur s'est produite lors du téléchargement de l'image";
+
+        return "Une erreur s'est produite lors du téléchargement de l'image";
   }
 }
     }
@@ -247,7 +249,6 @@ use Twig\Loader\FilesystemLoader;
 
     if(isset($_SESSION['user_id'])){
       $session = $_SESSION['user_id'];
-      $id_user = $session['user_id'];
 
     $lieu= LieuManager::findAll();
     $categorie = CategorieManager::findAll();
@@ -255,7 +256,6 @@ use Twig\Loader\FilesystemLoader;
     $eventId =  $_GET['id_event']; 
     $event = EventManager::find($eventId);
 
-    
     $this->loader = new FilesystemLoader('templates');
     $this->twig = new Environment($this->loader);
     echo $this->twig->render('events/formUpdate.html.twig',  ['lieu'=>$lieu, 'categorie'=>$categorie, 'auto_reload' => true , 'event'=> $event, 'session'=>$this->session]);
@@ -268,24 +268,33 @@ public function update() {
   if(isset($_SESSION['user_id'])) {
       $userId = $_SESSION['user_id'];
 
+      // Vérifier si l'identifiant de l'événement est transmis dans l'URL
+      if(!isset($_GET['id_event'])) {
+          $message = "L'identifiant de l'événement est manquant.";
+          $loader = new FilesystemLoader('templates');
+          $twig = new Environment($loader);
+          echo $twig->render('events/formUpdate.html.twig', ['message' => $message]);
+          return; // Arrêter l'exécution de la méthode si l'identifiant est manquant
+      }
+      $eventId = $_GET['id_event'];
+
       if(empty($_POST['titre_event']) || empty($_POST['date_debut_event']) || empty($_POST['resume_event'])) {
           $message = "Les champs titre, date et resumé sont obligatoires";
           $loader = new FilesystemLoader('templates');
           $twig = new Environment($loader);
           echo $twig->render('events/formUpdate.html.twig', ['message' => $message]);
       } else {
-          $eventId = $_GET['id_event'];
           $titre_event = $_POST['titre_event'];
           $date_debut = $_POST['date_debut_event'];
           $date_fin = !empty($_POST['date_fin_event']) ? $_POST['date_fin_event'] : '';
           $nb_places = $_POST['places'];
           $resume = $_POST['resume_event'];
-          $description = !empty($_POST['description_event']) ? $_POST['description_event'] : '';
+          $description = !empty($_POST['description']) ? $_POST['description'] : '';
           $lieuId = $_POST["lieu"];
           $categorieId = $_POST['categorie'];
 
           $event = new Event();
-          $event->setId_event($eventId);
+          $event->setId_event($eventId); // Utiliser l'identifiant de l'événement transmis dans l'URL
           $event->setTitre_event($titre_event);
           $event->setDate_Debut_event($date_debut);
           $event->setDate_Fin_event($date_fin);
@@ -298,6 +307,29 @@ public function update() {
 
           EventManager::update($event);
 
+          $image = $_FILES['photo'];
+          // Vérifier si le fichier est une image valide
+          $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
+          $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
+          if(!in_array($extension, $allowedExtensions)){
+              return "Le fichier doit être une image valide (JPG, JPEG, PNG ou GIF)";
+          }
+          
+            // Déplacer le fichier vers le dossier de téléchargement
+            $uploadsDir = "public/media/events/";
+            $tempFile = $image['tmp_name'];
+            $newFileName = $eventId . date('YmdHs') . "." . $extension;
+            $targetFile = $uploadsDir . $newFileName;
+            if(move_uploaded_file($tempFile, $targetFile)){
+
+              $media = new Media();
+
+              $media->setURL($targetFile);
+              $media->setId_event($eventId);
+
+              $id_media = MediaManager::update($media);
+
+
           // Récupérer une liste d'événement correspondant à l'utilisateur
           $eventManager = new EventManager();
           $events = $eventManager->getEventById($userId);
@@ -308,19 +340,23 @@ public function update() {
               $categorie = CategorieManager::find($categorieId);
               $categories [] = $categorie;
           }
-
+          
           $loader = new FilesystemLoader('templates');
           $twig = new Environment($loader);
           echo $twig->render('events/seeEvent.html.twig', ['list' => $events, 'categorie' => $categories, 'session'=>$this->session]);
+        }
       }
+    }
   }
-}
 
   public function delete(){
     if(isset($_SESSION['user_id'])){
       $session = $_SESSION['user_id'];
 
+      
+
       $eventId =  $_GET['id_event'];
+      $media = MediaManager::delete($eventId);
       $event = EventManager::delete($eventId);
 
      // Récupérer une liste d'événement correspondant à l'utilisateur

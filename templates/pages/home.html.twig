@@ -5,30 +5,28 @@
       <div class="container mt-5 mb-5">
         <div class="row">
           <div class="col-md-5 offset-1 me-1">
-          <i class="fa-solid fa-heart floating-heart"></i>
-              <i class="fa-solid fa-heart floating-heart"></i>
-              <i class="fa-solid fa-heart floating-heart"></i> 
+            <i class="fa-solid fa-heart floating-heart"></i>
+            <i class="fa-solid fa-heart floating-heart"></i>
+            <i class="fa-solid fa-heart floating-heart"></i> 
             <div class="d-flex justify-content-left">
               <h2 class="animate__animated animate__pulse animate__infinite	infinite">Coup de coeur de la semaine</h2>
             </div>
-            
+            <div class="d-flex justify-content-left">
+              Organisé par <a href="?controller=users&action=show&id={{event.id_user}}">{{ user[event.getId_User()].raison_sociale }}</a>
+            </div>
+          </div>
+          <div class="col-md-5 mt-3 ms-1 bg-custom">
+            <a href="?controller=events&action=show&id={{favoriteEvent.id_event}}">
               <div class="d-flex justify-content-left">
-                Organisé par <a href="?controller=users&action=show&id={{event.id_user}}">{{ user[event.getId_User()].raison_sociale }}</a>
+                <h3>{{ favoriteEvent.titre_event }}</h3> 
               </div>
-            </div>
-            <div class="col-md-5 mt-3 ms-1 bg-custom">
-              <a href="?controller=events&action=show&id={{favoriteEvent.id_event}}">
-                <div class="d-flex justify-content-left">
-                  <h3>{{ favoriteEvent.titre_event }}</h3> 
-                </div>
-                <div class="d-flex justify-content-left">
-                  <p>{{ favoriteEvent.date_debut_event|date('j') }} au {{ favoriteEvent.date_fin_event|date('j F Y') }}</p>
-                </div>
-                <div class="d-flex justify-content-left">
-                  <p>{{ favoriteEvent.resume_event }}</p>
-                </div>
-              </a>
-            </div>
+              <div class="d-flex justify-content-left">
+                <p>{{ favoriteEvent.date_debut_event|date('j') }} au {{ favoriteEvent.date_fin_event|date('j F Y') }}</p>
+              </div>
+              <div class="d-flex justify-content-left">
+                <p>{{ favoriteEvent.resume_event }}</p>
+              </div>
+            </a>
           </div>
         </div>
       </div>
@@ -101,10 +99,14 @@
         </div>
       <div class="row mb-5 mt-5 d-flex justify-content-center align-items-center">
         {% for event in list %}
-          <div class="col-ld-3 col-md-3 col-12 col-sm-6 mb-5 ">
+          <div class="col-lg-2 col-md-4 col-12 col-sm-6 mb-5 ">
             <a href="?controller=events&action=show&id={{event.id_event}}" class="border-bottom">
               <div class="card baseBlock mx-auto ">
-                <img class="card-img-top" src="public\media\{{ event.url_photo }}" alt="Card image cap">
+              {% if event.url_photo == NULL %}
+                <img class="card-img-top" src="public\media\events\202303262013.png" alt="Card image cap">
+                {% else %}
+                <img class="card-img-top" src="{{ event.url_photo }}" alt="Card image cap">
+                {% endif %}
                 <div class="bg-{{ event.libelle_couleur }}-2"><h4 class="card-text">{{ event.libelle_categorie }}</h4></div>
                 <div class="card-body face face2">
                   <h5 class="card-title">{{ event.titre_event }}</h5>

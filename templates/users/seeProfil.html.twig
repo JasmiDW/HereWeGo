@@ -32,7 +32,7 @@
                                         <h1 class="modal-title" id="exampleModalLabel">Modifier ma photo</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <form action="?controller=users&action=updateProfileImage" method="post" enctype="multipart/form-data">
+                                    <form action="?controller=users&action=seeProfil&id={{ userSession }}" method="post" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             <div class="row align-items-center">
                                                 <div class="col-10">
@@ -83,6 +83,15 @@
         // Afficher la modal
         var modal = document.querySelector('#change-photo-modal');
         modal.style.display = 'block';
+    });
+
+        // Sélectionnez le formulaire de la modal pour la modification de la photo
+    const formPhoto = document.querySelector('#exampleModal form');
+
+    // Ajoutez un gestionnaire d'événements pour écouter la soumission du formulaire
+    formPhoto.addEventListener('submit', function() {
+    // Rechargez la page après la soumission du formulaire
+    location.reload();
     });
 </script>
 {% endblock %}

@@ -254,8 +254,7 @@ use Twig\Loader\FilesystemLoader;
       
       // Vérifier si le transport existe et s'il appartient à l'utilisateur
       $transport = TransportManager::find($transportId);
-      var_dump($transport->getId_participant());
-      var_dump($session);
+
       $participantId = ParticipantManager::findByUser($session);
       if($transport && $transport->getId_participant() == $participantId) {
         // Traitement des données de formulaire et mise à jour du transport
