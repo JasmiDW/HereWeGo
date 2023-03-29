@@ -155,7 +155,27 @@ class ParticipantManager {
           $query = $db->prepare("DELETE FROM participant WHERE id_user =:id_user");
           $query->bindValue(':id_user', $userId, PDO::PARAM_INT);
           $query->execute();
-      }
+    }
+
+    public static function findParticipantByEvent($idEvent, $idUser) {
+
+        $db = DbConnection::getInstance();
+        // instancier la connexion à la base de données
+
+        // Préparation de la requête SQL
+        $req = $db->prepare('SELECT id_participant FROM participant WHERE id_event = :id_event AND id_user = :id_user');
+        // Bind des valeurs
+        $req->bindValue(':id_event', $idEvent, PDO::PARAM_INT);
+        $req->bindValue(':id_user', $idUser, PDO::PARAM_INT);
+        // Exécution de la requête
+        $req->execute();
+
+        // Récupération du résultat
+        $data = $req->fetch();
+        // Création de l'objet Utilisateur correspondant
+        return new Participant($data);
+    }
+
 }
 
 ?>

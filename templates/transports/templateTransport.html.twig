@@ -50,7 +50,7 @@
                     <div class="d-flex justify-content-left mb-3">
                         <div class="form-row">
                             <label for="places">Nombre de places</label>
-                            <select name="places" id="places" form="placesform">
+                            <select name="places" id="places">
                                 {% for i in range(1, nbPlacesDispo) %}
                                     <option value="{{ i+1 }}">{{ i }}</option>
                                 {% endfor %}

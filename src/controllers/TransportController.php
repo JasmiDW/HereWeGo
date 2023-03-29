@@ -60,7 +60,8 @@ use Twig\Loader\FilesystemLoader;
 
       $userId = ParticipantManager::findUser($participantId);
       $user = UserManager::find($userId);
-      
+
+
 
       // Récupérer les types de transports correspondant au transport
       $typeId = $transports->getID_Type_Transport();  
@@ -97,10 +98,9 @@ use Twig\Loader\FilesystemLoader;
       for($i = 0; $i < count($participants); $i++) {
           $id_participants[] = $participants[$i]->getId_participant();
       }
-
         // Vérifier si l'identifiant de participant existe
         if (count($participants) < 1) {
-        // Si l'identifiant de participant n'existe pas, rediriger l'utilisateur vers la page d'accueil
+        // Si l'identifiant de participant n'existe pas, rediriger l'utilisateur
         header("Location: ?controller=participant&action=TransportFailed");
         exit();
     }
@@ -117,7 +117,6 @@ use Twig\Loader\FilesystemLoader;
       
     }
   }
-  
 
   public function add(){
 
@@ -146,8 +145,8 @@ use Twig\Loader\FilesystemLoader;
     $contact = $_POST['contact'];
     $content = !empty($_POST['description']) ? $_POST['description'] : '';
     $id_lieu = $_POST["lieu"];
-    $id_participant = $_POST['id_participant'];
-    
+
+    $id_participant = ParticipantManager::findParticipantByEvent($id_event,$session);
 
     $transport = new Transport();
 

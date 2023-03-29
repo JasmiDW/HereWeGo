@@ -54,13 +54,14 @@ class ReservationController{
                     // ...
                 } else {
                     // Ajouter la réservation
-                    $reservationManager = new ReservationManager();
                     $reservation = new Reservation();
+
                     $reservation->setId_participant($participant->getId_event());
                     $reservation->setDate($date);
                     $reservation->setId_transport($transportId);
                     $reservation->setNb_place($places);
-                    $reservationManager->add($reservation);
+
+                    $newReservation = ReservationManager::add($reservation);
     
                     // Mettre à jour le nombre de places disponibles pour le transport
                     $transport->setNb_dispo($transport->getNb_dispo() - $places);

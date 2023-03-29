@@ -114,7 +114,7 @@ use \PDO;
         $contact = $_POST['contact'];
         $content = !empty($_POST['description']) ? $_POST['description'] : '';
         $id_lieu = $_POST["lieu"];
-        $id_participant = $_POST['id_participant'];
+        $id_participant = ParticipantManager::findParticipantByEvent($id_event,$session);
 
         $query=$db->prepare("INSERT INTO moyen_de_transport (id_event, id_type_transport, date_depart_transport, heure_depart, heure_arrivee, nb_place, nb_dispo, tarif, info_contact, descriptif, id_lieu, id_participant) 
           VALUES(:id_event, :id_type_transport, :date_depart_transport, :heure_depart, :heure_arrivee, :nb_place, :nb_dispo, :tarif, :info_contact, :descriptif, :id_lieu, :id_participant )");
