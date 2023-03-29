@@ -7,81 +7,112 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-6">
                     <h1 class="compte mb-5">Inscription</h1>
-                        <div class="form-row">
-                            <form name="formEx2" method="" action="#" onsubmit="return verification()">
-                                <div class="compte">
-                                    <p class=" col-md-4 mb-2"> Etes-vous un organisateur ?
-                                        <input class="" type="radio" id="formOrga"> Oui 
-                                        <input class="" type="radio" id="formUtil"> Non</p>
-                                        <p>
-                                            <span id="ErreurOrga" class="error"></span>
-                                        </p>
-                                </div>
+                    <div class="form-row">
+                        <form name="formEx2" method="post" action="?controller=users&action=add" onsubmit="return verification()">
+                            <div class="compte">
+                                <p class=" col-md-4 mb-2"> Etes-vous un organisateur ?
                                     <p>
-                                        <input class="col-md-6 p-2" type="text" id="raison sociale" placeholder="raison sociale">
-                                    </p>
-                                    <p>
-                                        <span id="ErreurRS" class="error"></span>
-                                    </p>
+                                    {{message}}
+                                        <label>Oui
+                                            <input type="radio" id="formOrga" name="statut" value="organisateur">
+                                        </label>
                                     
-                                        <input class="col-md-3 mb-1 p-2 " type="text" id="nom" placeholder="nom">
-                                        
-                                        <input class="col-md-3 mb-1 p-2 " type="text" id="prenom" placeholder="prenom">
-                                    
+                                        <label>Non
+                                            <input type="radio" id="formUtil" name="statut" value="utilisateur">
+                                        </label>
                                     </p>
-                                    <p>
-                                        <span id="ErreurNom" class="error"></span>
-                                    
-                                    </p>
-                                    <p>
-                                        <span id="ErreurPrenom" class="error"></span>
-                                    </p>
-                                    
-                                    <p>
-                                        <input class="col-md-3 mb-1 p-2 "  id="formMail" placeholder="email">
-                                        <input class="col-md-3 mb-1 p-2 " type="text" id="formPassword" placeholder="mot de passe">
-                                    </p>
-                                    <p>
-                                        <span id="ErreurMail" class="error"></span>
-                                    
-                                    </p>
-                                    <p>
-                                        <span id="ErreurPassword" class="error"></span>
-                                    </p>
-                                    <p>
-                                        <input class="col-md-6 mb-1 p-2" type="text" id="adresse" placeholder="adresse">
-                                    </p>
-                                    <p>
-                                        <span id="ErreurAdresse" class="error"></span>
-                                    
-                                    </p>
-                                    <p>
-                                        <input class="col-md-3 mb-1 p-2 " type="text" id="formCP" placeholder="code postale">
-                                        <input class="col-md-3 mb-1 p-2 " type="text" id="formLieu" placeholder="ville">
-                                    </p>
-                                    <p>
-                                        <span id="ErreurCP" class="error"></span>
-                                    
-                                    </p>
-                                    <p>
-                                        <span id="ErreurLieu" class="error"></span>
-                                    </p>
-                                    <p>
-                                        <input class="col-md-6 mb-1 p-2" type="text" id="formTelephone" placeholder="téléphone">
-                                    </p>
-                                    <p>
-                                        <span id="ErreurTelephone" class="error"></span>
-                                    </p>
+                                </p>
+                                <p>
+                                    <span id="ErreurOrga" class="error"></span>
+                                </p>
+                                <p class=" col-md-6 mb-2">
+                                    <label>Homme
+                                        <input class="me-1" type="radio" id="formHomme" name="genre" value="homme">
+                                    </label>
+                                    <label>Femme
+                                        <input type="radio" id="formFemme" name="genre" value="femme">
+                                    </label>
+                                </p>
+                            </div>
+                            <p>
+                                <input class="col-md-6 p-2" type="text" id="raison_sociale" name="raison_sociale" placeholder="raison sociale">
+                            </p>
+                            <p>
+                                <span id="ErreurRS" class="error"></span>
+                            </p>
+                            
+                                <input class="col-md-3 mb-1 p-2 " type="text" id="nom" name ="nom" placeholder="nom">
                                 
-                                    <div class="btn">
-                                        <a><input class="btn p-0" type="submit" value="Valider"></a>
-                                    </div>
-                                
-                            </form>
+                                <input class="col-md-3 mb-1 p-2 " type="text" id="prenom" name ="prenom" placeholder="prenom">
+                            
+                            </p>
+                            <p>
+                                <span id="ErreurNom" class="error"></span>
+                            
+                            </p>
+                            <p>
+                                <span id="ErreurPrenom" class="error"></span>
+                            </p>
+                            
+                            <p>
+                                <input class="col-md-3 mb-1 p-2 "  id="formMail" name="mail" placeholder="email">
+                                <input class="col-md-3 mb-1 p-2 " type="text" id="formPassword" name="password" placeholder="mot de passe">
+                            </p>
+                            <p>
+                                <span id="ErreurMail" class="error"></span>
+                            {{messageMail}}
+                            </p>
+                            <p>
+                                <span id="ErreurPassword" class="error"></span>
+                            </p>
+                            {# <p>
+                                <input class="col-md-6 mb-1 p-2" type="text" id="adresse" name="adresse" placeholder="adresse">
+                            </p> #}
+                            <p>
+                                <span id="ErreurAdresse" class="error"></span>
+                            
+                            </p>
+                            <p>
+                                <select class="form col-md-6 mb-1 p-2" id="lieu" name ="lieu">
+                                    {% for lieu in lieu %}
+                                            <option value="{{ lieu.id_lieu }}">{{ lieu.code_postal }} - {{ lieu.ville }}</option>
+                                    {% endfor %}
+                                </select>
+                            </p>
+                            <p>
+                                <span id="ErreurCP" class="error"></span>
+                            </p>
+                            <p>
+                                <span id="ErreurLieu" class="error"></span>
+                            </p>
+                            <p>
+                                <input class="col-md-6 mb-1 p-2" type="text" id="formTelephone" name ="telephone" placeholder="téléphone">
+                            </p>
+                            <p>
+                                <span id="ErreurTelephone" class="error"></span>
+                            </p>
+                        
+                            <div class="btn">
+                                <a><input class="btn p-0" type="submit" value="Valider"></a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <script>
+        const radioOui = document.getElementById("formOrga");
+        const radioNon = document.getElementById("formUtil");
+        const inputRaisonSociale = document.getElementById("raison_sociale");
 
+        radioOui.addEventListener("click", () => {
+        inputRaisonSociale.disabled = false; // activer l'input si "Oui" est sélectionné
+        });
+
+        radioNon.addEventListener("click", () => {
+        inputRaisonSociale.disabled = true; // désactiver l'input si "Non" est sélectionné
+        });
+    </script>
+    
 {% endblock %}

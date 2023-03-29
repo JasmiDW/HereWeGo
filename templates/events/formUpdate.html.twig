@@ -12,7 +12,7 @@
                             <form method="post" action="?controller=events&action=update&id_event={{event.id_event}}" onsubmit="return verificationEvent()" enctype="multipart/form-data">
                                 <p> 
                                 {{message}}
-                                    <input class="col-md-6 mb-1 p-2" type="number" id="id" name="id_event" value="{{event.id_event}}">
+                                    <input class="col-md-6 mb-1 p-2" type="hidden" id="id" name="id_event" value="{{event.id_event}}">
                                     <input class="col-md-6 mb-1 p-2" type="hidden" id="id" name="id_user" value="{{user.id_user}}">
                                 </p>
                                 <p>

@@ -60,32 +60,33 @@ class MediaManager {
                 return $obj;
             }
 
-            public static function update(Media $obj){
-            
-                $db = DbConnection::getInstance();
-            
-                $sql="UPDATE media SET url = :url WHERE id_event = :id_event";
-                    
-                    $query = $db ->prepare($sql);
-                    $query->bindValue(':id_event',$obj->getId_event(), PDO::PARAM_INT);
-                    $query->bindValue(':url', $obj->getURL(), PDO::PARAM_STR);
+        public static function update(Media $obj){
         
-                    $query->execute();
-                    
-                    return $obj;
-                }
+            $db = DbConnection::getInstance();
+        
+            $sql="UPDATE media SET url = :url WHERE id_event = :id_event";
+                
+                $query = $db ->prepare($sql);
+                $query->bindValue(':id_event',$obj->getId_event(), PDO::PARAM_INT);
+                $query->bindValue(':url', $obj->getURL(), PDO::PARAM_STR);
+    
+                $query->execute();
+                
+                return $obj;
+            }
 
-                public static function delete($eventId){
-            
-                    $db = DbConnection::getInstance();
-                    $eventId = intval($eventId);
-                    $sql="DELETE FROM media WHERE id_event =:id_event ";
-                        
-                        $query = $db ->prepare($sql);
-                        $query->bindValue(':id_event', $eventId, PDO::PARAM_INT);
+        public static function delete($eventId){
+    
+            $db = DbConnection::getInstance();
+            $eventId = intval($eventId);
+            $sql="DELETE FROM media WHERE id_event =:id_event ";
+                
+                $query = $db ->prepare($sql);
+                $query->bindValue(':id_event', $eventId, PDO::PARAM_INT);
 
-            
-                        $query->execute();
+    
+                $query->execute();
 
-                    }
         }
+
+    }

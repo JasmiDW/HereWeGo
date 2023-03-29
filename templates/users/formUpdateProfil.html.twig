@@ -38,28 +38,18 @@
                                     </p>
                                     <p>
                                         <input class="col-md-3 mb-1 p-2 " type="text" id="lieu" name="mail" placeholder="email" value="{{user.mail_user}}">
-                                        <input class="col-md-3 mb-1 p-2 " type="password" id="categories" name="password" placeholder="mot de passe" value="{{user.password}}">
+                                        <input class="col-md-3 mb-1 p-2 " type="password" id="categories" name="password" placeholder="mot de passe">
                                     </p>
-                                    <p>
+                                    {# <p>
                                         <input class="col-md-6 mb-1 p-2" type="text" id="adresse" name="adresse" placeholder="adresse" value="{{user.adresse_user}}">
-                                    </p>
+                                    </p> #}
                                     <p>
-                                        <select class="form col-md-3 mb-1 p-2" id="codepostal" name="codepostal">
-                                            {% for cp in cp %}
-                                                {% if lieu.id_lieu == event.id_lieu %}
-                                                    <option value="{{ lieu.id_lieu }}" selected>{{ lieu.code_postal }}</option>
-                                                {% else %}
-                                                    <option value="{{ lieu.id_lieu }}">{{ lieu.code_postal }}</option>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </select>
-                                        
-                                        <select class="form col-md-3 mb-1 p-2" id="lieu" name="lieu">
+                                        <select class="form col-md-6 mb-1 p-2" id="lieu" name="lieu">
                                             {% for lieu in lieu %}
-                                                {% if lieu.id_lieu == event.id_lieu %}
-                                                    <option value="{{ lieu.id_lieu }}" selected>{{ lieu.ville }}</option>
+                                                {% if lieu.id_lieu == user.id_lieu %}
+                                                    <option value="{{ lieu.id_lieu }}" selected> {{lieu.code_postal}} - {{ lieu.ville }}</option>
                                                 {% else %}
-                                                    <option value="{{ lieu.id_lieu }}">{{ lieu.ville }}</option>
+                                                    <option value="{{ lieu.id_lieu }}">{{lieu.code_postal}} - {{ lieu.ville }}</option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>

@@ -9,6 +9,7 @@ use App\modeles\UserManager;
 use App\modeles\MediaManager;
 use App\modeles\CategorieManager;
 use App\modeles\CouleurManager;
+use App\modeles\LieuManager;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -86,10 +87,12 @@ use Twig\Loader\FilesystemLoader;
 
     public function inscription()
     {
+      $lieu= LieuManager::findAll();
+      
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
 
-      echo $this->twig->render('pages/inscription.html.twig',['session'=>$this->session]);
+      echo $this->twig->render('pages/inscription.html.twig',['session'=>$this->session, 'lieu'=> $lieu]);
     }
 
     public function error() {

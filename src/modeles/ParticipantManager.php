@@ -31,12 +31,13 @@ class ParticipantManager {
         
     }
 
-    public function addParticipant(Participant $participant, $statut) {
+    
+
+    public static function add(Participant $participant) {
         $db = DbConnection::getInstance();
         // Préparation de la requête SQL
-        $req = $this->_db->prepare('INSERT INTO participant (statut, id_event, id_user) VALUES(:statut, :id_event, :id_user)');
+        $req = $db->prepare('INSERT INTO participant ( id_event, id_user) VALUES( :id_event, :id_user)');
         // Bind des valeurs
-        $req->bindValue(':statut', $statut);
         $req->bindValue(':id_event', $participant->getId_event());
         $req->bindValue(':id_user', $participant->getId_user());
         // Exécution de la requête
@@ -45,17 +46,20 @@ class ParticipantManager {
 
     public static function findByUser($idUser) {
         $db = DbConnection::getInstance();
-        // instancier la connexion à la base de données
+        $list = [];
         // Préparation de la requête SQL
-        $req = $db->prepare('SELECT id_participant FROM participant WHERE id_user = :id_user');
+        $req = $db->prepare('SELECT * FROM participant WHERE id_user = :id_user');
         // Bind des valeurs
         $req->bindValue(':id_user', $idUser);
         // Exécution de la requête
         $req->execute();
-        // Récupération du résultat
-        $data = $req->fetch();
-        // Création de l'objet Utilisateur correspondant
-        return new Participant($data);
+        $results=$req->fetchAll(PDO::FETCH_ASSOC);
+   
+      foreach($results as $participant) {
+           $list[] = new Participant($participant);
+      }
+   
+       return $list;
     }
 
     public static function find($idParticipant) {
@@ -90,7 +94,68 @@ class ParticipantManager {
         return new Participant($data);
     }
 
+    public static function findParticipant($idUser) {
 
+        $db = DbConnection::getInstance();
+        // instancier la connexion à la base de données
+        $list = [];
+        // Préparation de la requête SQL
+        $req = $db->prepare('SELECT * FROM participant WHERE id_user = :id_user');
+        // Bind des valeurs
+        $req->bindValue(':id_user', $idUser);
+        // Exécution de la requête
+        $req->execute();
+        $results=$req->fetchAll(PDO::FETCH_ASSOC);
+   
+        foreach($results as $participant) {
+             $list[] = new Participant($participant);
+        }
+     
+         return $list;
+    }
+
+    public static function findByUserEvent($idUser, $idEvent) {
+
+        $db = DbConnection::getInstance();
+        // instancier la connexion à la base de données
+        $list = [];
+        // Préparation de la requête SQL
+        $req = $db->prepare('SELECT * FROM participant WHERE id_user = :id_user AND id_event = :id_event');
+        // Bind des valeurs
+        $req->bindValue(':id_user', $idUser);
+        $req->bindValue(':id_event', $idEvent);
+        // Exécution de la requête
+        $req->execute();
+        $results=$req->fetchAll(PDO::FETCH_ASSOC);
+   
+        foreach($results as $participant) {
+             $list[] = new Participant($participant);
+        }
+     
+         return $list;
+    }
+
+    public static function countParticipants($idEvent) {
+        $db = DbConnection::getInstance();
+        // Préparation de la requête SQL
+        $req = $db->prepare('SELECT COUNT(*) FROM participant WHERE id_event = :id_event');
+        // Bind des valeurs
+        $req->bindValue(':id_event', $idEvent);
+        // Exécution de la requête
+        $req->execute();
+        // Récupération du résultat
+        $count = $req->fetchColumn();
+        // Retourner le nombre de participants
+        return $count;
+    }
+
+    public static function deleteByUser($userId){
+        $db = DbConnection::getInstance();
+        $userId = intval($userId);
+          $query = $db->prepare("DELETE FROM participant WHERE id_user =:id_user");
+          $query->bindValue(':id_user', $userId, PDO::PARAM_INT);
+          $query->execute();
+      }
 }
 
 ?>

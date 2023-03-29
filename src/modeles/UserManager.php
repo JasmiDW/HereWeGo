@@ -27,24 +27,29 @@ class UserManager {
         return $user;
     }
 
-    public function addUser(User $user) {
+    public static function add(User $user) {
+
+        $db = DbConnection::getInstance();
+
+        
         // Préparation de la requête SQL
-        $req = $this->_db->prepare('INSERT INTO utilisateur (rs, email, nom, prenom, genre, password, tel, photo, badge, date_inscription, lieu_id, statut_id) VALUES(:rs, :email, :nom, :prenom, :password, :tel, :photo, :badge, :date_inscription, :lieu_id, :statut_id)');
+        $req = $db->prepare('INSERT INTO utilisateur (raison_sociale, mail_user, nom_user, prenom_user, genre, password, tel_user, date_inscription, id_lieu, id_statut) VALUES(:raison_sociale, :mail_user, :nom_user, :prenom_user, :genre, :pwhHash, :tel_user, :date_inscription, :id_lieu, :id_statut)');
         // Bind des valeurs
-        $req->bindValue(':rs', $user->getRS());
-        $req->bindValue(':email', $user->getMail_user());
-        $req->bindValue(':nom', $user->getNom_user());
-        $req->bindValue(':prenom', $user->getPrenom_user());
-        $req->bindValue(':genre', $user->getGenre());
-        $req->bindValue(':password', $user->getPassword());
-        $req->bindValue(':tel', $user->getTel_user());
-        $req->bindValue(':photo', $user->getPhoto());
-        $req->bindValue(':badge', $user->getBadge());
-        $req->bindValue(':date_inscription', $user->getDateInscription());
-        $req->bindValue(':lieu_id', $user->getId_lieu());
-        $req->bindValue(':statut_id', $user->getStatutId());
+        $req->bindValue(':raison_sociale', $user->getRaison_sociale(),PDO::PARAM_STR);
+        $req->bindValue(':mail_user', $user->getMail_user(),PDO::PARAM_STR);
+        $req->bindValue(':nom_user', $user->getNom_user(),PDO::PARAM_STR);
+        $req->bindValue(':prenom_user', $user->getPrenom_user(),PDO::PARAM_STR);
+        $req->bindValue(':genre', $user->getGenre(),PDO::PARAM_INT);
+        $req->bindValue(':pwhHash', $user->getPassword(), PDO::PARAM_STR);
+        $req->bindValue(':tel_user', $user->getTel_user(),PDO::PARAM_STR);
+        $req->bindValue(':date_inscription', $user->getDateInscription(),PDO::PARAM_STR);
+        $req->bindValue(':id_lieu', $user->getId_lieu(),PDO::PARAM_INT);
+        $req->bindValue(':id_statut', $user->getId_statut(),PDO::PARAM_INT);
         // Exécution de la requête
         $req->execute();
+
+        $id_user = $db->lastInsertId();
+        return $id_user;
     }
 
     public static function find($userId) {

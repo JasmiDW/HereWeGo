@@ -66,10 +66,30 @@ use \PDO;
     return $list;
   }
 
+  public static function getEvent($userId){
+    $list = [];
+    $db = DbConnection::getInstance();
+    $req=$db->prepare('SELECT event.*, GROUP_CONCAT(media.url) AS urls
+    FROM event
+    LEFT JOIN media ON event.id_event = media.id_event
+    WHERE event.id_user = :userId
+    GROUP BY event.id_event');
+    $req->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $req->execute();
+    $results=$req->fetchAll(PDO::FETCH_ASSOC);
+
+    // we create a list of Event objects from the database results
+    foreach($results as $event) {
+        $list[] = new Event($event);
+    }
+
+    return $list;
+  }
   public static function findByParticipant($userId)
     {
       $db = DbConnection::getInstance();
         // instancier la connexion à la base de données
+      $list = [];
       $req=$db->prepare ("SELECT event.* FROM event
       JOIN participant ON event.id_event = participant.id_event
       WHERE participant.id_user = :userId"); 
@@ -231,5 +251,18 @@ use \PDO;
         $query->execute();
         
     }
+
+    public static function deleteByUser($id_user){
+
+      $db = DbConnection::getInstance();
+      $id_user = intval($id_user);
+
+      $query = $db->prepare("DELETE FROM event WHERE id_user =:id_user");
+      $query->bindValue('id_user',$id_user,PDO::PARAM_INT);
+      $query->execute();
+      
+  }
+
+    
 }
 ?>

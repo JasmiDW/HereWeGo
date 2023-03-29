@@ -60,20 +60,17 @@
           <div class="d-flex justify-content-left">
             <div class="number">
             {{ remainingPlaces }}
+            </div>
           </div>
         </div>
-        
-        </div>
-        <form id="form-participer" method="get" action="?controller=participant&action=addParticipant&id={{event.id_event}}">
-          <div class="btn mb-5 ">
-            <button class="btn p-0" type="submit">Participer</button>
-          </div>
+        <form method="post" action="?controller=participant&action=add&id={{event.id_event}}">
+
+              <input type="submit" value="Valider">
+
         </form>
-        <div class="btn mb-5 ">
-          <a><input class="btn p-0" type="submit" value="Participer"></a>
-        </div>
       </div>
       </div>
+      
     </section>
     <section id="transport">
       <div class="d-flex bg-blue">
@@ -81,6 +78,7 @@
           <div class="d-flex justify-content-center mt-5 mb-5">
             <h2>Moyens de transport</h2>
           </div>
+          
           {% if listTransports %}
             <div class="row no-gutters d-flex justify-content-center align-items-center mb-5 mt-5">
               {% for transport in listTransports %}

@@ -19,6 +19,7 @@ class User
     private $_lieu;
     private $_statutId;
     private $_statut;
+    private $_adresse;
 
     
     public function __construct($data = array()){
@@ -96,8 +97,7 @@ class User
 
     public function setPassword($password)
     {
-        $hash = password_hash($password, PASSWORD_DEFAULT);
-        $this->_password = $hash;
+        $this->_password = $password;
         return $this;
     }
 
@@ -170,6 +170,15 @@ class User
     
     public function setStatut($statut){
         $this->_statut = $statut;
+        return $this;
+    }
+
+    public function getAdresse(){
+        return $this->_adresse;
+    }
+    
+    public function setAdresse($adresse){
+        $this->_adresse = $adresse;
         return $this;
     }
 

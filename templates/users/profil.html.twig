@@ -15,7 +15,8 @@
                                 <a class="nav-link mx-2" href="?controller=events&action=seeEvent&id={{ user.id_user }}"></i>Voir mes événements</a>
                             {% else %}
                                 <a class="nav-link mx-2" href="?controller=transports&action=addTransport&id={{ user.id_user }}"></i>Ajouter un transport</a>
-                                <a class="nav-link mx-2" href="?controller=transports&action=seeTransport&id={{ user.id_user }}"></i>Voir mes transports</a>
+                                <a class="nav-link mx-2" href="?controller=transports&action=seeTransport&id_user={{ user.id_user }}"></i>Mes transports</a>
+                                <a class="nav-link mx-2" href="?controller=transports&action=show&id_user={{ user.id_user }}"></i>Mes réservations</a>
                             {% endif %}
                                 <a class="nav-link mx-2" href="?controller=users&action=logout"></i>Deconnexion</a>
                         {% endfor %}

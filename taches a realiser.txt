@@ -1,0 +1,12 @@
+gestion des événements dans un profil organisateur (events qui s'affiche en double) : LE FAIRE SUR PAGE DELETE/UPDATE
+récupérer la date d'un événement pour le transport lors de la modification : FAIT
+création d'un utilisateur :
+gestion d'un utilisateur devenant participant :
+page de renvoie après la création/modification d'un événement/transport : FAIT POUR EVENT
+
+bouton exportation des événements : FAIT
+bouton page retour qui ne fonctionne pas : 
+bannière pour les événements montage : 
+formulaire/navbar en mobile à réadapter : 
+Afficher les événements par localisation et date sur la page home : en dernier condition en twig avec {% if resume.lenght < 50% %} small {%endif%}
+et dans le fichier css, creer un style .card .small{ et définir la hauteur de la card }

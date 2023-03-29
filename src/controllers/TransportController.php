@@ -60,6 +60,7 @@ use Twig\Loader\FilesystemLoader;
 
       $userId = ParticipantManager::findUser($participantId);
       $user = UserManager::find($userId);
+      
 
       // Récupérer les types de transports correspondant au transport
       $typeId = $transports->getID_Type_Transport();  
@@ -86,26 +87,37 @@ use Twig\Loader\FilesystemLoader;
       if(isset($_SESSION['user_id'])){
         $session=$_SESSION['user_id'];
 
-
       // Récupérer l'user correspondant à l'identifiant dans l'URL
-      $userId = $_GET['id'];
       $user = UserManager::find($session);
 
       // Récupérer l'id participant correspondant à l'identifiant dans l'URL
-      $participant = ParticipantManager::findByUser($userId);
+      $participants = ParticipantManager::findByUser($session);
 
+      $id_participants = array();
+      for($i = 0; $i < count($participants); $i++) {
+          $id_participants[] = $participants[$i]->getId_participant();
+      }
+
+        // Vérifier si l'identifiant de participant existe
+        if (count($participants) < 1) {
+        // Si l'identifiant de participant n'existe pas, rediriger l'utilisateur vers la page d'accueil
+        header("Location: ?controller=participant&action=TransportFailed");
+        exit();
+    }
+    
       $typeTransport = TypeTransportManager::findAll();
 
-      $event = EventManager::findByParticipant($userId);
+      $event = EventManager::findByParticipant($session);
 
       $lieu= LieuManager::findAll();
 
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('transports/addTransport.html.twig', array('lieu'=>$lieu, 'user'=> $user, 'listTypeTransport'=> $typeTransport, 'listEvent'=> $event, 'participant' => $participant, 'session'=>$this->session));
+      echo $this->twig->render('transports/addTransport.html.twig', array('lieu'=>$lieu, 'user'=> $user, 'listTypeTransport'=> $typeTransport, 'listEvent'=> $event, 'listParticipant' => $participants, 'session'=>$this->session));
       
     }
   }
+  
 
   public function add(){
 
@@ -135,7 +147,7 @@ use Twig\Loader\FilesystemLoader;
     $content = !empty($_POST['description']) ? $_POST['description'] : '';
     $id_lieu = $_POST["lieu"];
     $id_participant = $_POST['id_participant'];
-
+    
 
     $transport = new Transport();
 
@@ -166,12 +178,11 @@ use Twig\Loader\FilesystemLoader;
     $typeId = $transport->getID_Type_Transport();  
     $typeTransport = TypeTransportManager::find($typeId);
 
-    //Récupérer l'user correspondant au transport
-
     $this->loader = new FilesystemLoader('templates');
     $this->twig = new Environment($this->loader);
 
     echo $this->twig->render('transports/templateTransport.html.twig', array(
+      
       'transport' => $transport,
       'localisation' => $localisation,
       'event' => $event,
@@ -185,39 +196,41 @@ use Twig\Loader\FilesystemLoader;
       if(isset($_SESSION['user_id'])){
         $session=$_SESSION['user_id'];
 
-      // Récupérer le participant correspondant à l'identifiant dans l'URL
-      $participantId = ParticipantManager::findByUser($session);
-      
+              // Récupérer le participant correspondant à l'identifiant dans l'URL
+        $participant = ParticipantManager::findByUser($session);
 
-      // Récupérer une liste d'événement correspondant à l'utilisateur
-      $transportManager = new TransportManager();
+        // Récupérer tous les participants associés à l'utilisateur
+        $participants = ParticipantManager::findByUser($session, true);
+        
+        $id_participants = array();
+        foreach ($participants as $participant) {
+            $id_participants[] = $participant->getId_participant();
+        }
 
-      $page = isset($_GET['page']) ? $_GET['page'] : 1;
-      $limit = isset($_GET['limit']) ? $_GET['limit'] : 1;
-      $offset = ($page - 1) * $limit;
-    
-      $transports = $transportManager->getTransportByParticipant($participantId, $offset, $limit);
+        // Récupérer une liste de tous les transports associés aux participants
+        $transportManager = new TransportManager();
+        $transports = array();
+        foreach ($id_participants as $id_participant) {
+            $transports = array_merge($transports, $transportManager->getTransportByParticipant($id_participant));
+        }
 
-      $count = count($transports);
+        //Récupérer les événements correspondants aux transport 
+        $eventId = EventManager::find($id_participants);
 
-      $numPages = ceil($count / $limit);
+        $typeTransports = array();
+        foreach ($transports as $transport) {
+            $typeId = $transport->getId_type_transport();
+            $typeTransport = TypeTransportManager::find($typeId);
+            $typeTransports[] = $typeTransport;
+        }
 
-      //Récupérer les événements correspondants aux transport 
-      $eventId = EventManager::find($participantId);
-      
-      $typeTransports = array();
-      foreach ($transports as $transport) {
-          $typeId = $transport->getId_type_transport();
-          $typeTransport = TypeTransportManager::find($typeId);
-          $typeTransports[] = $typeTransport;
-      }
+              $this->loader = new FilesystemLoader('templates');
+              $this->twig = new Environment($this->loader);
+              echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'session'=>$this->session]);
+              
+            }
+          }
 
-      $this->loader = new FilesystemLoader('templates');
-      $this->twig = new Environment($this->loader);
-      echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'numPages'=>$numPages, 'session'=>$this->session]);
-      
-    }
-  }
 
   public function formUpdate(){
 
@@ -341,23 +354,8 @@ use Twig\Loader\FilesystemLoader;
       // Récupérer le participant correspondant à l'identifiant dans l'URL
       $participantId = ParticipantManager::findByUser($session);
       
-      // Récupérer une liste d'événement correspondant à l'utilisateur
-      $transportManager = new TransportManager();
-      $transports = $transportManager->getTransportByParticipant($participantId);
-      //Récupérer les événements correspondants aux transport 
-      $eventId = EventManager::find($participantId);
-      
-      $typeTransports = array();
-      foreach ($transports as $transport) {
-          $typeId = $transport->getId_type_transport();
-          $typeTransport = TypeTransportManager::find($typeId);
-          $typeTransports[] = $typeTransport;
-      }
-
-      // Rediriger vers la page seeTransport après la suppression
-      $this->loader = new FilesystemLoader('templates');
-      $this->twig = new Environment($this->loader);
-      echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'message'=>$messageDelete, 'session'=>$this->session]);
+      header("Location: ?controller=users&action=profil&id=$session");
+        exit();
   }
     }
 }

@@ -288,13 +288,13 @@ header{
 }
 
 .bg-yellow-1{
-    height: 140vh;
+    height: 150vh;
     background-color: #E9C46A;
     border-right: 3px solid black;
 }
 
 .bg-blue-1{
-    height: 140vh;
+    height: 150vh;
     background-color: #264653;
     border-right: 3px solid black;
 }
@@ -569,7 +569,7 @@ input:focus {
 }
 
 .card .card-body{
-    height: 250px;
+    height: 100%;
     width: auto;
 }
 
@@ -617,6 +617,22 @@ input:focus {
 	box-shadow: 0 40px 40px rgba(0, 0, 0, 0.2);
 }
 
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000;
+    border-radius: 0;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    margin:0%;
+  }
+  
+  input[type="radio"]:checked {
+    background-color: #264653;
+  }
 
 .img-event img {
     border: 2px solid black;

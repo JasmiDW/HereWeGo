@@ -4,8 +4,12 @@ use App\controllers\PagesController;
 use App\controllers\EventsController;
 use App\controllers\UserController;
 use App\controllers\TransportController;
+use App\controllers\ParticipantController;
+use App\controllers\ReservationController;
 use App\controllers\MediaManager;
 use App\modeles\EventManager;
+use App\modeles\ParticipantManager;
+use App\modeles\ReservationManager;
 
 function call($controller, $action){
 
@@ -16,8 +20,8 @@ function call($controller, $action){
         break;
 
       case "events":
-          $controller = new EventsController();
-          break;
+        $controller = new EventsController();
+        break;
 
       case "users":
         $controller = new UserController();
@@ -25,16 +29,26 @@ function call($controller, $action){
 
       case "transports":
         $controller = new TransportController();
+        break;
+
+      case 'participant':
+        $controller = new ParticipantController();
+        break;
+
+      case 'reservation':
+        $controller = new ReservationController();
+        break;
   }
   $controller->{ $action }();
 }
 
 $controllers = array(
   'pages' => ['home', 'about', 'connexion', 'contact', 'inscription', 'error','filtres','templateTransport','event'],
-  'events' => ['show','formAddEvent','seeEvent','add','formUpdate','update','delete'],
-  'participant' => ['addParticipant'],
+  'events' => ['show','formAddEvent','seeEvent','add','formUpdate','update','delete','export'],
+  'participant' => ['addParticipant','add','TransportFailed'],
   'transports' => ['show','addTransport','add','seeTransport','formUpdate','update','delete'],
-  'users' => ['show','profil','login','seeProfil','logout','formUpdateProfil','deleteProfil','update','updateProfileImage']
+  'users' => ['show','profil','login','seeProfil','logout','formUpdateProfil','deleteProfil','update','updateProfileImage','add'],
+  'reservation' => ['add', 'delete', 'update','success']
   );
 
 if(array_key_exists($controller, $controllers)){

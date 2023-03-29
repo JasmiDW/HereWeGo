@@ -186,5 +186,24 @@ use \PDO;
       $query->execute();
       
   }
+
+  public static function deleteByParticipant($participantId){
+    $db = DbConnection::getInstance();
+    $participantId = intval($participantId);
+      $query = $db->prepare("DELETE FROM moyen_de_transport WHERE id_participant =:id_participant");
+      $query->bindValue(':id_participant', $participantId, PDO::PARAM_INT);
+      $query->execute();
+  }
+
+  public static function remainingPlaces($mdtId)
+    {
+      $db = DbConnection::getInstance();
+      $mdtId = intval($mdtId);
+      $query = $db->prepare("SELECT nb_dispo FROM moyen_de_transport WHERE id_mdt = :id_mdt");
+      $query->bindValue(':id_mdt', $mdtId, PDO::PARAM_INT);
+      $query->execute();
+
+    }
+
 }
 ?>

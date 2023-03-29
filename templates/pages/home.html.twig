@@ -99,7 +99,7 @@
         </div>
       <div class="row mb-5 mt-5 d-flex justify-content-center align-items-center">
         {% for event in list %}
-          <div class="col-lg-2 col-md-4 col-12 col-sm-6 mb-5 ">
+          <div class="col-lg-2 col-md-5 col-12 col-sm-5 mb-5 ">
             <a href="?controller=events&action=show&id={{event.id_event}}" class="border-bottom">
               <div class="card baseBlock mx-auto ">
               {% if event.url_photo == NULL %}
@@ -110,7 +110,18 @@
                 <div class="bg-{{ event.libelle_couleur }}-2"><h4 class="card-text">{{ event.libelle_categorie }}</h4></div>
                 <div class="card-body face face2">
                   <h5 class="card-title">{{ event.titre_event }}</h5>
-                  <h6 class="card-text mb-4">{{ event.date_debut_event|date('j') }} au {{ event.date_fin_event|date('j F Y') }}</h6>
+                  {% set date_debut = event.date_debut_event|date('Y-m-d') %}
+                    {% set date_fin = event.date_fin_event|date('Y-m-d') %}
+                    
+                    {% set mois_debut = date_debut|date('m')|number_format %}
+                    {% set mois_fin = date_fin|date('m')|number_format %}
+
+                    {% if mois_debut == mois_fin %}
+                      {% set texte_date = ' Du ' ~ date_debut|date('j ')  ~ ' au ' ~ date_fin|date('j ') ~ date_fin|date('F Y') %}
+                    {% else %}
+                      {% set texte_date = ' Du ' ~ date_debut|date('j ') ~ date_debut|date('F') ~ ' au ' ~ date_fin|date('j F Y') %}
+                    {% endif %}
+                  <h6 class="card-text mb-4">{{ texte_date }}</h6>
                   <p class="card-text mb-4">{{ event.resume_event }}</p>
                   <a href="?controller=events&action=show&id={{event.id_event}}"><button>Voir plus</button></a>
                 </a>

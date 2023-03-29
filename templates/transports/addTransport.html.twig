@@ -9,21 +9,23 @@
                     <p class="m-0"> <a href="#"  onclick="backOrToPage()">Retour ?</a></p>
                     <h1 class="compte mb-5">Ajouter un transport</h1>
                         <form method="post" action="?controller=transports&action=add" onsubmit="return verificationEvent()">
-                        <input class="col-md-6 mb-1 p-2 " type="text" id="id_participant" name="id_participant" value="{{ participant.id_participant }}">
                             <div class="form-row">
                                 <p>
                                     <div class="col-md-6 col-sm-6">
                                         <select class="form-ville p-2" id="titre_event" name="titre_event">
                                             {% for event in listEvent %}
-                                                
-                                                <option value="{{ event.id_event }}" selected>{{ event.titre_event }}</option>
-                                                
+                                                <option value="{{ event.id_event }}" {% if selectedEventID == event.id_event %} selected {% endif %} data-event-id="{{ event.id_event }}">{{ event.titre_event }}</option>
                                             {% endfor %}
-                                            {{ messageTitre }}
+                                            <input type="text" id="id_participant" name="id_participant" value="">
                                         </select>
                                     </div>
                                 </p>
                                 <p>
+                                    {# {% for participant in listParticipant %}
+                                        {% if participant.id_event == selectedEventID %}
+                                            <input class="col-md-6 mb-1 p-2 " type="text" id="id_participant" name="id_participant" value="{{ participant.id_participant }}">
+                                        {% endif %}
+                                    {% endfor %} #}
                                     <div class="col-md-6 col-sm-6">
                                         <select class="form-ville p-2" id="type_transport" name="type_transport">
                                             {% for typeTransport in listTypeTransport %}
@@ -32,8 +34,12 @@
                                         </select>
                                     </div>
                                 </p>
-                                <p>
-                                    <input class="col-md-6 mb-1 p-2 " type="date" id="date_depart" name="date_depart" placeholder="date de départ">
+                                <p> 
+                                    <p>
+                                        Date de début de l'événement : <span id="date_debut_event">{{ listEvent[0].date_debut_event }}</span>
+                                    </p>
+
+                                    <input class="col-md-6 mb-1 p-2 " type="date" id="date_depart" name="date_depart" placeholder="date de départ" >
                                 </p>
                                 <p>
                                     <input class="col-md-3 mb-1 p-2 " type="time" id="heure_depart" name="heure_depart" placeholder="heure de départ">
@@ -70,5 +76,29 @@
             </div>
         </div>
     </section>
+<script>
+  var datesEvent = {
+    {% for event in listEvent %}
+      "{{ event.id_event }}": "{{ event.date_debut_event }}",
+    {% endfor %}
+  };
 
+  document.getElementById('titre_event').addEventListener('change', function() {
+    var selectedEventId = this.value;
+    var dateDebutEvent = datesEvent[selectedEventId];
+    document.getElementById('date_debut_event').textContent = dateDebutEvent;
+  });
+
+  document.getElementById('titre_event').addEventListener('change', function() {
+    var selectedEventId = this.value;
+    var participantId = '';
+    {% for participant in listParticipant %}
+        {% if participant.id_event == selectedEventId %}
+            participantId = "{{ participant.id_participant }}";
+        {% endif %}
+    {% endfor %}
+    document.getElementById('id_participant').value = participantId;
+});
+
+</script>
 {% endblock %}

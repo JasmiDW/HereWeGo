@@ -59,7 +59,38 @@
                     <div class="trait"></div>
                     <h2 class="compte mb-2 mt-3">Informations</h2>
                     <a class="" href="?controller=users&action=formUpdateProfil&id_user={{ user.id_user }}">Modifier mon profil</a>
-                    <a class="" href="?controller=users&action=deleteProfil&id_user={{ user.id_user }}">Supprimer mon profil</a>
+                    <a class="" data-bs-toggle="modal" data-bs-target="#suppressionProfil" href="#">Supprimer mon profil</a>
+                    <!-- Modal -->
+                        <div class="modal fade" id="suppressionProfil" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title" id="exampleModalLabel">Supprimer mon profil</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="?controller=users&action=deleteProfil&id_user={{ user.id_user }}" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-10">
+                                                <div class="form-connexion mb-5">
+                                                    <p>Voulez-vous supprimer vos propositions de transports, vos participations à des événements et votre profil ?
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="btn">
+                                            <a><input class="btn p-0" data-bs-dismiss="modal" value="Fermer"></a>
+                                            </div>
+                                            <div class="btn">
+                                            <a><input class="btn p-0" type="submit" value="Valider"></a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
                     <p class="mt-3"><i class="fa-solid fa-user fa-xl"></i>{{user.raison_sociale}} {{user.nom_user}}  {{user.prenom_user}} </p>
                     <p class="mb-3"><i class="fa-solid fa-phone fa-xl"></i>{{user.tel_user}} </p>
                     <div class="trait"></div>
