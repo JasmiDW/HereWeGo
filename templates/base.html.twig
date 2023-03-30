@@ -67,13 +67,13 @@
                             <div class="col-12 col-lg-4 col-md-4 mt-5 px-5 align-items-center">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <a href="?controller=pages&action=histoire" title="à propos" class="text-decoration-none">à propos</a>
+                                            <a href="?controller=pages&action=about" title="à propos" class="text-decoration-none">à propos</a>
                                         </li>
                                         <li>
                                             <a href="?controller=pages&action=event" title="events" class="text-decoration-none">événements</a>
                                         </li>
                                         <li>
-                                            <a href="?controller=pages&action=about" title="contact" class="text-decoration-none">Contact</a>
+                                            <a href="?controller=pages&action=contact" title="contact" class="text-decoration-none">Contact</a>
                                         </li>
                                     </ul>
                             </div>
@@ -100,6 +100,16 @@
             <script src="public/script/bootstrap.min.js"></script> 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
             <script src="public/script/bootstrap.min.js"></script>
-            <script src="public/script/code.js"></script>   
+            <script src="public/script/code.js"></script>
+            <script>
+                function backOrToPage() {
+                    if (document.referrer === "") {
+                        // Si la page précédente n'existe pas, rediriger vers une autre page
+                        window.location.href = "?controller=pages&action=home"; // Remplacez "/" par l'URL de votre choix
+                    } else {
+                        history.back(); // Retourner à la page précédente
+                    }
+                };
+            </script>   
         </body>
     </html>

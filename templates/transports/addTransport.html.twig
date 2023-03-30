@@ -16,7 +16,6 @@
                                             {% for event in listEvent %}
                                                 <option value="{{ event.id_event }}" {% if selectedEventID == event.id_event %} selected {% endif %} data-event-id="{{ event.id_event }}">{{ event.titre_event }}</option>
                                             {% endfor %}
-                                            <input type="text" id="id_participant" name="id_participant" value="">
                                         </select>
                                     </div>
                                 </p>

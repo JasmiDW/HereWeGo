@@ -62,6 +62,24 @@ class ParticipantManager {
        return $list;
     }
 
+    public static function findById($idUser) {
+        $db = DbConnection::getInstance();
+        $list = [];
+        // Préparation de la requête SQL
+        $req = $db->prepare('SELECT id_participant FROM participant WHERE id_user = :id_user');
+        // Bind des valeurs
+        $req->bindValue(':id_user', $idUser);
+        // Exécution de la requête
+        $req->execute();
+        $results=$req->fetchAll(PDO::FETCH_ASSOC);
+   
+      foreach($results as $participant) {
+           $list[] = new Participant($participant);
+      }
+   
+       return $list;
+    }
+
     public static function find($idParticipant) {
 
         $db = DbConnection::getInstance();
@@ -173,7 +191,28 @@ class ParticipantManager {
         // Récupération du résultat
         $data = $req->fetch();
         // Création de l'objet Utilisateur correspondant
-        return new Participant($data);
+        return $data['id_participant'];
+    }
+
+    public static function findMedia($idUser, $idParticipant) {
+
+        $db = DbConnection::getInstance();
+        // instancier la connexion à la base de données
+
+        // Préparation de la requête SQL
+        $req = $db->prepare('SELECT url_photo, utilisateur.id_user,id_participant FROM utilisateur 
+        INNER JOIN participant ON utilisateur.id_user = participant.id_user
+        WHERE utilisateur.id_user = :id_user AND participant.id_participant = :id_participant LIMIT 1');
+        // Bind des valeurs
+        $req->bindValue(':id_participant', $idParticipant, PDO::PARAM_INT);
+        $req->bindValue(':id_user', $idUser, PDO::PARAM_INT);
+        // Exécution de la requête
+        $req->execute();
+
+        // Récupération du résultat
+        $data = $req->fetch();
+
+        return $data['url_photo'];
     }
 
 }

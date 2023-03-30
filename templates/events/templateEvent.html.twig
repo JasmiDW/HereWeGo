@@ -92,7 +92,9 @@
                         <img src="img/Plan de travail 4.png" class="card-img" alt="profil">
                       {% endif %}
                     {% else %}
-                        <img src="{{user.url_photo}}" class="card-img ms-1" alt="profil">
+                      {% for url in images %}
+                        <img src="{{url}}" class="card-img ms-1" alt="profil">
+                      {% endfor %}
                     {% endif %}
                     </div>
                     <div class="col-md-8">

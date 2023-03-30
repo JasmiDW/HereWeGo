@@ -100,7 +100,7 @@ use \PDO;
       
     }
 
-    public static function add(){
+    public static function add($id_event, $id_type_transport, $date_depart, $heure_depart, $heure_arrivee, $nb_place, $nb_dispo, $prix, $contact, $content, $id_lieu, $id_participant){
         $db = DbConnection::getInstance();
 
         $id_event = $_POST['titre_event'];
@@ -114,7 +114,7 @@ use \PDO;
         $contact = $_POST['contact'];
         $content = !empty($_POST['description']) ? $_POST['description'] : '';
         $id_lieu = $_POST["lieu"];
-        $id_participant = ParticipantManager::findParticipantByEvent($id_event,$session);
+
 
         $query=$db->prepare("INSERT INTO moyen_de_transport (id_event, id_type_transport, date_depart_transport, heure_depart, heure_arrivee, nb_place, nb_dispo, tarif, info_contact, descriptif, id_lieu, id_participant) 
           VALUES(:id_event, :id_type_transport, :date_depart_transport, :heure_depart, :heure_arrivee, :nb_place, :nb_dispo, :tarif, :info_contact, :descriptif, :id_lieu, :id_participant )");
@@ -203,6 +203,19 @@ use \PDO;
       $query->bindValue(':id_mdt', $mdtId, PDO::PARAM_INT);
       $query->execute();
 
+    }
+
+    public static function findByParticipant($idParticipant, $idEvent) {
+      $db = DbConnection::getInstance();
+
+      $req = $db->prepare('SELECT * FROM moyen_de_transport WHERE id_participant = :id_participant AND id_event = :id_event');
+
+      // the query was prepared, now we replace :id with our actual $id value
+      $req->bindValue('id_participant', $idParticipant, PDO::PARAM_INT);
+      $req->bindValue('id_event' , $idEvent, PDO::PARAM_INT);
+      $req->execute();
+
+      
     }
 
 }

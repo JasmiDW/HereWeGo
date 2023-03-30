@@ -92,7 +92,29 @@ use Twig\Loader\FilesystemLoader;
       $user = UserManager::find($session);
 
       // Récupérer l'id participant correspondant à l'identifiant dans l'URL
-      $participants = ParticipantManager::findByUser($session);
+      $participants = ParticipantManager::findById($session);
+
+      $typeTransport = TypeTransportManager::findAll();
+
+      $events = EventManager::findByParticipant($session);
+      $idEvents = [];
+      foreach ($events as $event){
+          $idEvent = $event->getId_event();
+          $idEvents[] = $idEvent;
+      }
+
+      $lieu= LieuManager::findAll();
+
+      // Vérifier si le participant a déjà proposé un transport pour cet événement
+      foreach ($events as $event){
+          $transports = TransportManager::findByParticipant($session, $idEvents);
+          if (!empty($transports)) {
+
+              // Afficher un message d'erreur
+              echo "Vous avez déjà proposé un transport pour l'événement " . $event->getTitre() . ".";
+          }
+      }
+
 
       $id_participants = array();
       for($i = 0; $i < count($participants); $i++) {
@@ -103,17 +125,15 @@ use Twig\Loader\FilesystemLoader;
         // Si l'identifiant de participant n'existe pas, rediriger l'utilisateur
         header("Location: ?controller=participant&action=TransportFailed");
         exit();
+
+      
     }
     
-      $typeTransport = TypeTransportManager::findAll();
-
-      $event = EventManager::findByParticipant($session);
-
-      $lieu= LieuManager::findAll();
+      
 
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
-      echo $this->twig->render('transports/addTransport.html.twig', array('lieu'=>$lieu, 'user'=> $user, 'listTypeTransport'=> $typeTransport, 'listEvent'=> $event, 'listParticipant' => $participants, 'session'=>$this->session));
+      echo $this->twig->render('transports/addTransport.html.twig', array('lieu'=>$lieu, 'user'=> $user, 'listTypeTransport'=> $typeTransport, 'listEvent'=> $events, 'listParticipant' => $participants, 'session'=>$this->session));
       
     }
   }
@@ -163,7 +183,7 @@ use Twig\Loader\FilesystemLoader;
     $transport->setId_lieu($id_lieu);
     $transport->setId_participant($id_participant);
 
-    $newTransport = TransportManager::add($transport);
+    $newTransport = TransportManager::add($id_event, $_POST['type_transport'], $_POST['date_depart'], $_POST['heure_depart'], $_POST['heure_arrivee'], $_POST['places'], $_POST['places'], $_POST['prix'], $_POST['contact'], $_POST['description'], $_POST["lieu"], $id_participant);
 
     // Récupérer la localisation correspondant au transport
     $localisationId = $transport->getId_lieu();
@@ -213,8 +233,20 @@ use Twig\Loader\FilesystemLoader;
             $transports = array_merge($transports, $transportManager->getTransportByParticipant($id_participant));
         }
 
-        //Récupérer les événements correspondants aux transport 
-        $eventId = EventManager::find($id_participants);
+        $eventIds = array();
+        foreach($transports as $transport){
+          $eventId = $transport->getId_event();
+          $eventIds[] = $eventId;
+
+        }
+
+        $events = array();
+        foreach ($eventIds as $eventId) {
+            $event = EventManager::find($eventId);
+            $events[] = $event;
+        }
+
+        $lieu= LieuManager::findAll();
 
         $typeTransports = array();
         foreach ($transports as $transport) {
@@ -223,35 +255,35 @@ use Twig\Loader\FilesystemLoader;
             $typeTransports[] = $typeTransport;
         }
 
-              $this->loader = new FilesystemLoader('templates');
-              $this->twig = new Environment($this->loader);
-              echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $eventId, 'session'=>$this->session]);
+        $this->loader = new FilesystemLoader('templates');
+        $this->twig = new Environment($this->loader);
+        echo $this->twig->render('transports/seeTransport.html.twig',  ['user'=>$session, 'auto_reload' => true , 'list'=> $transports, 'typeTransport' => $typeTransports, 'event'=> $events, 'lieu' => $lieu, 'session'=>$this->session]);
               
-            }
-          }
+      }
+    }
 
 
-  public function formUpdate(){
+    public function formUpdate(){
 
-    if(isset($_SESSION['user_id'])){
-      $session = $_SESSION['user_id'];
+      if(isset($_SESSION['user_id'])){
+        $session = $_SESSION['user_id'];
 
-    $participantId = ParticipantManager::findByUser($session);
+        $participantId = ParticipantManager::findByUser($session);
 
-    $lieu= LieuManager::findAll();
-    $typeTransport = TypeTransportManager::findAll();
+        $lieu= LieuManager::findAll();
+        $typeTransport = TypeTransportManager::findAll();
 
-    $transportId =  $_GET['id_transport'];
-    $transport = TransportManager::find($transportId);
-    
-    $eventId = $transport->getId_event();
-    $event = EventManager::find($eventId); 
+        $transportId =  $_GET['id_transport'];
+        $transport = TransportManager::find($transportId);
+        
+        $eventId = $transport->getId_event();
+        $event = EventManager::find($eventId); 
 
-    $this->loader = new FilesystemLoader('templates');
-    $this->twig = new Environment($this->loader);
-    echo $this->twig->render('transports/formUpdate.html.twig',  ['lieu'=>$lieu, 'list'=> $typeTransport, 'auto_reload' => true , 'transport'=> $transport, 'event'=>$event, 'session'=>$this->session]);
-  }
-}
+        $this->loader = new FilesystemLoader('templates');
+        $this->twig = new Environment($this->loader);
+        echo $this->twig->render('transports/formUpdate.html.twig',  ['lieu'=>$lieu, 'list'=> $typeTransport, 'auto_reload' => true , 'transport'=> $transport, 'event'=>$event, 'session'=>$this->session]);
+      }
+    }
 
 
 

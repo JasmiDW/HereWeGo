@@ -57,7 +57,9 @@ use Twig\Loader\FilesystemLoader;
       if (!isset($_GET['id'])) {
         return call('pages', 'error');
       }
-    
+      
+      if(isset($_SESSION['user_id'])){
+        $session=$_SESSION['user_id'];
       // Récupérer l'événement correspondant à l'identifiant dans l'URL
       $eventId = $_GET['id'];
 
@@ -90,10 +92,24 @@ use Twig\Loader\FilesystemLoader;
       $mediaManager = new MediaManager();
       $media = $mediaManager->findAllByEvent($eventId);
 
-            // initialiser $typeTransport à null
+      $participantManager = New ParticipantManager();
+      $listParticipants= $participantManager->findByUser($session);
+
+      
+      // $participants = array();
+      // foreach ($listParticipants as $participant) {
+      //   $participantId = $listTransports->getId_participant();
+      //   $participant = ParticipantManager::find($participantId);
+      //   $participants[]= $participant;
+      // }
+      
+      //Récupérer l'url_photo du participant
+
+      // initialiser $typeTransport à null
       $typeTransport = null;
 
       $localisations = array();
+      $participants = array();
             
       if (!empty($listTransports)) {
           foreach ($listTransports as $transport) {
@@ -104,9 +120,20 @@ use Twig\Loader\FilesystemLoader;
               // récupérer les types de transports correspondant à chaque transport
               $typeId = $transport->getID_Type_Transport();  
               $typeTransport = TypeTransportManager::find($typeId);
-          }
-      }
 
+              //Récupérer les participants correspondant aux transports
+              $participantId = $transport->getId_participant();
+              $participant = ParticipantManager::find($participantId);
+              $participants[]= $participant;
+          }
+          $images = array();
+          foreach ($participants as $participant) {
+              $image = ParticipantManager::findMedia($session, $participant->getId_participant());
+              $images[] = $image;
+          }
+          
+      }
+      var_dump($images);
       $this->loader = new FilesystemLoader('templates');
       $this->twig = new Environment($this->loader);
       $this->twig->addExtension(new \Twig\Extension\DebugExtension());
@@ -119,9 +146,13 @@ use Twig\Loader\FilesystemLoader;
           'typeTransport' => $typeTransport,
           'categorie' => $categorie,
           'media' => $media,
-          'color' =>$color, 'session'=>$this->session, 'userSession'=> $this->user_id
+          'color' =>$color, 
+          'session'=>$this->session, 
+          'userSession'=> $this->user_id, 
+          'images' => $images
       ));
     }
+  }
 
     public function formAddEvent(){
 

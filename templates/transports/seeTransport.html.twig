@@ -27,7 +27,11 @@
                             <p class="mt-5"> Vous n'avez pas proposé de transport encore. </p>
                         {% else %}
                         {% for key,transport in list %}
-                            <h2 class="compte mb-2 mt-3">{{ event.titre_event }}</h2>
+                            {% for event in event %}
+                                {% if event.id_event == transport.id_event %}
+                                    <h2 class="compte mb-2 mt-3">{{ event.titre_event }}</h2>
+                                {% endif %}
+                            {% endfor %}
                             <p class="mb-3" ><i class="{{ typeTransport[key].icone_fontawesome }}"></i>{{ typeTransport[key].libelle_type_transport }} <i class="fa-solid fa-calendar-days fa-xl"></i>{{ transport.date_depart_transport|date('j') }} au {{ transport.date_fin_event|date('j F Y') }}</p>
                             <a class="" href="?controller=transports&action=formUpdate&id_transport={{ transport.id_mdt }}">Modifier ce transport</a>
                             <a class="" href="?controller=transports&action=delete&id_transport={{ transport.id_mdt }}">Supprimer ce transport</a>

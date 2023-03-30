@@ -40,7 +40,7 @@ class ReservationController{
             
             //Récupérer le participant correspondant à l'id user
             $participantManager = new ParticipantManager();
-            $participant = $participantManager->findByUserEvent($session,$event->getId_event());
+            $participant = $participantManager->findByUserEvent($session, $event->getId_event());
     
             // Ajouter une reservation pour le participant
             $date = date("Y-m-d");
